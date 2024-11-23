@@ -19,7 +19,7 @@ MainWindow::~MainWindow()
     delete ui;
 }
 void MainWindow::on_editBattery(int value){
-    ui->Battery->setText(QString::number(value));
+    ui->label_batteryValue->setText(QString::number(value));
 }
 
 
