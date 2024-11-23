@@ -1,5 +1,6 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
+#include "scan.h"
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
     , ui(new Ui::MainWindow)
@@ -37,5 +38,7 @@ void MainWindow::on_button_profiles_clicked()
 {
     app->measure();
     app->calculateScan(0);
+    Scan* scan = app->activeUser->getScan(0);
+    app->calculateReadingGraph(scan->getPoints().at(1));
 }
 
