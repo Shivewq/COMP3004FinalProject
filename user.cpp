@@ -1,6 +1,5 @@
 #include "user.h"
 #include "scan.h"
-#include <QDebug>
 User::User(QObject* parent,QString name, int weight, int height):QObject(parent),name(name),weight(weight),height(height){
 
 }

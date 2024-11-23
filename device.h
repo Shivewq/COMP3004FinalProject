@@ -1,7 +1,7 @@
 #ifndef DEVICE_H
 #define DEVICE_H
 #include "battery.h"
-
+#include <random>
 class Device
 {
 public:

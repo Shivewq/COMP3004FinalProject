@@ -10,6 +10,7 @@ void Device::turnOff(){}
 int Device::geneateDataPoint(){
     std::random_device rd; // Non-deterministic random seed
     std::mt19937 gen(rd()); // Mersenne Twister engine
-    std::uniform_int_distribution<> dist(5, 160); // Distribution in range [min, max]
+    //std::uniform_int_distribution<> dist(5, 160); // Distribution in range [min, max]. //before change
+    std::uniform_int_distribution<> dist(5, 160);
     return dist(rd);
 }

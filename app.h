@@ -2,6 +2,9 @@
 #define APP_H
 #include <QVector>
 #include <QDateTime>
+#include <cmath>
+#include <iostream>
+#include <QDebug>
 //foward declarations
 class User;
 class Device;

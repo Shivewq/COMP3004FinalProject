@@ -3,6 +3,7 @@
 #include <QString>
 #include <QVector>
 #include <QObject>
+#include <QDebug>
 class Scan; //foward decalration of scan for the scan list
 class User: public QObject{
         Q_OBJECT
