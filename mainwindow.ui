@@ -62,7 +62,7 @@
         </widget>
        </item>
        <item>
-        <widget class="QPushButton" name="pushButton_4">
+        <widget class="QPushButton" name="button_history">
          <property name="text">
           <string>History</string>
          </property>
@@ -164,6 +164,19 @@
       <widget class="QPlainTextEdit" name="plainTextEdit_3"/>
      </item>
     </layout>
+   </widget>
+   <widget class="QLabel" name="Battery">
+    <property name="geometry">
+     <rect>
+      <x>750</x>
+      <y>30</y>
+      <width>62</width>
+      <height>17</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>TextLabel</string>
+    </property>
    </widget>
   </widget>
   <widget class="QMenuBar" name="menubar">
