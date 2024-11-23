@@ -11,6 +11,7 @@ public:
     explicit User(QObject* parent = nullptr, QString name = "name", int weight = 53, int height = 180);
     ~User();
     void addScan(Scan* scan);
+    Scan* getScan(int index){return measurements.at(index);}
 private:
     QString name;
     int weight; //in kg

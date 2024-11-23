@@ -3,6 +3,7 @@
 #include <QVector>
 #include <QString>
 #include <QDateTime>
+//45-70 is normal. < 45 is low functionality, > 70 is high functionality
 class Scan
 {
 public:
