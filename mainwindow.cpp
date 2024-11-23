@@ -6,17 +6,16 @@ MainWindow::MainWindow(QWidget *parent)
     , ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
+    device = new Device();
+    connect(device->charge,&Battery::editBattery,this,&MainWindow::on_editBattery);
 }
 
 MainWindow::~MainWindow()
 {
     delete ui;
 }
-
-
-void MainWindow::on_pushButton_clicked()
-{
-    ui->stackedWidget->setCurrentIndex(1);
+void MainWindow::on_editBattery(int value){
+    ui->Battery->setText(QString::number(value));
 }
 
 
@@ -25,5 +24,12 @@ void MainWindow::on_button_home_clicked()
     QLabel* label = new QLabel("battery low",this);
     label->setGeometry(100,100,300,500);
     label->setVisible(true);
+}
+
+
+
+void MainWindow::on_button_history_clicked()
+{
+    device->turnOn();
 }
 
