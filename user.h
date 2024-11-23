@@ -3,19 +3,19 @@
 #include <QString>
 #include <QVector>
 #include <QObject>
-
 class Scan; //foward decalration of scan for the scan list
 class User: public QObject{
         Q_OBJECT
 
 public:
-    explicit User(QObject* parent = nullptr);
+    explicit User(QObject* parent = nullptr, QString name = "name", int weight = 53, int height = 180);
     ~User();
+    void addScan(Scan* scan);
 private:
     QString name;
     int weight; //in kg
     int height; // in cm
-    QVector<Scan*> measurements;
+    QVector<Scan*> measurements; //back is most recent scan
 };
 
 #endif // USER_H

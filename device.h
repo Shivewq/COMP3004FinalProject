@@ -10,7 +10,10 @@ public:
     void turnOn();
     void turnOff();
     Battery* charge;
+    int geneateDataPoint();
 private:
+
+public slots:
 
 };
 
