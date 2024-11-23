@@ -2,14 +2,12 @@
 #define MAINWINDOW_H
 
 #include <QMainWindow>
-#include <QtCharts/QChart>
 #include <QtCharts/QChartView>
 #include <QtCharts/QLineSeries>
 #include <QTimer>
 #include "device.h"
 #include "app.h"
 #include "user.h"
-QT_CHARTS_USE_NAMESPACE
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }
 QT_END_NAMESPACE
@@ -34,11 +32,9 @@ private slots:
 
 private:
     Ui::MainWindow *ui;
-    QLineSeries* series;
+    QLineSeries *series;
     Device * device;
     App* app;
-    int pointCounter = 0;
-
 public slots:
     void on_editBattery(int value);
 };
