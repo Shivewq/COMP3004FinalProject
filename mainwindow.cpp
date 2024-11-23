@@ -55,6 +55,8 @@ void MainWindow::on_button_history_clicked()
 
 void MainWindow::on_button_profiles_clicked()
 {
+    app->measure();
+    app->calculateScan(0);
 }
 
 void MainWindow::updateChart(int y)

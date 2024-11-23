@@ -2,8 +2,6 @@
 #include "device.h"
 #include "user.h"
 #include "scan.h"
-#include <cmath>
-#include <iostream>
 #include <QDebug>
 App::App(Device* d):device(d)
 {
@@ -39,6 +37,7 @@ void App::calculateScan(int index){
             processed = std::abs(point - 70);
             processed = 100 + ((processed/point)*100);
         }
+        qInfo() <<"Data point: " <<point << "Processed value:" << processed;
         processedScan.push_back(std::floor(processed));
     }
 }
