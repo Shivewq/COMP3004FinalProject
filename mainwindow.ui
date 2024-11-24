@@ -62,13 +62,25 @@
         </widget>
        </item>
        <item>
-        <widget class="QPushButton" name="pushButton_4">
+        <widget class="QPushButton" name="button_history">
          <property name="text">
           <string>History</string>
          </property>
         </widget>
        </item>
       </layout>
+     </widget>
+    </widget>
+    <widget class="QWidget" name="page_metering">
+     <widget class="QGraphicsView" name="meteringGraph">
+      <property name="geometry">
+       <rect>
+        <x>60</x>
+        <y>211</y>
+        <width>651</width>
+        <height>251</height>
+       </rect>
+      </property>
      </widget>
     </widget>
     <widget class="QWidget" name="page_profiles">
@@ -164,6 +176,19 @@
       <widget class="QPlainTextEdit" name="plainTextEdit_3"/>
      </item>
     </layout>
+   </widget>
+   <widget class="QLabel" name="Battery">
+    <property name="geometry">
+     <rect>
+      <x>750</x>
+      <y>30</y>
+      <width>62</width>
+      <height>17</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>TextLabel</string>
+    </property>
    </widget>
   </widget>
   <widget class="QMenuBar" name="menubar">
