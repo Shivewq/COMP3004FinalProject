@@ -12,6 +12,8 @@ MainWindow::MainWindow(QWidget *parent)
     , ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
+    ui->stackedWidget->setCurrentIndex(0); // Set to homepage
+    connect(ui->button_profiles, &QPushButton::clicked, this, &MainWindow::on_button_profiles_clicked);
     //setup device
     device = new Device();
     connect(device->charge,&Battery::editBattery,this,&MainWindow::on_editBattery);
@@ -55,6 +57,8 @@ void MainWindow::on_button_history_clicked()
 
 void MainWindow::on_button_profiles_clicked()
 {
+    ui->stackedWidget->setCurrentIndex(2);
+
     app->measure();
     app->calculateScan(0);
 }
