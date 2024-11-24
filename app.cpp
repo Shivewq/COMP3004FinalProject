@@ -2,12 +2,65 @@
 #include "device.h"
 #include "user.h"
 #include "scan.h"
-#include <cmath>
-#include <iostream>
 #include <QDebug>
 App::App(Device* d):device(d)
 {
 
+}
+//will have signal to plot point and clear graph
+//function template for starting measuring, getting the reading,calculating the graph points
+//will need a slot in mainwindow to connect to app that updates the thing that displays which point we are measuring
+void App::MeasureFunctionTemplate(){
+    //pre-get all data points
+    QVector<int> measurement;
+    for(int i = 0; i < 23; i++ ){
+        measurement.push_back(this->device->geneateDataPoint());
+    }
+    QDateTime scanDate = QDateTime::currentDateTime();
+    activeUser->addScan(new Scan(measurement,scanDate));
+
+    //So basically the timer is to loop through each point. At the end of the function you restart the timer
+    int* counter = new int(0); //increments when me move through the points. Pointer so I can modify in the timeout
+    QTimer* points = new QTimer(this);
+    points->setSingleShot(true);
+    connect(points,&QTimer::timeout,this,[this,measurement,counter,points](){
+        int data = measurement.at(*counter);
+        QVector<int>* graph_Yvalues = new QVector<int>(calculateReadingGraph(data));
+        QTimer* graph = new QTimer(); //will declare with "this" later as a parameter to set the parent object
+        graph->setSingleShot(true);
+        connect(graph,&QTimer::timeout, this,[graph_Yvalues,graph,counter,points](){
+            if(!graph_Yvalues->isEmpty()){ //if there is still more to plot
+                int y = graph_Yvalues->takeFirst();
+                //plot the point by popping a value from the front of y
+                graph->start(300); //restart the timer
+            }
+            else{ //if there is no more points to graph. We move onto the next measurement
+                *counter+= 1;
+                points->start(3000);
+            }
+
+        });
+       graph->start(300);
+    });
+    points->start(3000);
+}
+
+//waits and plots the point
+void App::graphFunction(QVector<int>* yValues, int* counter, QTimer* points){
+    QTimer* graph = new QTimer(); //will declare with "this" later as a parameter to set the parent object
+    graph->setSingleShot(true);
+    connect(graph,&QTimer::timeout, this,[yValues,graph,counter,points](){
+        if(!yValues->isEmpty()){ //if there is still more to plot
+            //plot the point by popping a value from the front of y
+            graph->start(3000); //restart the timer
+        }
+        else{ //if there is no more points to graph. We move onto the next measurement
+            *counter+= 1;
+            points->start(3000);
+        }
+
+    });
+   graph->start(3000);
 }
 void App::measure(){
     //for all 24 points on the body
@@ -19,7 +72,7 @@ void App::measure(){
     activeUser->addScan(new Scan(measurement,scanDate));
 }
 //45-70 is normal. < 45 is low functionality, > 70 is high functionality
-void App::calculateScan(int index){
+int App::calculateScan(int index){
 
     QVector<int> processedScan;
     Scan* scan = activeUser->getScan(index);
@@ -39,6 +92,43 @@ void App::calculateScan(int index){
             processed = std::abs(point - 70);
             processed = 100 + ((processed/point)*100);
         }
+        qInfo() <<"Data point: " <<point << "Processed value:" << processed;
         processedScan.push_back(std::floor(processed));
     }
+}
+//input: an individual reading point
+//output: A vector of all the y axis points for the graph
+QVector<int> App::calculateReadingGraph(int reading){
+    QVector<int> yValues;
+    int y = 0; //current i thing
+    //basically for 1/4 of reading, 1/2 reading, 3/4 reading , full reading
+    for(int i = 1; i <= 4; i++){
+        y = (i*reading)/4;
+        //i = 1, 1/4 reading, i = 2, 1/2 reading, i = 3, 3/4 reading, i = 4, full reading
+        int f = randomNum(1,2); // how much difference to add to simulate random change between i intervals. Could remove if graph looks weird with low values of reading such as 8.
+        //it will still simulate a longer reading
+        for(int i = 0; i < randomNum(1,3); i++){
+            yValues.push_back(y - f);
+        }
+        for(int i = 0; i < randomNum(1,3);i++){
+             yValues.push_back(y);
+        }
+    }
+    qInfo() <<"Calculating graph points based on reading:" << reading;
+    for(int num: yValues){
+        qInfo() << num;
+    }
+    return yValues;
+}
+
+
+
+//helper functions
+
+//generates a random number between minimum and maximum
+int App::randomNum(int minimum,int maximum){
+    std::random_device rd; // Non-deterministic random seed
+    std::mt19937 gen(rd()); // Mersenne Twister engine
+    std::uniform_int_distribution<> dist(minimum,maximum); // Distribution in range [min, max]. //before change
+    return dist(gen);
 }

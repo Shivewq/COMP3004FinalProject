@@ -1,5 +1,6 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
+#include "scan.h"
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
     , ui(new Ui::MainWindow)
@@ -18,7 +19,7 @@ MainWindow::~MainWindow()
     delete ui;
 }
 void MainWindow::on_editBattery(int value){
-    ui->Battery->setText(QString::number(value));
+    ui->label_batteryValue->setText(QString::number(value));
 }
 
 
@@ -35,5 +36,9 @@ void MainWindow::on_button_history_clicked()
 
 void MainWindow::on_button_profiles_clicked()
 {
+    app->measure();
+    app->calculateScan(0);
+    Scan* scan = app->activeUser->getScan(0);
+    app->calculateReadingGraph(scan->getPoints().at(1));
 }
 
