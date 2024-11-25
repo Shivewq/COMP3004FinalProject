@@ -29,18 +29,20 @@ MainWindow::MainWindow(QWidget *parent)
 
 
     // Create a chart and add the series
-    QLineSeries *series = new QLineSeries();
+    QLineSeries *series = new QLineSeries(this);
     QChart *chart = new QChart();
     chart->addSeries(series);
     chart->setTitle("Metering Body Point");
     chart->legend()->hide();
-
-
+    chart->createDefaultAxes();
+    series->append(0,0.75);
+    series->append(0.25,0.8);
     // display chartView
     ui->meteringGraph->setChart(chart); // `graphicsView` is now a QChartView
     ui->meteringGraph->setRenderHint(QPainter::Antialiasing); // Enable anti-aliasing for smooth rendering
 
-    connect(app, &App::plotPoint, this, &MainWindow::updateChart);
+    //connect(app, &App::plotPoint, this, &MainWindow::updateChart);
+    connect(app, &App::clearMeteringGraph,this,&MainWindow::clearChart);
 
 }
 
@@ -206,9 +208,13 @@ void MainWindow::update_Active_User(const QString &text) {
 
 void MainWindow::updateChart(int y)
 {
-    series->append(pointCounter, y); // Append (x, y) to the chart series
+    qInfo() <<"Plotting point:" << y;
+    series->append(pointCounter, (int)y); // Append (x, y) to the chart series
+    qInfo() << "Appended";
     pointCounter++;                 // Increment the x value
-    ui->meteringGraph->repaint();
+    qInfo() <<"Counted";
+    //ui->meteringGraph->repaint();
+    qInfo() <<"Finished plotting point";
 }
 
 void MainWindow::clearChart()
@@ -222,5 +228,11 @@ void MainWindow::clearChart()
     // Update internal references
     series = newSeries;
     pointCounter = 0; // Reset the x-axis counter
+}
+
+
+void MainWindow::on_pushButton_clicked()
+{
+    app->MeasureFunctionTemplate();
 }
 

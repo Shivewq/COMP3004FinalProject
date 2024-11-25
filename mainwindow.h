@@ -43,13 +43,15 @@ private slots:
 
 
 
+    void on_pushButton_clicked();
+
 private:
     Ui::MainWindow *ui;
     QtCharts::QLineSeries *series;
     Device * device;
     App* app;
     QStringListModel* userModel;
-    int pointCounter;
+    int pointCounter =2;
 public slots:
     void on_editBattery(int value);
 };

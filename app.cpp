@@ -30,20 +30,23 @@ void App::MeasureFunctionTemplate(){
         QTimer* graph = new QTimer(); //will declare with "this" later as a parameter to set the parent object
         graph->setSingleShot(true);
 
-        connect(graph,&QTimer::timeout, this,[graph_Yvalues,graph,counter,points](){
+        connect(graph,&QTimer::timeout, this,[this,graph_Yvalues,graph,counter,points](){
 
             if(!graph_Yvalues->isEmpty()){ //if there is still more to plot
                 int y = graph_Yvalues->takeFirst();
                 //plot the point by popping a value from the front of y
-                graph->start(300); //restart the timer
+                qInfo() <<"Plotting point:" << y;
+                emit plotPoint(y);
+                graph->start(1000); //restart the timer
             }
             else{ //if there is no more points to graph. We move onto the next measurement
+                qInfo() <<" Moving on to next measurement";
                 *counter+= 1;
                 points->start(3000);
             }
 
         });
-       graph->start(300);
+       graph->start(1000);
     });
     points->start(3000);
 }
