@@ -27,13 +27,13 @@
      <enum>QFrame::Box</enum>
     </property>
     <property name="currentIndex">
-     <number>2</number>
+     <number>3</number>
     </property>
     <widget class="QWidget" name="page_home">
      <widget class="QLabel" name="label">
       <property name="geometry">
        <rect>
-        <x>270</x>
+        <x>340</x>
         <y>0</y>
         <width>81</width>
         <height>31</height>
@@ -44,7 +44,7 @@
         <pointsize>17</pointsize>
         <weight>75</weight>
         <bold>true</bold>
-        <underline>true</underline>
+        <underline>false</underline>
        </font>
       </property>
       <property name="text">
@@ -61,6 +61,27 @@
         <width>581</width>
         <height>251</height>
        </rect>
+      </property>
+     </widget>
+     <widget class="QLabel" name="label_4">
+      <property name="geometry">
+       <rect>
+        <x>300</x>
+        <y>0</y>
+        <width>141</width>
+        <height>31</height>
+       </rect>
+      </property>
+      <property name="font">
+       <font>
+        <pointsize>17</pointsize>
+        <weight>75</weight>
+        <bold>true</bold>
+        <underline>false</underline>
+       </font>
+      </property>
+      <property name="text">
+       <string>MEASURE</string>
       </property>
      </widget>
     </widget>
@@ -158,18 +179,21 @@
        <rect>
         <x>20</x>
         <y>20</y>
-        <width>111</width>
+        <width>131</width>
         <height>17</height>
        </rect>
       </property>
       <property name="font">
        <font>
         <family>DejaVu Sans</family>
-        <pointsize>13</pointsize>
+        <pointsize>17</pointsize>
+        <weight>75</weight>
+        <bold>true</bold>
+        <underline>true</underline>
        </font>
       </property>
       <property name="text">
-       <string>Profile List</string>
+       <string>PROFILES</string>
       </property>
      </widget>
      <widget class="QListView" name="profileList">
@@ -200,7 +224,7 @@
        <rect>
         <x>330</x>
         <y>40</y>
-        <width>111</width>
+        <width>131</width>
         <height>17</height>
        </rect>
       </property>
@@ -208,6 +232,8 @@
        <font>
         <family>DejaVu Sans</family>
         <pointsize>13</pointsize>
+        <weight>75</weight>
+        <bold>true</bold>
        </font>
       </property>
       <property name="text">
@@ -219,9 +245,9 @@
      <widget class="QLabel" name="History_label">
       <property name="geometry">
        <rect>
-        <x>260</x>
-        <y>10</y>
-        <width>111</width>
+        <x>320</x>
+        <y>0</y>
+        <width>121</width>
         <height>31</height>
        </rect>
       </property>
@@ -230,11 +256,11 @@
         <pointsize>17</pointsize>
         <weight>75</weight>
         <bold>true</bold>
-        <underline>true</underline>
+        <underline>false</underline>
        </font>
       </property>
       <property name="text">
-       <string>History</string>
+       <string>HISTORY</string>
       </property>
      </widget>
      <widget class="QComboBox" name="User_History_List">
@@ -336,6 +362,14 @@
     <layout class="QVBoxLayout" name="verticalLayout">
      <item>
       <widget class="QPushButton" name="button_measure">
+       <property name="font">
+        <font>
+         <pointsize>14</pointsize>
+         <weight>75</weight>
+         <italic>true</italic>
+         <bold>true</bold>
+        </font>
+       </property>
        <property name="text">
         <string>Measure</string>
        </property>
@@ -343,6 +377,14 @@
      </item>
      <item>
       <widget class="QPushButton" name="button_home">
+       <property name="font">
+        <font>
+         <pointsize>14</pointsize>
+         <weight>75</weight>
+         <italic>true</italic>
+         <bold>true</bold>
+        </font>
+       </property>
        <property name="text">
         <string>Home</string>
        </property>
@@ -350,6 +392,14 @@
      </item>
      <item>
       <widget class="QPushButton" name="button_profiles">
+       <property name="font">
+        <font>
+         <pointsize>14</pointsize>
+         <weight>75</weight>
+         <italic>true</italic>
+         <bold>true</bold>
+        </font>
+       </property>
        <property name="text">
         <string>Profiles</string>
        </property>
@@ -357,6 +407,14 @@
      </item>
      <item>
       <widget class="QPushButton" name="button_history">
+       <property name="font">
+        <font>
+         <pointsize>14</pointsize>
+         <weight>75</weight>
+         <italic>true</italic>
+         <bold>true</bold>
+        </font>
+       </property>
        <property name="text">
         <string>History</string>
        </property>
@@ -394,11 +452,17 @@ QProgressBar {
    <widget class="QLabel" name="activeUser">
     <property name="geometry">
      <rect>
-      <x>450</x>
+      <x>200</x>
       <y>30</y>
-      <width>161</width>
-      <height>17</height>
+      <width>231</width>
+      <height>20</height>
      </rect>
+    </property>
+    <property name="font">
+     <font>
+      <pointsize>15</pointsize>
+      <italic>true</italic>
+     </font>
     </property>
     <property name="text">
      <string>NO PROFILE SELECTED</string>
