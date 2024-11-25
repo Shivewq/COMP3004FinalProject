@@ -7,7 +7,7 @@ Battery::Battery(QObject* parent):QObject(parent), battery(100), batteryTimer(ne
 //connects the battery timeout to update the power and starts the timer
 void Battery::startTimer(){
     connect(batteryTimer,&QTimer::timeout,this,&Battery::updateBattery);
-     batteryTimer->start(300); //2 second timer
+     batteryTimer->start(5000); //2 second timer
 }
 void Battery::stopTimer(){
     batteryTimer->stop();
