@@ -6,6 +6,7 @@
 #include "device.h"
 #include "app.h"
 #include "user.h"
+#include <QStringListModel>
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }
 QT_END_NAMESPACE
@@ -20,6 +21,11 @@ public:
     MainWindow(QWidget *parent = nullptr);
     ~MainWindow();
 
+    void on_Add_User_clicked();
+    void on_Delete_User_clicked();
+    void on_Update_User_clicked();
+    void update_Active_User(const QString &text);
+
 private slots:
     void showBatteryMsg();
     //Menu Selection Options
@@ -28,10 +34,14 @@ private slots:
     void on_button_profiles_clicked();
     void on_button_measure_clicked();
 
+
+
+
 private:
     Ui::MainWindow *ui;
     Device * device;
     App* app;
+    QStringListModel* userModel;
 public slots:
     void on_editBattery(int value);
 };
