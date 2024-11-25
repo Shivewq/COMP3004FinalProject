@@ -7,6 +7,7 @@
 #include <iostream>
 #include <QDebug>
 #include <QTimer>
+#include <QString>
 //foward declarations
 class User;
 class Device;
@@ -25,6 +26,15 @@ public:
     void graphFunction(QVector<int>* yValues, int*, QTimer*); //will remove
     //helper functions
     int randomNum(int minimum,int maximum);
+
+    void setActiveUser(User*);
+    User* getActiveUser();
+    void addUser(User*);
+    void deleteUser(User*);
+    User* getUserFromName(QString name);
+
+
+
 private:
     Device* device;
     //User* activeUser;

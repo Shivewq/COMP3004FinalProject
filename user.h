@@ -13,6 +13,14 @@ public:
     ~User();
     void addScan(Scan* scan);
     Scan* getScan(int index){return measurements.at(index);}
+
+    QString getName();
+    int getHeight();
+    int getWeight();
+    void setName(QString name);
+    void setWeight(int weight);
+    void setHeight(int height);
+
 private:
     QString name;
     int weight; //in kg
