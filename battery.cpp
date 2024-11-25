@@ -1,6 +1,6 @@
 #include "battery.h"
 
-Battery::Battery(QObject* parent):QObject(parent), batteryTimer(new QTimer()),battery(100)
+Battery::Battery(QObject* parent):QObject(parent), battery(100), batteryTimer(new QTimer())
 {
 
 }
@@ -17,5 +17,7 @@ void Battery::updateBattery(){
     //when battery is empty
     else {}
     //if the battery reaches 20% warn user
-    if(battery == 20){}
+    if(battery == 20){
+        emit lowBatteryWarning();
+    }
 }
