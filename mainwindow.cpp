@@ -20,7 +20,7 @@ MainWindow::MainWindow(QWidget *parent)
     app = new App(device);
     app->activeUser = new User();
 
-
+    populateOrganList();
     userModel = new QStringListModel(this);
     ui->profileList->setModel(userModel);
     connect(ui->button_add, &QPushButton::clicked, this, &MainWindow::on_Add_User_clicked);
@@ -54,6 +54,90 @@ MainWindow::MainWindow(QWidget *parent)
 
 }
 
+
+void MainWindow::initializeHistoryBar()
+{
+    // Prepare the bar sets for "Right" and "Left"
+    QtCharts::QBarSet *leftSet = new QtCharts::QBarSet("Left");
+    QtCharts::QBarSet *rightSet = new QtCharts::QBarSet("Right");
+
+    // Assign colors
+    leftSet->setColor(Qt::blue);
+    rightSet->setColor(Qt::green);
+
+    // Get processed data
+    QVector<int> processedData = app->getActiveUser()->getMostRecentScan()->getProccesedPoints();
+    if (processedData.isEmpty() || processedData.size() < 24) {
+        qWarning() << "Invalid or insufficient processed scan data.";
+        return;
+    }
+
+    // Add values to bar sets
+    for (int i = 0; i < 12; ++i) {
+        *leftSet << processedData[i];          // Left side of organ
+        *rightSet << processedData[i + 12];   // Corresponding right side of organ
+    }
+
+    // Create the bar series and add the sets
+    historyBar = new QtCharts::QBarSeries();
+    historyBar->append(leftSet);
+    historyBar->append(rightSet);
+
+    // Create the chart and add the series
+    QtCharts::QChart *chart = new QtCharts::QChart();
+    chart->addSeries(historyBar);
+    chart->setTitle("Organ Functionality Comparison");
+    chart->setAnimationOptions(QtCharts::QChart::SeriesAnimations);
+
+    // Define categories for the x-axis
+    QStringList categories = app->categories;
+    // Set up x-axis
+    QtCharts::QBarCategoryAxis *xAxis = new QtCharts::QBarCategoryAxis();
+    xAxis->append(categories);
+    chart->addAxis(xAxis, Qt::AlignBottom);
+    historyBar->attachAxis(xAxis);
+
+    // Set up y-axis
+    QtCharts::QValueAxis *yAxis = new QtCharts::QValueAxis();
+    yAxis->setRange(0, 200); // Assuming percentages range from 0 to 200%
+    yAxis->setTitleText("Functionality (%)");
+    chart->addAxis(yAxis, Qt::AlignLeft);
+    historyBar->attachAxis(yAxis);
+
+    // Add the chart to a QChartView in your UI
+    ui->barGraph->setChart(chart); // Assuming `historyGraph` is a QChartView in your UI
+    ui->barGraph->setRenderHint(QPainter::Antialiasing);
+}
+
+void MainWindow::populateOrganList()
+{
+    // Create a QStringList to hold the associations
+    QStringList organAssociations = {
+        "H1 - Lungs",
+        "H2 - Pericardium",
+        "H3 - Heart",
+        "H4 - Small Intestines",
+        "H5 - Immune System (Triple Heater)",
+        "H6 - Large Intestines",
+        "F1 - Spleen and Pancreas",
+        "F2 - Liver",
+        "F3 - Kidneys",
+        "F4 - Bladder",
+        "F5 - Gallbladder",
+        "F6 - Stomach",
+    };
+
+    // Create a QStringListModel
+    QStringListModel *model = new QStringListModel(this);
+    model->setStringList(organAssociations);
+
+    // Set the model to the QListView
+    ui->organList->setModel(model);
+
+    // Optional: Make the list view read-only
+    ui->organList->setEditTriggers(QAbstractItemView::NoEditTriggers);
+}
+
 MainWindow::~MainWindow()
 {
     delete ui;
@@ -65,6 +149,7 @@ void MainWindow::on_editBattery(int value){
     }
     ui->label_batteryValue->setText(QString::number(value));
 }
+
 
 void MainWindow::showBatteryMsg()
 {
@@ -86,6 +171,7 @@ void MainWindow::on_button_home_clicked()
 void MainWindow::on_button_history_clicked()
 {
     ui->stackedWidget->setCurrentIndex(3);
+    initializeHistoryBar();
 }
 
 void MainWindow::on_button_measure_clicked()

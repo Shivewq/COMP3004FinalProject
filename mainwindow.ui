@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>1252</width>
-    <height>593</height>
+    <height>782</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -17,10 +17,10 @@
    <widget class="QStackedWidget" name="stackedWidget">
     <property name="geometry">
      <rect>
-      <x>200</x>
+      <x>190</x>
       <y>60</y>
       <width>751</width>
-      <height>481</height>
+      <height>661</height>
      </rect>
     </property>
     <property name="frameShape">
@@ -307,6 +307,26 @@
       </property>
       <property name="orientation">
        <enum>Qt::Vertical</enum>
+      </property>
+     </widget>
+     <widget class="QChartView" name="barGraph">
+      <property name="geometry">
+       <rect>
+        <x>280</x>
+        <y>200</y>
+        <width>451</width>
+        <height>251</height>
+       </rect>
+      </property>
+     </widget>
+     <widget class="QListView" name="organList">
+      <property name="geometry">
+       <rect>
+        <x>445</x>
+        <y>460</y>
+        <width>281</width>
+        <height>192</height>
+       </rect>
       </property>
      </widget>
     </widget>

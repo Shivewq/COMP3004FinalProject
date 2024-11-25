@@ -32,7 +32,10 @@ public:
     void addUser(User*);
     void deleteUser(User*);
     User* getUserFromName(QString name);
-
+    QStringList categories = {
+        "H1", "H2", "H3", "H4", "H5", "H6", // Hand points
+        "F1", "F2", "F3", "F4", "F5", "F6"  // Foot points
+    };
 
 
 private:

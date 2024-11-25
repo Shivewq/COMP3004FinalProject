@@ -9,6 +9,7 @@
 #include <QtCharts/QChart>
 #include <QtCharts/QChartView>
 #include <QtCharts/QLineSeries>
+#include <QtCharts/QBarSeries>
 #include <QStringListModel>
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }
@@ -39,7 +40,8 @@ private slots:
     //Metering chart updating
     void updateChart(int y);
     void clearChart(int max_y,int max_x);
-
+    void initializeHistoryBar();
+    void populateOrganList();
 
 
 
@@ -55,6 +57,7 @@ private slots:
 private:
     Ui::MainWindow *ui;
     QtCharts::QLineSeries *series;
+    QtCharts::QBarSeries *historyBar;
     Device * device;
     App* app;
     QStringListModel* userModel;
