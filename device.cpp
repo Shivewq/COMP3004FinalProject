@@ -3,9 +3,15 @@
 Device::Device(): charge(new Battery())
 {
 }
-void Device::turnOn(){charge->startTimer();}
-void Device::turnOff(){}
-
+void Device::turnOn(){
+    charge->startTimer();
+    onStatus = true;
+}
+void Device::turnOff(){
+    charge->stopTimer();
+    onStatus = false;
+}
+void Device::plugIn(){charge->chargeBattery();}
 /*
  * Generates a random datapoint.
  * 45-70 is normal. < 45 is low functionality, > 70 is high functionality

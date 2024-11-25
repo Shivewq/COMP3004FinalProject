@@ -12,6 +12,9 @@ public:
     explicit Battery(QObject* parent = nullptr);
     QTimer* getBattery(){return batteryTimer;}
     void startTimer();
+    void stopTimer();
+    void chargeBattery();
+    int getCharge(){return battery;}
 private:
     int battery;
     QTimer* batteryTimer;

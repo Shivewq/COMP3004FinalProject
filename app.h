@@ -16,7 +16,7 @@ class App :public QObject
     Q_OBJECT
 public:
     App(Device* d);
-    int calculateScan(int index); //gets the scan from the user and does calculations, not sure what it returns
+    QVector<int> calculateScan(QVector<int> rawPoints); //gets the scan from the user and does calculations, not sure what it returns
     void MeasureFunctionTemplate();
     //I think below should be during the scan after getting the random number from the device it runs this function that returns an array of int. In the graph every say 0.3 seconds it plots a point.
     //in the graph, every 0.3 seconds pop a point. Stop the tiemr when there are no more points left
@@ -25,23 +25,29 @@ public:
     //helper functions
     int randomNum(int minimum,int maximum);
 
+    //getters and setters
     void setActiveUser(User*);
     User* getActiveUser();
     void addUser(User*);
     void deleteUser(User*);
     User* getUserFromName(QString name);
-
+    QTimer* getGraphTimer(){return graphTimer;}
 
 
 private:
     Device* device;
     //User* activeUser;
     QVector<User*> users;
+    QTimer* points;
+    QTimer* graphTimer;
 //private slots:
    // void takeMeasurement(int counter, QVector<int*> measurements); //takes in the current point we are measureing and the vector of all previous points.
 signals:
     void plotPoint(int y);
     void clearMeteringGraph(int max_y,int max_x); //possibly pass in final value for the axis in case the graph doesn't dynamically change it in the case that the final value is very large.
+    void deleteCurrentScan();
+public slots:
+    void stopMeasure(); //stops the measurement for the graceful shutdown
 };
 
 #endif // APP_H

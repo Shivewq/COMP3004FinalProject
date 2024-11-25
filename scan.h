@@ -7,12 +7,14 @@
 class Scan
 {
 public:
-    Scan(QVector<int> scan, QDateTime date);
+    Scan(QVector<int> scan, QVector<int> processed,QDateTime date);
     QVector<int> getPoints(){return points;}
+    QVector<int> getProccesedPoints(){return processedPoints;}
     QDateTime getDate(){return date;}
     QString getName(){return name;}
 private:
     QVector<int> points; //stores all 24 readings from device
+    QVector<int> processedPoints;
     QDateTime  date; //date of scan
     QString name; //name of scan
 };

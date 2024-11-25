@@ -43,7 +43,14 @@ private slots:
 
 
 
-    void on_pushButton_clicked();
+
+    void on_button_on_clicked();
+
+    void on_button_off_clicked();
+
+    void on_button_charge_clicked();
+
+    void on_button_startMeasure_clicked();
 
 private:
     Ui::MainWindow *ui;
