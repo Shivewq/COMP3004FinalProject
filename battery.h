@@ -19,7 +19,6 @@ public slots:
    void updateBattery();
 signals:
    void editBattery(int value);
-   void lowBatteryWarning();
 };
 
 #endif // BATTERY_H

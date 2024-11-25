@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>1155</width>
+    <width>1047</width>
     <height>600</height>
    </rect>
   </property>
@@ -17,9 +17,9 @@
    <widget class="QStackedWidget" name="stackedWidget">
     <property name="geometry">
      <rect>
-      <x>200</x>
+      <x>50</x>
       <y>60</y>
-      <width>751</width>
+      <width>771</width>
       <height>481</height>
      </rect>
     </property>
@@ -27,125 +27,67 @@
      <enum>QFrame::Box</enum>
     </property>
     <property name="currentIndex">
-     <number>2</number>
+     <number>1</number>
     </property>
     <widget class="QWidget" name="page_home">
-     <widget class="QLabel" name="label">
+     <widget class="QWidget" name="verticalLayoutWidget">
       <property name="geometry">
        <rect>
-        <x>270</x>
-        <y>0</y>
-        <width>81</width>
-        <height>31</height>
+        <x>10</x>
+        <y>40</y>
+        <width>160</width>
+        <height>120</height>
        </rect>
       </property>
-      <property name="font">
-       <font>
-        <pointsize>17</pointsize>
-        <weight>75</weight>
-        <bold>true</bold>
-        <underline>true</underline>
-       </font>
-      </property>
-      <property name="text">
-       <string>HOME</string>
-      </property>
-     </widget>
-    </widget>
-    <widget class="QWidget" name="page_metering">
-     <widget class="QChartView" name="meteringGraph">
-      <property name="geometry">
-       <rect>
-        <x>20</x>
-        <y>220</y>
-        <width>581</width>
-        <height>251</height>
-       </rect>
-      </property>
+      <layout class="QVBoxLayout" name="verticalLayout">
+       <item>
+        <widget class="QPushButton" name="button_measure">
+         <property name="text">
+          <string>Measure</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QPushButton" name="button_home">
+         <property name="text">
+          <string>Home</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QPushButton" name="button_profiles">
+         <property name="text">
+          <string>Profiles</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QPushButton" name="button_history">
+         <property name="text">
+          <string>History</string>
+         </property>
+        </widget>
+       </item>
+      </layout>
      </widget>
     </widget>
     <widget class="QWidget" name="page_profiles">
-     <widget class="QPushButton" name="button_update">
+     <widget class="QComboBox" name="combo_profiles">
       <property name="geometry">
        <rect>
-        <x>580</x>
-        <y>370</y>
-        <width>161</width>
-        <height>25</height>
-       </rect>
-      </property>
-      <property name="text">
-       <string>Update current user</string>
-      </property>
-     </widget>
-     <widget class="QComboBox" name="userSelect">
-      <property name="geometry">
-       <rect>
-        <x>330</x>
-        <y>70</y>
+        <x>70</x>
+        <y>120</y>
         <width>211</width>
         <height>25</height>
        </rect>
       </property>
      </widget>
-     <widget class="QTextEdit" name="profileLog">
-      <property name="geometry">
-       <rect>
-        <x>10</x>
-        <y>410</y>
-        <width>301</width>
-        <height>31</height>
-       </rect>
-      </property>
-     </widget>
-     <widget class="QWidget" name="formLayoutWidget">
-      <property name="geometry">
-       <rect>
-        <x>320</x>
-        <y>170</y>
-        <width>254</width>
-        <height>230</height>
-       </rect>
-      </property>
-      <layout class="QFormLayout" name="formLayout">
-       <item row="0" column="0">
-        <widget class="QLabel" name="label_name">
-         <property name="text">
-          <string>Name</string>
-         </property>
-        </widget>
-       </item>
-       <item row="0" column="1">
-        <widget class="QPlainTextEdit" name="text_name"/>
-       </item>
-       <item row="1" column="0">
-        <widget class="QLabel" name="label_weight">
-         <property name="text">
-          <string>Weight</string>
-         </property>
-        </widget>
-       </item>
-       <item row="1" column="1">
-        <widget class="QPlainTextEdit" name="text_weight"/>
-       </item>
-       <item row="2" column="0">
-        <widget class="QLabel" name="label_height">
-         <property name="text">
-          <string>Height</string>
-         </property>
-        </widget>
-       </item>
-       <item row="2" column="1">
-        <widget class="QPlainTextEdit" name="text_height"/>
-       </item>
-      </layout>
-     </widget>
      <widget class="QPushButton" name="button_add">
       <property name="geometry">
        <rect>
-        <x>560</x>
+        <x>310</x>
         <y>70</y>
-        <width>131</width>
+        <width>71</width>
         <height>25</height>
        </rect>
       </property>
@@ -153,147 +95,17 @@
        <string>Add</string>
       </property>
      </widget>
-     <widget class="QLabel" name="label_2">
-      <property name="geometry">
-       <rect>
-        <x>20</x>
-        <y>20</y>
-        <width>111</width>
-        <height>17</height>
-       </rect>
-      </property>
-      <property name="font">
-       <font>
-        <family>DejaVu Sans</family>
-        <pointsize>13</pointsize>
-       </font>
-      </property>
-      <property name="text">
-       <string>Profile List</string>
-      </property>
-     </widget>
-     <widget class="QListView" name="profileList">
-      <property name="geometry">
-       <rect>
-        <x>10</x>
-        <y>50</y>
-        <width>301</width>
-        <height>351</height>
-       </rect>
-      </property>
-     </widget>
      <widget class="QPushButton" name="button_delete">
       <property name="geometry">
        <rect>
-        <x>560</x>
-        <y>110</y>
-        <width>131</width>
+        <x>320</x>
+        <y>160</y>
+        <width>121</width>
         <height>25</height>
        </rect>
       </property>
       <property name="text">
        <string>Delete</string>
-      </property>
-     </widget>
-     <widget class="QLabel" name="label_3">
-      <property name="geometry">
-       <rect>
-        <x>330</x>
-        <y>40</y>
-        <width>111</width>
-        <height>17</height>
-       </rect>
-      </property>
-      <property name="font">
-       <font>
-        <family>DejaVu Sans</family>
-        <pointsize>13</pointsize>
-       </font>
-      </property>
-      <property name="text">
-       <string>Active Profile</string>
-      </property>
-     </widget>
-    </widget>
-    <widget class="QWidget" name="page_history">
-     <widget class="QLabel" name="History_label">
-      <property name="geometry">
-       <rect>
-        <x>260</x>
-        <y>10</y>
-        <width>111</width>
-        <height>31</height>
-       </rect>
-      </property>
-      <property name="font">
-       <font>
-        <pointsize>17</pointsize>
-        <weight>75</weight>
-        <bold>true</bold>
-        <underline>true</underline>
-       </font>
-      </property>
-      <property name="text">
-       <string>History</string>
-      </property>
-     </widget>
-     <widget class="QComboBox" name="User_History_List">
-      <property name="geometry">
-       <rect>
-        <x>30</x>
-        <y>90</y>
-        <width>131</width>
-        <height>21</height>
-       </rect>
-      </property>
-     </widget>
-     <widget class="QPushButton" name="Select_History">
-      <property name="geometry">
-       <rect>
-        <x>180</x>
-        <y>90</y>
-        <width>83</width>
-        <height>21</height>
-       </rect>
-      </property>
-      <property name="text">
-       <string>Select</string>
-      </property>
-     </widget>
-     <widget class="QLabel" name="Profile_label">
-      <property name="geometry">
-       <rect>
-        <x>30</x>
-        <y>70</y>
-        <width>62</width>
-        <height>17</height>
-       </rect>
-      </property>
-      <property name="text">
-       <string>Profile:</string>
-      </property>
-     </widget>
-     <widget class="QListView" name="User_History">
-      <property name="geometry">
-       <rect>
-        <x>30</x>
-        <y>150</y>
-        <width>211</width>
-        <height>301</height>
-       </rect>
-      </property>
-     </widget>
-     <widget class="Line" name="line">
-      <property name="geometry">
-       <rect>
-        <x>263</x>
-        <y>80</y>
-        <width>20</width>
-        <height>371</height>
-       </rect>
-      </property>
-      <property name="orientation">
-       <enum>Qt::Vertical</enum>
       </property>
      </widget>
     </widget>
@@ -311,10 +123,52 @@
      <string>Battery</string>
     </property>
    </widget>
+   <widget class="QWidget" name="formLayoutWidget">
+    <property name="geometry">
+     <rect>
+      <x>850</x>
+      <y>210</y>
+      <width>254</width>
+      <height>230</height>
+     </rect>
+    </property>
+    <layout class="QFormLayout" name="formLayout">
+     <item row="0" column="0">
+      <widget class="QLabel" name="label_name">
+       <property name="text">
+        <string>Name</string>
+       </property>
+      </widget>
+     </item>
+     <item row="0" column="1">
+      <widget class="QPlainTextEdit" name="text_name"/>
+     </item>
+     <item row="1" column="0">
+      <widget class="QLabel" name="label_weight">
+       <property name="text">
+        <string>Weight</string>
+       </property>
+      </widget>
+     </item>
+     <item row="1" column="1">
+      <widget class="QPlainTextEdit" name="text_weight"/>
+     </item>
+     <item row="2" column="0">
+      <widget class="QLabel" name="label_height">
+       <property name="text">
+        <string>Height</string>
+       </property>
+      </widget>
+     </item>
+     <item row="2" column="1">
+      <widget class="QPlainTextEdit" name="plainTextEdit_3"/>
+     </item>
+    </layout>
+   </widget>
    <widget class="QLabel" name="label_batteryValue">
     <property name="geometry">
      <rect>
-      <x>840</x>
+      <x>750</x>
       <y>30</y>
       <width>62</width>
       <height>17</height>
@@ -324,93 +178,13 @@
      <string>TextLabel</string>
     </property>
    </widget>
-   <widget class="QWidget" name="verticalLayoutWidget">
-    <property name="geometry">
-     <rect>
-      <x>20</x>
-      <y>160</y>
-      <width>160</width>
-      <height>201</height>
-     </rect>
-    </property>
-    <layout class="QVBoxLayout" name="verticalLayout">
-     <item>
-      <widget class="QPushButton" name="button_measure">
-       <property name="text">
-        <string>Measure</string>
-       </property>
-      </widget>
-     </item>
-     <item>
-      <widget class="QPushButton" name="button_home">
-       <property name="text">
-        <string>Home</string>
-       </property>
-      </widget>
-     </item>
-     <item>
-      <widget class="QPushButton" name="button_profiles">
-       <property name="text">
-        <string>Profiles</string>
-       </property>
-      </widget>
-     </item>
-     <item>
-      <widget class="QPushButton" name="button_history">
-       <property name="text">
-        <string>History</string>
-       </property>
-      </widget>
-     </item>
-    </layout>
-   </widget>
-   <widget class="QProgressBar" name="battery">
-    <property name="geometry">
-     <rect>
-      <x>750</x>
-      <y>20</y>
-      <width>71</width>
-      <height>31</height>
-     </rect>
-    </property>
-    <property name="styleSheet">
-     <string notr="true">QProgressBar::chunk {
-     background-color: rgb(65, 158, 48);
-	border-radius: 5px, 10px, 5px, 10px;
- }
-
-QProgressBar {
-	text-align: center;
-	border-radius: 5px;
-}</string>
-    </property>
-    <property name="value">
-     <number>100</number>
-    </property>
-    <property name="alignment">
-     <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-    </property>
-   </widget>
-   <widget class="QLabel" name="activeUser">
-    <property name="geometry">
-     <rect>
-      <x>450</x>
-      <y>30</y>
-      <width>161</width>
-      <height>17</height>
-     </rect>
-    </property>
-    <property name="text">
-     <string>NO PROFILE SELECTED</string>
-    </property>
-   </widget>
   </widget>
   <widget class="QMenuBar" name="menubar">
    <property name="geometry">
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>1155</width>
+     <width>1047</width>
      <height>22</height>
     </rect>
    </property>
@@ -423,13 +197,6 @@ QProgressBar {
   </widget>
   <widget class="QStatusBar" name="statusbar"/>
  </widget>
- <customwidgets>
-  <customwidget>
-   <class>QChartView</class>
-   <extends>QGraphicsView</extends>
-   <header>QtCharts</header>
-  </customwidget>
- </customwidgets>
  <resources/>
  <connections/>
 </ui>

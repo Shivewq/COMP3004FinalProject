@@ -1,4 +1,4 @@
-QT       += core gui widgets charts
+QT       += core gui
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
