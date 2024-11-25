@@ -14,7 +14,7 @@ void App::MeasureFunctionTemplate(){
     scanning = true;
     //pre-get all data points
     QVector<int> measurement;
-    for(int i = 0; i < 23; i++ ){
+    for(int i = 0; i < 24; i++ ){
         measurement.push_back(this->device->geneateDataPoint());
     }
     QDateTime scanDate = QDateTime::currentDateTime();
