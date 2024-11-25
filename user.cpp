@@ -29,3 +29,8 @@ void User::setHeight(int newHeight){
     height = newHeight;
     qInfo()<<"new height set";
 }
+//for graceful shutdown, removes the last scan
+//this should be called in app if the timer is on
+void User::deleteScan(){
+    measurements.removeLast();
+}

@@ -9,9 +9,12 @@ public:
     Battery* getBattery(){return charge;}
     void turnOn();
     void turnOff();
+    void plugIn();
     int geneateDataPoint();
+    bool isOn(){return onStatus;}
 private:
     Battery* charge;
+    bool onStatus;
 
 public slots:
 

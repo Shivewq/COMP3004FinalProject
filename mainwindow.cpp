@@ -14,6 +14,7 @@ MainWindow::MainWindow(QWidget *parent)
     device = new Device();
     connect(device->getBattery(),&Battery::editBattery,this,&MainWindow::on_editBattery);
     connect(device->getBattery(),&Battery::editBattery,this,&MainWindow::on_editBattery);
+    connect(device->getBattery(),&Battery::lowBatteryWarning,this,&MainWindow::showBatteryMsg);
 
     //setup app
     app = new App(device);
@@ -26,7 +27,6 @@ MainWindow::MainWindow(QWidget *parent)
     connect(ui->button_delete, &QPushButton::clicked, this, &MainWindow::on_Delete_User_clicked);
     connect(ui->button_update, &QPushButton::clicked, this, &MainWindow::on_Update_User_clicked);
     connect(ui->userSelect, &QComboBox::currentTextChanged, this, &MainWindow::update_Active_User);
-
 
     // Create a chart and add the series
     series = new QLineSeries(this);
@@ -140,6 +140,10 @@ void MainWindow::on_Add_User_clicked(){
     ui->userSelect->addItem(newUser->getName(), QVariant::fromValue(newUser));
     ui->profileLog->setText("Profile Created!");
 
+    //connecting user signals (Eric added this for shutdown...)
+    //I am not too sure if this will delete the most recent scan from all users...
+    //if not then just need to add a check to make sure we are doing it to active user
+    connect(app,&App::deleteCurrentScan,newUser,&User::deleteScan);
 }
 
 // deletes all traces of a user
@@ -224,6 +228,7 @@ void MainWindow::updateChart(int y)
 
 void MainWindow::clearChart(int max_y,int max_x)
 {
+
     QChart *chart = ui->meteringGraph->chart();
     chart->removeAllSeries(); // Remove existing series
     // Create a new empty series
@@ -248,11 +253,26 @@ void MainWindow::clearChart(int max_y,int max_x)
 }
 
 
-void MainWindow::on_pushButton_clicked()
+void MainWindow::on_button_on_clicked()
+{
+    device->turnOn();
+}
+
+
+void MainWindow::on_button_off_clicked()
+{
+    device->turnOff();
+}
+
+
+void MainWindow::on_button_charge_clicked()
+{
+    device->plugIn();
+}
+
+
+void MainWindow::on_button_startMeasure_clicked()
 {
     app->MeasureFunctionTemplate();
-//    updateChart(1);
-//    updateChart(12);
-//    updateChart(54);
 }
 

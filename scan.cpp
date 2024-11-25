@@ -1,6 +1,6 @@
 #include "scan.h"
 
-Scan::Scan(QVector<int> scan,QDateTime date):points(scan),date(date)
+Scan::Scan(QVector<int> scan,QVector<int> processed, QDateTime date):points(scan),processedPoints(processed),  date(date)
 {
 
 }
