@@ -6,6 +6,9 @@
 #include "device.h"
 #include "app.h"
 #include "user.h"
+#include <QtCharts/QChart>
+#include <QtCharts/QChartView>
+#include <QtCharts/QLineSeries>
 #include <QStringListModel>
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }
@@ -33,15 +36,20 @@ private slots:
     void on_button_history_clicked();
     void on_button_profiles_clicked();
     void on_button_measure_clicked();
+    //Metering chart updating
+    void updateChart(int y);
+    void clearChart();
 
 
 
 
 private:
     Ui::MainWindow *ui;
+    QtCharts::QLineSeries *series;
     Device * device;
     App* app;
     QStringListModel* userModel;
+    int pointCounter;
 public slots:
     void on_editBattery(int value);
 };
