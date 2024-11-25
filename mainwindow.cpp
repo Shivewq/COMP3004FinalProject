@@ -28,6 +28,20 @@ MainWindow::MainWindow(QWidget *parent)
     connect(ui->userSelect, &QComboBox::currentTextChanged, this, &MainWindow::update_Active_User);
 
 
+    // Create a chart and add the series
+    QLineSeries *series = new QLineSeries();
+    QChart *chart = new QChart();
+    chart->addSeries(series);
+    chart->setTitle("Metering Body Point");
+    chart->legend()->hide();
+
+
+    // display chartView
+    ui->meteringGraph->setChart(chart); // `graphicsView` is now a QChartView
+    ui->meteringGraph->setRenderHint(QPainter::Antialiasing); // Enable anti-aliasing for smooth rendering
+
+    connect(app, &App::plotPoint, this, &MainWindow::updateChart);
+
 }
 
 MainWindow::~MainWindow()
@@ -187,5 +201,26 @@ void MainWindow::update_Active_User(const QString &text) {
     User* activeUser = app->getUserFromName(text);
     app->setActiveUser(activeUser);
 
+}
+
+
+void MainWindow::updateChart(int y)
+{
+    series->append(pointCounter, y); // Append (x, y) to the chart series
+    pointCounter++;                 // Increment the x value
+    ui->meteringGraph->repaint();
+}
+
+void MainWindow::clearChart()
+{
+    QChart *chart = ui->meteringGraph->chart();
+    //add a new empty series to reset the chart
+    QLineSeries *newSeries = new QLineSeries();
+    chart->addSeries(newSeries);
+    chart->createDefaultAxes();
+
+    // Update internal references
+    series = newSeries;
+    pointCounter = 0; // Reset the x-axis counter
 }
 
