@@ -29,20 +29,28 @@ MainWindow::MainWindow(QWidget *parent)
 
 
     // Create a chart and add the series
-    QLineSeries *series = new QLineSeries(this);
+    series = new QLineSeries(this);
     QChart *chart = new QChart();
     chart->addSeries(series);
     chart->setTitle("Metering Body Point");
     chart->legend()->hide();
-    chart->createDefaultAxes();
-    series->append(0,0.75);
-    series->append(0.25,0.8);
+    QValueAxis *xAxis = new QValueAxis;
+    QValueAxis *yAxis = new QValueAxis;
+    xAxis->setRange(0, 20);
+    yAxis->setRange(0, 100);
+
+    chart->addAxis(xAxis, Qt::AlignBottom);
+    chart->addAxis(yAxis, Qt::AlignLeft);
+    series->attachAxis(xAxis);
+    series->attachAxis(yAxis);
+
+
     // display chartView
     ui->meteringGraph->setChart(chart); // `graphicsView` is now a QChartView
     ui->meteringGraph->setRenderHint(QPainter::Antialiasing); // Enable anti-aliasing for smooth rendering
 
-    //connect(app, &App::plotPoint, this, &MainWindow::updateChart);
-    connect(app, &App::clearMeteringGraph,this,&MainWindow::clearChart);
+    connect(app, &App::plotPoint, this, &MainWindow::updateChart);
+    connect(app,&App::clearMeteringGraph,this,&MainWindow::clearChart);
 
 }
 
@@ -208,31 +216,43 @@ void MainWindow::update_Active_User(const QString &text) {
 
 void MainWindow::updateChart(int y)
 {
-    qInfo() <<"Plotting point:" << y;
-    series->append(pointCounter, (int)y); // Append (x, y) to the chart series
-    qInfo() << "Appended";
-    pointCounter++;                 // Increment the x value
-    qInfo() <<"Counted";
-    //ui->meteringGraph->repaint();
-    qInfo() <<"Finished plotting point";
+    series->append(pointCounter, y); // Append (x, y) to the chart series
+    // Update axis ranges dynamically
+    pointCounter++; // Increment the x value
+    ui->meteringGraph->repaint();
 }
 
-void MainWindow::clearChart()
+void MainWindow::clearChart(int max_y,int max_x)
 {
     QChart *chart = ui->meteringGraph->chart();
-    //add a new empty series to reset the chart
-    QLineSeries *newSeries = new QLineSeries();
-    chart->addSeries(newSeries);
-    chart->createDefaultAxes();
+    chart->removeAllSeries(); // Remove existing series
+    // Create a new empty series
+    series = new QLineSeries();
+    chart->addSeries(series);
+    chart->removeAxis(chart->axisX());
+    chart->removeAxis(chart->axisY());
 
-    // Update internal references
-    series = newSeries;
-    pointCounter = 0; // Reset the x-axis counter
+    // Reset axes
+    QValueAxis *xAxis = new QValueAxis();
+    QValueAxis *yAxis = new QValueAxis();
+    xAxis->setRange(1, max_x); // Start with a basic range
+    yAxis->setRange(0, max_y + 5); // Adjust as needed for initial view
+    chart->addAxis(xAxis, Qt::AlignBottom);
+    chart->addAxis(yAxis, Qt::AlignLeft);
+    series->attachAxis(xAxis);
+    series->attachAxis(yAxis);
+
+    chart->update();
+    pointCounter = 1; // Reset the x-axis counter
+
 }
 
 
 void MainWindow::on_pushButton_clicked()
 {
     app->MeasureFunctionTemplate();
+//    updateChart(1);
+//    updateChart(12);
+//    updateChart(54);
 }
 

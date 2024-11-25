@@ -29,26 +29,24 @@ void App::MeasureFunctionTemplate(){
         QVector<int>* graph_Yvalues = new QVector<int>(calculateReadingGraph(data));
         QTimer* graph = new QTimer(); //will declare with "this" later as a parameter to set the parent object
         graph->setSingleShot(true);
-
+        emit clearMeteringGraph(data,graph_Yvalues->size());
         connect(graph,&QTimer::timeout, this,[this,graph_Yvalues,graph,counter,points](){
-
+            //emit clearMeteringGraph(graph_Yvalues->last());
             if(!graph_Yvalues->isEmpty()){ //if there is still more to plot
                 int y = graph_Yvalues->takeFirst();
                 //plot the point by popping a value from the front of y
-                qInfo() <<"Plotting point:" << y;
                 emit plotPoint(y);
-                graph->start(1000); //restart the timer
+                graph->start(400); //restart the timer
             }
             else{ //if there is no more points to graph. We move onto the next measurement
-                qInfo() <<" Moving on to next measurement";
                 *counter+= 1;
                 points->start(3000);
             }
 
         });
-       graph->start(1000);
+       graph->start(400);
     });
-    points->start(3000);
+    points->start(400);
 }
 
 //45-70 is normal. < 45 is low functionality, > 70 is high functionality
@@ -77,7 +75,6 @@ int App::calculateScan(int index){
     }
     return processed;
 }
-
 //input: an individual reading point
 //output: A vector of all the y axis points for the graph
 QVector<int> App::calculateReadingGraph(int reading){
@@ -95,10 +92,6 @@ QVector<int> App::calculateReadingGraph(int reading){
         for(int i = 0; i < randomNum(1,3);i++){
              yValues.push_back(y);
         }
-    }
-    qInfo() <<"Calculating graph points based on reading:" << reading;
-    for(int num: yValues){
-        qInfo() << num;
     }
     return yValues;
 }

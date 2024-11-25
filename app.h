@@ -41,7 +41,7 @@ private:
    // void takeMeasurement(int counter, QVector<int*> measurements); //takes in the current point we are measureing and the vector of all previous points.
 signals:
     void plotPoint(int y);
-    void clearMeteringGraph(); //possibly pass in final value for the axis in case the graph doesn't dynamically change it in the case that the final value is very large.
+    void clearMeteringGraph(int max_y,int max_x); //possibly pass in final value for the axis in case the graph doesn't dynamically change it in the case that the final value is very large.
 };
 
 #endif // APP_H

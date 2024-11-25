@@ -38,7 +38,7 @@ private slots:
     void on_button_measure_clicked();
     //Metering chart updating
     void updateChart(int y);
-    void clearChart();
+    void clearChart(int max_y,int max_x);
 
 
 
@@ -51,7 +51,7 @@ private:
     Device * device;
     App* app;
     QStringListModel* userModel;
-    int pointCounter =2;
+    int pointCounter =1;
 public slots:
     void on_editBattery(int value);
 };
