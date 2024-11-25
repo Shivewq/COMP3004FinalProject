@@ -9,9 +9,9 @@ public:
     Battery* getBattery(){return charge;}
     void turnOn();
     void turnOff();
-    Battery* charge;
     int geneateDataPoint();
 private:
+    Battery* charge;
 
 public slots:
 
