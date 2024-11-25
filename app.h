@@ -5,6 +5,7 @@
 #include <cmath>
 #include <iostream>
 #include <QDebug>
+#include <QString>
 //foward declarations
 class User;
 class Device;
@@ -15,6 +16,15 @@ public:
     void calculateScan(int index); //gets the scan from the user and does calculations, not sure what it returns
     void measure();
      User* activeUser;
+
+    void setActiveUser(User*);
+    User* getActiveUser();
+    void addUser(User*);
+    void deleteUser(User*);
+    void updateUser(User*);
+    User* getUserFromName(QString name);
+
+
 private:
     Device* device;
     //User* activeUser;

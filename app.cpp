@@ -42,3 +42,50 @@ void App::calculateScan(int index){
         processedScan.push_back(std::floor(processed));
     }
 }
+
+//set the active user to the user selected in the profiles page
+void App::setActiveUser(User* user){
+    qInfo()<<"active user updated";
+    activeUser = user;
+}
+
+//gets the active user
+User* App::getActiveUser(){
+    return activeUser;
+
+}
+
+//add user to users list
+void App::addUser(User* user){
+    qInfo()<<"User added to list";
+    users.append(user);
+
+}
+
+//deletes user from user list
+void App::deleteUser(User* user){
+    qInfo()<<"User removed";
+    int index = users.indexOf(user);
+    if (index != -1) {
+        users.removeAt(index);
+    }
+
+    delete user;
+}
+
+//updates user profile data
+void App::updateUser(User* user){
+
+}
+
+//gets the user object from their name
+User* App:: getUserFromName(QString name){
+    for(User* user: users){
+        if (user->getName() == name){
+            return user;
+        }
+    }
+    return nullptr;
+}
+
+
