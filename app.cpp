@@ -154,6 +154,9 @@ User* App:: getUserFromName(QString name){
 //when the app runs out of battery, this stops the timers so no more points are plotted on the graph
 void App::stopMeasure(){
     //if we are currently measuring need to delete the most recent scan from the user list
-    if(scanning) emit deleteCurrentScan();
+    if(scanning) {
+        emit deleteCurrentScan();
+        scanning = false;
+    }
 
 }
