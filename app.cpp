@@ -95,7 +95,9 @@ int App::calculateScan(int index){
         qInfo() <<"Data point: " <<point << "Processed value:" << processed;
         processedScan.push_back(std::floor(processed));
     }
+    return processed;
 }
+
 //input: an individual reading point
 //output: A vector of all the y axis points for the graph
 QVector<int> App::calculateReadingGraph(int reading){
