@@ -2,17 +2,15 @@
 #define MAINWINDOW_H
 
 #include <QMainWindow>
-#include <QtCharts/QChart>
-#include <QtCharts/QChartView>
-#include <QtCharts/QLineSeries>
-#include <QTimer>
+#include <QMessageBox>
 #include "device.h"
 #include "app.h"
 #include "user.h"
-QT_CHARTS_USE_NAMESPACE
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }
 QT_END_NAMESPACE
+
+
 
 class MainWindow : public QMainWindow
 {
@@ -22,23 +20,18 @@ public:
     MainWindow(QWidget *parent = nullptr);
     ~MainWindow();
 
-public slots:
-    void updateChart(int y);
-
 private slots:
+    void showBatteryMsg();
+    //Menu Selection Options
     void on_button_home_clicked();
-
     void on_button_history_clicked();
-
     void on_button_profiles_clicked();
+    void on_button_measure_clicked();
 
 private:
     Ui::MainWindow *ui;
-    QLineSeries* series;
     Device * device;
     App* app;
-    int pointCounter = 0;
-
 public slots:
     void on_editBattery(int value);
 };
