@@ -29,7 +29,9 @@ void App::MeasureFunctionTemplate(){
     int* counter = new int(0); //increments when me move through the points. Pointer so I can modify in the timeout
 
     connect(points,&QTimer::timeout,this,[this,measurement,counter](){
-        if(*counter == 23) return;
+        if(*counter == 23) {
+            return;
+        }
         int data = measurement.at(*counter);
         QVector<int>* graph_Yvalues = new QVector<int>(calculateReadingGraph(data));
         emit clearMeteringGraph(data,graph_Yvalues->size());
