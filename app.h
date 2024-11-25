@@ -26,20 +26,20 @@ public:
     int randomNum(int minimum,int maximum);
 
     //getters and setters
+    bool isScanning(){return scanning;}
     void setActiveUser(User*);
     User* getActiveUser();
     void addUser(User*);
     void deleteUser(User*);
     User* getUserFromName(QString name);
-    QTimer* getGraphTimer(){return graphTimer;}
+
 
 
 private:
     Device* device;
     //User* activeUser;
     QVector<User*> users;
-    QTimer* points;
-    QTimer* graphTimer;
+    bool scanning;
 //private slots:
    // void takeMeasurement(int counter, QVector<int*> measurements); //takes in the current point we are measureing and the vector of all previous points.
 signals:
@@ -47,7 +47,6 @@ signals:
     void clearMeteringGraph(int max_y,int max_x); //possibly pass in final value for the axis in case the graph doesn't dynamically change it in the case that the final value is very large.
     void deleteCurrentScan();
 public slots:
-    void stopMeasure(); //stops the measurement for the graceful shutdown
+    void stopMeasure();
 };
-
-#endif // APP_H
+#endif

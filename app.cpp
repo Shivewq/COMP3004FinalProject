@@ -3,52 +3,55 @@
 #include "user.h"
 #include "scan.h"
 #include <QDebug>
-App::App(Device* d):device(d),graphTimer(new QTimer(this)),points(new QTimer(this))
+App::App(Device* d):device(d)
 {
-    points->setSingleShot(true);
-    graphTimer->setSingleShot(true);
+
 }
 //will have signal to plot point and clear graph
 //function template for starting measuring, getting the reading,calculating the graph points
 //will need a slot in mainwindow to connect to app that updates the thing that displays which point we are measuring
 void App::MeasureFunctionTemplate(){
-    //if the device is off or it has no charge left
-    qInfo() <<"BATTERY:" <<device->getBattery()->getCharge() <<"IS ON" <<device->isOn();
-    if(!device->isOn() || device->getBattery()->getCharge() == 0) return;
-
+    scanning = true;
     //pre-get all data points
     QVector<int> measurement;
     for(int i = 0; i < 23; i++ ){
         measurement.push_back(this->device->geneateDataPoint());
     }
-    QVector<int> processedMeasurements = calculateScan(measurement);
     QDateTime scanDate = QDateTime::currentDateTime();
-    qInfo() <<processedMeasurements;
-    activeUser->addScan(new Scan(measurement,processedMeasurements,scanDate));
+    activeUser->addScan(new Scan(measurement,calculateScan(measurement),scanDate));
+
     //So basically the timer is to loop through each point. At the end of the function you restart the timer
     int* counter = new int(0); //increments when me move through the points. Pointer so I can modify in the timeout
-
-    connect(points,&QTimer::timeout,this,[this,measurement,counter](){
-        if(*counter == 23) return;
+    QTimer* points = new QTimer(this);
+    points->setSingleShot(true);
+    connect(points,&QTimer::timeout,this,[this,measurement,counter,points](){
+        if(*counter == 24){
+            scanning = false;
+            return;
+        }
         int data = measurement.at(*counter);
         QVector<int>* graph_Yvalues = new QVector<int>(calculateReadingGraph(data));
+        QTimer* graph = new QTimer(); //will declare with "this" later as a parameter to set the parent object
+        graph->setSingleShot(true);
         emit clearMeteringGraph(data,graph_Yvalues->size());
-
-        connect(graphTimer,&QTimer::timeout, this,[this,graph_Yvalues,counter](){
+        connect(graph,&QTimer::timeout, this,[this,graph_Yvalues,graph,counter,points](){
             //emit clearMeteringGraph(graph_Yvalues->last());
             if(!graph_Yvalues->isEmpty()){ //if there is still more to plot
                 int y = graph_Yvalues->takeFirst();
                 //plot the point by popping a value from the front of y
                 emit plotPoint(y);
-                graphTimer->start(400); //restart the timer
+                if(scanning) //this will only be false if a graceful shutdown has happened
+                    graph->start(50); //restart the timer
             }
             else{ //if there is no more points to graph. We move onto the next measurement
+                qInfo() << "counter" <<*counter;
                 *counter+= 1;
-                points->start(400);
+                if(scanning) //this will only be false if a graceful shutdown has happened
+                    points->start(100);
             }
 
         });
-       graphTimer->start(400);
+       graph->start(400);
     });
     points->start(400);
 }
@@ -151,8 +154,6 @@ User* App:: getUserFromName(QString name){
 //when the app runs out of battery, this stops the timers so no more points are plotted on the graph
 void App::stopMeasure(){
     //if we are currently measuring need to delete the most recent scan from the user list
-    if(graphTimer->isActive() || points->isActive()) emit deleteCurrentScan();
-    graphTimer->stop();
-    points->stop();
+    if(scanning) emit deleteCurrentScan();
 
 }

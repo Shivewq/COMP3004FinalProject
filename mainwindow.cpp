@@ -107,7 +107,6 @@ void MainWindow::on_button_profiles_clicked()
 
 //Creates new user from input data
 void MainWindow::on_Add_User_clicked(){
-
     //get the users info from the UI
     QString name = ui->text_name->toPlainText();
     QString heightStr = ui->text_height->toPlainText();
