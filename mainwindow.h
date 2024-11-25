@@ -3,6 +3,7 @@
 
 #include <QMainWindow>
 #include <QVariant>
+#include <QMessageBox>
 #include "device.h"
 #include "app.h"
 #include "user.h"
@@ -29,11 +30,12 @@ public:
 
 
 private slots:
+    void showBatteryMsg();
+    //Menu Selection Options
     void on_button_home_clicked();
-
     void on_button_history_clicked();
-
     void on_button_profiles_clicked();
+    void on_button_measure_clicked();
 
 
 
