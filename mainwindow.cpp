@@ -36,7 +36,7 @@ void MainWindow::on_button_history_clicked()
 
 void MainWindow::on_button_profiles_clicked()
 {
-    app->measure();
+    //app->measure();
     app->calculateScan(0);
     Scan* scan = app->activeUser->getScan(0);
     app->calculateReadingGraph(scan->getPoints().at(1));

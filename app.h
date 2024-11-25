@@ -21,9 +21,15 @@ public:
     //in the graph, every 0.3 seconds pop a point. Stop the tiemr when there are no more points left
     QVector<int> calculateReadingGraph(int reading); //this function will take the reading and calculate the points on the graph based on the doc part "How we calculate reading/how we take measurement:"
     User* activeUser;
-    //void graphFunction(QVector<int>* yValues); //will remove
     //helper functions
     int randomNum(int minimum,int maximum);
+
+    void setActiveUser(User*);
+    User* getActiveUser();
+    void addUser(User*);
+    void deleteUser(User*);
+    User* getUserFromName(QString name);
+
 private:
     Device* device;
     //User* activeUser;

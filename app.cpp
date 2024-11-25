@@ -50,32 +50,6 @@ void App::MeasureFunctionTemplate(){
     points->start(3000);
 }
 
-//waits and plots the point
-//void App::graphFunction(QVector<int>* yValues, int* counter, QTimer* points){
-//    QTimer* graph = new QTimer(); //will declare with "this" later as a parameter to set the parent object
-//    graph->setSingleShot(true);
-//    connect(graph,&QTimer::timeout, this,[yValues,graph,counter,points](){
-//        if(!yValues->isEmpty()){ //if there is still more to plot
-//            //plot the point by popping a value from the front of y
-//            graph->start(3000); //restart the timer
-//        }
-//        else{ //if there is no more points to graph. We move onto the next measurement
-//            *counter+= 1;
-//            points->start(3000);
-//        }
-
-//    });
-//   graph->start(3000);
-//}
-//void App::measure(){
-//    //for all 24 points on the body
-//    QVector<int> measurement;
-//    for(int i = 0; i < 23; i++ ){
-//        measurement.push_back(this->device->geneateDataPoint());
-//    }
-//    QDateTime scanDate = QDateTime::currentDateTime();
-//    activeUser->addScan(new Scan(measurement,scanDate));
-//}
 //45-70 is normal. < 45 is low functionality, > 70 is high functionality
 int App::calculateScan(int index){
 
@@ -136,4 +110,44 @@ int App::randomNum(int minimum,int maximum){
     std::mt19937 gen(rd()); // Mersenne Twister engine
     std::uniform_int_distribution<> dist(minimum,maximum); // Distribution in range [min, max]. //before change
     return dist(gen);
+}
+//set the active user to the user selected in the profiles page
+void App::setActiveUser(User* user){
+    qInfo()<<"active user updated";
+    activeUser = user;
+}
+
+//gets the active user
+User* App::getActiveUser(){
+    return activeUser;
+
+}
+
+//add user to users list
+void App::addUser(User* user){
+    qInfo()<<"User added to list";
+    users.append(user);
+
+}
+
+//deletes user from user list
+void App::deleteUser(User* user){
+    qInfo()<<"User removed";
+    int index = users.indexOf(user);
+    if (index != -1) {
+        users.removeAt(index);
+    }
+
+    delete user;
+}
+
+
+//gets the user object from their name
+User* App:: getUserFromName(QString name){
+    for(User* user: users){
+        if (user->getName() == name){
+            return user;
+        }
+    }
+    return nullptr;
 }

@@ -11,3 +11,21 @@ void User::addScan(Scan* scan){
        qInfo() << num;
    }
 }
+
+QString User::getName(){
+    return name;
+}
+
+void User::setName(QString newName){
+    name = newName;
+    qInfo()<<"new name set";
+}
+
+void User::setWeight(int newWeight){
+    weight = newWeight;
+    qInfo()<<"new weight set";
+}
+void User::setHeight(int newHeight){
+    height = newHeight;
+    qInfo()<<"new height set";
+}
