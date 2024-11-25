@@ -24,11 +24,14 @@ void App::MeasureFunctionTemplate(){
     QTimer* points = new QTimer(this);
     points->setSingleShot(true);
     connect(points,&QTimer::timeout,this,[this,measurement,counter,points](){
+
         int data = measurement.at(*counter);
         QVector<int>* graph_Yvalues = new QVector<int>(calculateReadingGraph(data));
         QTimer* graph = new QTimer(); //will declare with "this" later as a parameter to set the parent object
         graph->setSingleShot(true);
+
         connect(graph,&QTimer::timeout, this,[graph_Yvalues,graph,counter,points](){
+
             if(!graph_Yvalues->isEmpty()){ //if there is still more to plot
                 int y = graph_Yvalues->takeFirst();
                 //plot the point by popping a value from the front of y
@@ -45,32 +48,6 @@ void App::MeasureFunctionTemplate(){
     points->start(3000);
 }
 
-//waits and plots the point
-void App::graphFunction(QVector<int>* yValues, int* counter, QTimer* points){
-    QTimer* graph = new QTimer(); //will declare with "this" later as a parameter to set the parent object
-    graph->setSingleShot(true);
-    connect(graph,&QTimer::timeout, this,[yValues,graph,counter,points](){
-        if(!yValues->isEmpty()){ //if there is still more to plot
-            //plot the point by popping a value from the front of y
-            graph->start(3000); //restart the timer
-        }
-        else{ //if there is no more points to graph. We move onto the next measurement
-            *counter+= 1;
-            points->start(3000);
-        }
-
-    });
-   graph->start(3000);
-}
-void App::measure(){
-    //for all 24 points on the body
-    QVector<int> measurement;
-    for(int i = 0; i < 23; i++ ){
-        measurement.push_back(this->device->geneateDataPoint());
-    }
-    QDateTime scanDate = QDateTime::currentDateTime();
-    activeUser->addScan(new Scan(measurement,scanDate));
-}
 //45-70 is normal. < 45 is low functionality, > 70 is high functionality
 int App::calculateScan(int index){
 
