@@ -13,6 +13,7 @@ public:
     ~User();
     void addScan(Scan* scan);
     Scan* getScan(int index){return measurements.at(index);}
+    QVector<Scan*> getScanList(){return measurements;}
     Scan* getMostRecentScan(){return measurements.last();}
     QString getName();
     int getHeight();

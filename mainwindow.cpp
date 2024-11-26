@@ -9,6 +9,8 @@ MainWindow::MainWindow(QWidget *parent)
     ui->setupUi(this);
     ui->stackedWidget->setCurrentIndex(0); // Set to homepage
     connect(ui->button_profiles, &QPushButton::clicked, this, &MainWindow::on_button_profiles_clicked);
+    connect(ui->User_History, &QListWidget::itemClicked, this, &MainWindow::onScanSelected);
+
 
     //setup device
     device = new Device();
@@ -27,6 +29,7 @@ MainWindow::MainWindow(QWidget *parent)
     connect(ui->button_delete, &QPushButton::clicked, this, &MainWindow::on_Delete_User_clicked);
     connect(ui->button_update, &QPushButton::clicked, this, &MainWindow::on_Update_User_clicked);
     connect(ui->userSelect, &QComboBox::currentTextChanged, this, &MainWindow::update_Active_User);
+    connect(app, &App::bodyPointNumber, this, &MainWindow::changeMeasurePointUI);
 
     // Create a chart and add the series
     series = new QLineSeries(this);
@@ -52,10 +55,17 @@ MainWindow::MainWindow(QWidget *parent)
     connect(app, &App::plotPoint, this, &MainWindow::updateChart);
     connect(app,&App::clearMeteringGraph,this,&MainWindow::clearChart);
 
+    onStart();
+
+}
+
+void MainWindow::onStart(){
+    //Get History ready and make sure it cant be access until there is a user
+    ui->button_history->setEnabled(false);
 }
 
 
-void MainWindow::initializeHistoryBar()
+void MainWindow::initializeHistoryBar(Scan* selectedScan)
 {
     // Prepare the bar sets for "Right" and "Left"
     QtCharts::QBarSet *leftSet = new QtCharts::QBarSet("Left");
@@ -66,7 +76,7 @@ void MainWindow::initializeHistoryBar()
     rightSet->setColor(Qt::green);
 
     // Get processed data
-    QVector<int> processedData = app->getActiveUser()->getMostRecentScan()->getProccesedPoints();
+    QVector<int> processedData = selectedScan->getProccesedPoints();
     if (processedData.isEmpty() || processedData.size() < 24) {
         qWarning() << "Invalid or insufficient processed scan data.";
         return;
@@ -147,7 +157,6 @@ void MainWindow::on_editBattery(int value){
     if(ui->battery->value() != 0){
         ui->battery->setValue(value);
     }
-    ui->label_batteryValue->setText(QString::number(value));
 }
 
 
@@ -171,7 +180,8 @@ void MainWindow::on_button_home_clicked()
 void MainWindow::on_button_history_clicked()
 {
     ui->stackedWidget->setCurrentIndex(3);
-    initializeHistoryBar();
+    ui->User_History->clear();
+    loadUserHistory();
 }
 
 void MainWindow::on_button_measure_clicked()
@@ -182,13 +192,6 @@ void MainWindow::on_button_measure_clicked()
 void MainWindow::on_button_profiles_clicked()
 {
     ui->stackedWidget->setCurrentIndex(2);
-
-    /* Eric Test Code
-    app->measure();
-    app->calculateScan(0);
-    Scan* scan = app->activeUser->getScan(0);
-    app->calculateReadingGraph(scan->getPoints().at(1));
-    */
 }
 
 //Creates new user from input data
@@ -292,6 +295,10 @@ void MainWindow::on_Update_User_clicked(){
 
 }
 
+void MainWindow::changeMeasurePointUI(int const* point){
+    ui->currentPointText->setText(QString::number(*point+1));
+}
+
 
 //updates active user
 void MainWindow::update_Active_User(const QString &text) {
@@ -299,7 +306,7 @@ void MainWindow::update_Active_User(const QString &text) {
 
     User* activeUser = app->getUserFromName(text);
     app->setActiveUser(activeUser);
-
+    ui->button_history->setEnabled(true);
 }
 
 
@@ -335,6 +342,35 @@ void MainWindow::clearChart(int max_y,int max_x)
     chart->update();
     pointCounter = 1; // Reset the x-axis counter
 
+}
+
+void MainWindow::loadUserHistory(){
+    User* u = app->getActiveUser();
+    if (!u){
+        qWarning() << "No active user found.";
+        return;
+    }
+
+    //Add scans to the  list model
+    for (int i = 0; i < u->getScanList().size(); ++i) {
+        Scan* scan = u->getScan(i);
+        if (scan) {
+            QListWidgetItem* item = new QListWidgetItem(scan->toString(), ui->User_History);
+            item->setData(Qt::UserRole, QVariant::fromValue(scan));
+        }
+    }
+}
+
+void MainWindow::onScanSelected(QListWidgetItem* item) {
+    if (!item) return;
+
+    //Get the scan that the user has selected
+    Scan* selectedScan = item->data(Qt::UserRole).value<Scan*>();
+
+    if (selectedScan) {
+        qDebug() << "Selected Scan:" << selectedScan;
+        initializeHistoryBar(selectedScan);
+    }
 }
 
 
