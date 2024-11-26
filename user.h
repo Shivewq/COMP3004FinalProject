@@ -13,7 +13,7 @@ public:
     ~User();
     void addScan(Scan* scan);
     Scan* getScan(int index){return measurements.at(index);}
-
+    Scan* getMostRecentScan(){return measurements.last();}
     QString getName();
     int getHeight();
     int getWeight();
@@ -26,6 +26,8 @@ private:
     int weight; //in kg
     int height; // in cm
     QVector<Scan*> measurements; //back is most recent scan
+public slots:
+    void deleteScan();
 };
 
 #endif // USER_H

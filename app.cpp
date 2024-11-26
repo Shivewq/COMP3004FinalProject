@@ -11,76 +11,57 @@ App::App(Device* d):device(d)
 //function template for starting measuring, getting the reading,calculating the graph points
 //will need a slot in mainwindow to connect to app that updates the thing that displays which point we are measuring
 void App::MeasureFunctionTemplate(){
+    scanning = true;
     //pre-get all data points
     QVector<int> measurement;
-    for(int i = 0; i < 23; i++ ){
+    for(int i = 0; i < 24; i++ ){
         measurement.push_back(this->device->geneateDataPoint());
     }
     QDateTime scanDate = QDateTime::currentDateTime();
-    activeUser->addScan(new Scan(measurement,scanDate));
+    activeUser->addScan(new Scan(measurement,calculateScan(measurement),scanDate));
 
     //So basically the timer is to loop through each point. At the end of the function you restart the timer
     int* counter = new int(0); //increments when me move through the points. Pointer so I can modify in the timeout
     QTimer* points = new QTimer(this);
     points->setSingleShot(true);
     connect(points,&QTimer::timeout,this,[this,measurement,counter,points](){
+        if(*counter == 24){
+            scanning = false;
+            return;
+        }
         int data = measurement.at(*counter);
         QVector<int>* graph_Yvalues = new QVector<int>(calculateReadingGraph(data));
         QTimer* graph = new QTimer(); //will declare with "this" later as a parameter to set the parent object
         graph->setSingleShot(true);
-        connect(graph,&QTimer::timeout, this,[graph_Yvalues,graph,counter,points](){
+        emit clearMeteringGraph(data,graph_Yvalues->size());
+        connect(graph,&QTimer::timeout, this,[this,graph_Yvalues,graph,counter,points](){
+            //emit clearMeteringGraph(graph_Yvalues->last());
             if(!graph_Yvalues->isEmpty()){ //if there is still more to plot
                 int y = graph_Yvalues->takeFirst();
                 //plot the point by popping a value from the front of y
-                graph->start(300); //restart the timer
+                emit plotPoint(y);
+                if(scanning) //this will only be false if a graceful shutdown has happened
+                    graph->start(50); //restart the timer
             }
             else{ //if there is no more points to graph. We move onto the next measurement
+                qInfo() << "counter" <<*counter;
                 *counter+= 1;
-                points->start(3000);
+                if(scanning) //this will only be false if a graceful shutdown has happened
+                    points->start(100);
             }
 
         });
-       graph->start(300);
+       graph->start(400);
     });
-    points->start(3000);
+    points->start(400);
 }
 
-//waits and plots the point
-void App::graphFunction(QVector<int>* yValues, int* counter, QTimer* points){
-    QTimer* graph = new QTimer(); //will declare with "this" later as a parameter to set the parent object
-    graph->setSingleShot(true);
-    connect(graph,&QTimer::timeout, this,[yValues,graph,counter,points](){
-        if(!yValues->isEmpty()){ //if there is still more to plot
-            //plot the point by popping a value from the front of y
-            graph->start(3000); //restart the timer
-        }
-        else{ //if there is no more points to graph. We move onto the next measurement
-            *counter+= 1;
-            points->start(3000);
-        }
-
-    });
-   graph->start(3000);
-}
-void App::measure(){
-    //for all 24 points on the body
-    QVector<int> measurement;
-    for(int i = 0; i < 23; i++ ){
-        measurement.push_back(this->device->geneateDataPoint());
-    }
-    QDateTime scanDate = QDateTime::currentDateTime();
-    activeUser->addScan(new Scan(measurement,scanDate));
-}
 //45-70 is normal. < 45 is low functionality, > 70 is high functionality
-int App::calculateScan(int index){
-
-    QVector<int> processedScan;
-    Scan* scan = activeUser->getScan(index);
-    QVector<int> rawData = scan->getPoints();
+QVector<int> App::calculateScan(QVector<int> rawPoints){
     double processed; //the % difference
-
+    QVector<int> processedPoints;
     //goes through each measurement and calculates the %.
-    for(int point: rawData){
+    for(int point: rawPoints){
         if(point > 45 && point < 70){ //if the functionality is normal will be under 100%
             processed = 100;
         }
@@ -93,11 +74,10 @@ int App::calculateScan(int index){
             processed = 100 + ((processed/point)*100);
         }
         qInfo() <<"Data point: " <<point << "Processed value:" << processed;
-        processedScan.push_back(std::floor(processed));
+        processedPoints.push_back(std::floor(processed));
     }
-    return processed;
+    return processedPoints;
 }
-
 //input: an individual reading point
 //output: A vector of all the y axis points for the graph
 QVector<int> App::calculateReadingGraph(int reading){
@@ -115,10 +95,6 @@ QVector<int> App::calculateReadingGraph(int reading){
         for(int i = 0; i < randomNum(1,3);i++){
              yValues.push_back(y);
         }
-    }
-    qInfo() <<"Calculating graph points based on reading:" << reading;
-    for(int num: yValues){
-        qInfo() << num;
     }
     return yValues;
 }
@@ -174,4 +150,13 @@ User* App:: getUserFromName(QString name){
         }
     }
     return nullptr;
+}
+//when the app runs out of battery, this stops the timers so no more points are plotted on the graph
+void App::stopMeasure(){
+    //if we are currently measuring need to delete the most recent scan from the user list
+    if(scanning) {
+        emit deleteCurrentScan();
+        scanning = false;
+    }
+
 }
