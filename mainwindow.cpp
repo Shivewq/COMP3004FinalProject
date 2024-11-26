@@ -30,6 +30,7 @@ MainWindow::MainWindow(QWidget *parent)
     connect(ui->button_update, &QPushButton::clicked, this, &MainWindow::on_Update_User_clicked);
     connect(ui->userSelect, &QComboBox::currentTextChanged, this, &MainWindow::update_Active_User);
     connect(app, &App::bodyPointNumber, this, &MainWindow::changeMeasurePointUI);
+    connect(app, &App::bodyImageNum, this, &MainWindow::changeBodyImageUI);
 
     // Create a chart and add the series
     series = new QLineSeries(this);
@@ -297,6 +298,13 @@ void MainWindow::on_Update_User_clicked(){
 
 void MainWindow::changeMeasurePointUI(int const* point){
     ui->currentPointText->setText(QString::number(*point+1));
+
+
+}
+
+void MainWindow::changeBodyImageUI(int const* point){
+
+    ui->imageWidget->setCurrentIndex(*point);
 }
 
 

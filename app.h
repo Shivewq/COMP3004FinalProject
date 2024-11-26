@@ -50,6 +50,7 @@ signals:
     void clearMeteringGraph(int max_y,int max_x); //possibly pass in final value for the axis in case the graph doesn't dynamically change it in the case that the final value is very large.
     void deleteCurrentScan();
     void bodyPointNumber(int *const); // For UI changes
+    void bodyImageNum(int *const); //Also for UI
 public slots:
     void stopMeasure();
 };

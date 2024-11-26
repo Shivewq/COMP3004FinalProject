@@ -14,6 +14,7 @@
 #include <QStandardItemModel>
 #include <QListView>
 #include <QListWidgetItem>
+#include <QPixmap>
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }
@@ -59,6 +60,7 @@ private slots:
 
     //UI dynamic changing
     void changeMeasurePointUI(int const*);
+    void changeBodyImageUI(int const*);
 
 private:
     Ui::MainWindow *ui;
