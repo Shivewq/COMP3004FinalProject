@@ -51,6 +51,7 @@ private slots:
     void updateChart(int y);
     void clearChart(int max_y,int max_x);
     void initializeHistoryBar(Scan*);
+    void initializePolarGraph(const QVector<int>& processedData);
     void initializeHomeGraph(Scan*);
     void populateOrganList();
 

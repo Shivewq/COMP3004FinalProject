@@ -189,8 +189,123 @@ void MainWindow::initializeHistoryBar(Scan* selectedScan)
     // Add the chart to a QChartView in your UI
     ui->barGraph->setChart(chart); // Assuming `historyGraph` is a QChartView in your UI
     ui->barGraph->setRenderHint(QPainter::Antialiasing);
+}
 
+void MainWindow::initializePolarGraph(const QVector<int>& processedData)
+{
+    // Ensure processedData has the expected 24 points (12 left + 12 right)
+    if (processedData.size() != 24) {
+        qWarning() << "Processed data must have exactly 24 points.";
+        return;
+    }
 
+    // Split processedData into left and right sides
+    QVector<int> leftData, rightData;
+    for (int i = 0; i < 12; ++i) {
+        leftData << processedData[i];          // Left side of organ
+        rightData << processedData[i + 12];   // Corresponding right side of organ
+    }
+
+    // Create a polar chart
+    QPolarChart *polarChart = new QPolarChart();
+    polarChart->setTitle("Organ Functionality - Polar Chart");
+
+    // Create axes
+    QCategoryAxis *angleAxis = new QCategoryAxis();
+    QStringList pointNames = {"H1", "H2", "H3", "H4", "H5", "H6",
+                              "F1", "F2", "F3", "F4", "F5", "F6"};
+
+    for (int i = 0; i < pointNames.size(); ++i) {
+        angleAxis->append(pointNames[i], i * 30); // Map point names to angular positions
+    }
+    angleAxis->setRange(0, 360); // Full circular range
+    angleAxis->setLabelsPosition(QCategoryAxis::AxisLabelsPositionOnValue);
+    polarChart->addAxis(angleAxis, QPolarChart::PolarOrientationAngular);
+
+    QValueAxis *radiusAxis = new QValueAxis();
+    radiusAxis->setRange(0, 200); // Adjust as necessary
+    radiusAxis->setTickCount(5);
+    polarChart->addAxis(radiusAxis, QPolarChart::PolarOrientationRadial);
+
+    // Add indicator lines for functionality
+    QLineSeries *lowLine = new QLineSeries();
+    QLineSeries *normalLine = new QLineSeries();
+    QLineSeries *highLine = new QLineSeries();
+
+    for (int i = 0; i <= 360; i += 30) {
+        lowLine->append(i, 90);    // Low functionality threshold
+        normalLine->append(i, 100); // Normal functionality threshold
+        highLine->append(i, 108);  // High functionality threshold
+    }
+
+    polarChart->addSeries(lowLine);
+    polarChart->addSeries(normalLine);
+    polarChart->addSeries(highLine);
+
+    lowLine->attachAxis(angleAxis);
+    lowLine->attachAxis(radiusAxis);
+
+    normalLine->attachAxis(angleAxis);
+    normalLine->attachAxis(radiusAxis);
+
+    highLine->attachAxis(angleAxis);
+    highLine->attachAxis(radiusAxis);
+
+    QPen lowPen(Qt::red);
+    lowPen.setStyle(Qt::DashLine);
+    lowLine->setPen(lowPen);
+
+    QPen normalPen(Qt::black);
+    normalPen.setStyle(Qt::DashLine);
+    normalLine->setPen(normalPen);
+
+    QPen highPen(Qt::green);
+    highPen.setStyle(Qt::DashLine);
+    highLine->setPen(highPen);
+
+    // Add the left side data
+    QLineSeries *leftSeries = new QLineSeries();
+    for (int i = 0; i < leftData.size(); ++i) {
+        leftSeries->append(i * 30, leftData[i]); // 30 degrees per data point
+    }
+
+    // Add the right side data
+    QLineSeries *rightSeries = new QLineSeries();
+    for (int i = 0; i < rightData.size(); ++i) {
+        rightSeries->append(i * 30, rightData[i]); // 30 degrees per data point
+    }
+
+    // Create area series for left and right sides
+    QAreaSeries *leftArea = new QAreaSeries(leftSeries);
+    leftArea->setName("Left Side");
+    QColor leftColor = Qt::blue;
+    leftColor.setAlpha(150);
+    leftArea->setBrush(QBrush(leftColor));
+
+    QAreaSeries *rightArea = new QAreaSeries(rightSeries);
+    rightArea->setName("Right Side");
+    QColor rightColor = Qt::green;
+    rightColor.setAlpha(100);
+    rightArea->setBrush(QBrush(rightColor));
+
+    polarChart->addSeries(leftArea);
+    polarChart->addSeries(rightArea);
+
+    leftSeries->attachAxis(angleAxis);
+    leftSeries->attachAxis(radiusAxis);
+
+    rightSeries->attachAxis(angleAxis);
+    rightSeries->attachAxis(radiusAxis);
+
+    leftArea->attachAxis(angleAxis);
+    leftArea->attachAxis(radiusAxis);
+
+    rightArea->attachAxis(angleAxis);
+    rightArea->attachAxis(radiusAxis);
+
+    // Set the polar chart to the QChartView
+    ui->polarGraph->setChart(polarChart);
+    ui->polarGraph->setRenderHint(QPainter::Antialiasing);
 }
 
 void MainWindow::populateOrganList()
@@ -459,6 +574,7 @@ void MainWindow::onScanSelected(QListWidgetItem* item) {
     if (selectedScan) {
         qDebug() << "Selected Scan:" << selectedScan;
         initializeHistoryBar(selectedScan);
+        initializePolarGraph(selectedScan->getProccesedPoints());
         ui->scan_title_label->setText(selectedScan->toString());
     }
 }
