@@ -28,6 +28,8 @@ MainWindow::MainWindow(QWidget *parent)
     connect(ui->button_add, &QPushButton::clicked, this, &MainWindow::on_Add_User_clicked);
     connect(ui->button_delete, &QPushButton::clicked, this, &MainWindow::on_Delete_User_clicked);
     connect(ui->button_update, &QPushButton::clicked, this, &MainWindow::on_Update_User_clicked);
+    connect(ui->mesNow_button, &QPushButton::clicked, this, &MainWindow::on_button_measure_clicked);
+    connect(ui->details_button, &QPushButton::clicked, this, &MainWindow::on_details_clicked);
     connect(ui->userSelect, &QComboBox::currentTextChanged, this, &MainWindow::update_Active_User);
     connect(app, &App::bodyPointNumber, this, &MainWindow::changeMeasurePointUI);
     connect(app, &App::bodyImageNum, this, &MainWindow::changeBodyImageUI);
@@ -63,6 +65,75 @@ MainWindow::MainWindow(QWidget *parent)
 void MainWindow::onStart(){
     //Get History ready and make sure it cant be access until there is a user
     ui->button_history->setEnabled(false);
+}
+
+
+void MainWindow::initializeHomeGraph(Scan* selectedScan)
+{
+   // Prepare the bar sets for "Right" and "Left"
+   QtCharts::QBarSet *leftSet = new QtCharts::QBarSet("Left");
+   QtCharts::QBarSet *rightSet = new QtCharts::QBarSet("Right");
+
+   // Assign colors
+   leftSet->setColor(Qt::blue);
+   rightSet->setColor(Qt::green);
+
+   // Get processed data
+   QVector<int> processedData = selectedScan->getProccesedPoints();
+   if (processedData.isEmpty() || processedData.size() < 24) {
+       qWarning() << "Invalid or insufficient processed scan data.";
+       return;
+   }
+
+   // Add values to bar sets
+   for (int i = 0; i < 12; ++i) {
+       *leftSet << processedData[i];          // Left side of organ
+       *rightSet << processedData[i + 12];   // Corresponding right side of organ
+   }
+
+   // Create the bar series and add the sets
+   historyBar = new QtCharts::QBarSeries();
+   historyBar->append(leftSet);
+   historyBar->append(rightSet);
+
+   // Create the chart and add the series
+   QtCharts::QChart *chart = new QtCharts::QChart();
+   chart->addSeries(historyBar);
+   chart->setTitle("Organ Functionality Comparison");
+   chart->setAnimationOptions(QtCharts::QChart::SeriesAnimations);
+
+   // Define categories for the x-axis
+   QStringList categories = app->categories;
+   // Set up x-axis
+   QtCharts::QBarCategoryAxis *xAxis = new QtCharts::QBarCategoryAxis();
+   xAxis->append(categories);
+   chart->addAxis(xAxis, Qt::AlignBottom);
+   historyBar->attachAxis(xAxis);
+
+   // Set up y-axis
+   QtCharts::QValueAxis *yAxis = new QtCharts::QValueAxis();
+   yAxis->setRange(0, 200); // Assuming percentages range from 0 to 200%
+   yAxis->setTitleText("Functionality (%)");
+   chart->addAxis(yAxis, Qt::AlignLeft);
+   historyBar->attachAxis(yAxis);
+
+   // Add the chart to a QChartView in your UI
+   ui->home_graph->setChart(chart); // Assuming `historyGraph` is a QChartView in your UI
+   ui->home_graph->setRenderHint(QPainter::Antialiasing);
+
+
+}
+
+void MainWindow::on_details_clicked(){
+    ui->stackedWidget->setCurrentIndex(3);
+
+    if(!(app->getActiveUser()->getScanList().empty())){
+        ui->User_History->clear();
+        loadUserHistory();
+        initializeHistoryBar(app->getActiveUser()->getMostRecentScan());
+        ui->scan_title_label->setText(app->getActiveUser()->getMostRecentScan()->toString());
+    }
+
 }
 
 
@@ -118,6 +189,8 @@ void MainWindow::initializeHistoryBar(Scan* selectedScan)
     // Add the chart to a QChartView in your UI
     ui->barGraph->setChart(chart); // Assuming `historyGraph` is a QChartView in your UI
     ui->barGraph->setRenderHint(QPainter::Antialiasing);
+
+
 }
 
 void MainWindow::populateOrganList()
@@ -176,6 +249,11 @@ void MainWindow::showBatteryMsg()
 void MainWindow::on_button_home_clicked()
 {
     ui->stackedWidget->setCurrentIndex(0);
+    if(!(app->getActiveUser()->getScanList().empty())){
+           initializeHomeGraph(app->getActiveUser()->getMostRecentScan());
+    }
+
+
 }
 
 void MainWindow::on_button_history_clicked()
@@ -311,10 +389,13 @@ void MainWindow::changeBodyImageUI(int const* point){
 //updates active user
 void MainWindow::update_Active_User(const QString &text) {
     ui->activeUser->setText(text);
+    ui->Welcome_label->setText("Welcome");
+    ui->Name_label->setText(text);
 
     User* activeUser = app->getUserFromName(text);
     app->setActiveUser(activeUser);
     ui->button_history->setEnabled(true);
+    ui->details_button->setEnabled(true);
 }
 
 
@@ -378,6 +459,7 @@ void MainWindow::onScanSelected(QListWidgetItem* item) {
     if (selectedScan) {
         qDebug() << "Selected Scan:" << selectedScan;
         initializeHistoryBar(selectedScan);
+        ui->scan_title_label->setText(selectedScan->toString());
     }
 }
 

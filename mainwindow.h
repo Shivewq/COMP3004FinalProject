@@ -45,11 +45,13 @@ private slots:
     void on_button_history_clicked();
     void on_button_profiles_clicked();
     void on_button_measure_clicked();
+    void on_details_clicked();
 
     //Metering chart updating
     void updateChart(int y);
     void clearChart(int max_y,int max_x);
     void initializeHistoryBar(Scan*);
+    void initializeHomeGraph(Scan*);
     void populateOrganList();
 
     //Device Buttons

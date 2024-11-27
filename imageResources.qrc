@@ -1,0 +1,28 @@
+<RCC>
+    <qresource prefix="/photos">
+        <file>resources/compressedImages/Capture1-min.jpg</file>
+        <file>resources/compressedImages/Capture2-min.jpg</file>
+        <file>resources/compressedImages/Capture3-min.jpg</file>
+        <file>resources/compressedImages/Capture4-min.jpg</file>
+        <file>resources/compressedImages/Capture5-min.jpg</file>
+        <file>resources/compressedImages/Capture6-min.jpg</file>
+        <file>resources/compressedImages/Capture7-min.jpg</file>
+        <file>resources/compressedImages/Capture8-min.jpg</file>
+        <file>resources/compressedImages/Capture9-min.jpg</file>
+        <file>resources/compressedImages/Capture10-min.jpg</file>
+        <file>resources/compressedImages/Capture11-min.jpg</file>
+        <file>resources/compressedImages/Capture12-min.jpg</file>
+        <file>resources/compressedImages/Capture13-min.jpg</file>
+        <file>resources/compressedImages/Capture14-min.jpg</file>
+        <file>resources/compressedImages/Capture15-min.jpg</file>
+        <file>resources/compressedImages/Capture16-min.jpg</file>
+        <file>resources/compressedImages/Capture17-min.jpg</file>
+        <file>resources/compressedImages/Capture18-min.jpg</file>
+        <file>resources/compressedImages/Capture19-min.jpg</file>
+        <file>resources/compressedImages/Capture20-min.jpg</file>
+        <file>resources/compressedImages/Capture21-min.jpg</file>
+        <file>resources/compressedImages/Capture22-min.jpg</file>
+        <file>resources/compressedImages/Capture23-min.jpg</file>
+        <file>resources/compressedImages/Capture24-min.jpg</file>
+    </qresource>
+</RCC>

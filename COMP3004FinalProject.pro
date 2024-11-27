@@ -59,6 +59,30 @@ DISTFILES += \
     resources/JPEGimages/Capture7.jpg \
     resources/JPEGimages/Capture8.jpg \
     resources/JPEGimages/Capture9.jpg \
+    resources/compressedImages/Capture1-min.jpg \
+    resources/compressedImages/Capture10-min.jpg \
+    resources/compressedImages/Capture11-min.jpg \
+    resources/compressedImages/Capture12-min.jpg \
+    resources/compressedImages/Capture13-min.jpg \
+    resources/compressedImages/Capture14-min.jpg \
+    resources/compressedImages/Capture15-min.jpg \
+    resources/compressedImages/Capture16-min.jpg \
+    resources/compressedImages/Capture17-min.jpg \
+    resources/compressedImages/Capture18-min.jpg \
+    resources/compressedImages/Capture19-min.jpg \
+    resources/compressedImages/Capture2-min.jpg \
+    resources/compressedImages/Capture20-min.jpg \
+    resources/compressedImages/Capture21-min.jpg \
+    resources/compressedImages/Capture22-min.jpg \
+    resources/compressedImages/Capture23-min.jpg \
+    resources/compressedImages/Capture24-min.jpg \
+    resources/compressedImages/Capture3-min.jpg \
+    resources/compressedImages/Capture4-min.jpg \
+    resources/compressedImages/Capture5-min.jpg \
+    resources/compressedImages/Capture6-min.jpg \
+    resources/compressedImages/Capture7-min.jpg \
+    resources/compressedImages/Capture8-min.jpg \
+    resources/compressedImages/Capture9-min.jpg \
     resources/images/Capture1.PNG \
     resources/images/Capture10.PNG \
     resources/images/Capture11.PNG \
@@ -75,11 +99,10 @@ DISTFILES += \
     resources/images/Capture21.PNG \
     resources/images/Capture22.PNG \
     resources/images/Capture23.PNG \
-    resources/images/Capture24.PNG \
     resources/images/Capture3.PNG \
     resources/images/Capture4.PNG \
     resources/images/Capture5.PNG \
-    resources/images/Capture6.PNG \
-    resources/images/Capture7.PNG \
-    resources/images/Capture8.PNG \
-    resources/images/Capture9.PNG
+    resources/images/Capture6.PNG
+
+RESOURCES += \
+    imageResources.qrc
