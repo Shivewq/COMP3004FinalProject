@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>1252</width>
-    <height>593</height>
+    <width>1475</width>
+    <height>782</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -17,11 +17,14 @@
    <widget class="QStackedWidget" name="stackedWidget">
     <property name="geometry">
      <rect>
-      <x>200</x>
-      <y>60</y>
-      <width>751</width>
-      <height>481</height>
+      <x>190</x>
+      <y>50</y>
+      <width>931</width>
+      <height>671</height>
      </rect>
+    </property>
+    <property name="autoFillBackground">
+     <bool>false</bool>
     </property>
     <property name="frameShape">
      <enum>QFrame::Box</enum>
@@ -33,7 +36,7 @@
      <widget class="QLabel" name="label">
       <property name="geometry">
        <rect>
-        <x>270</x>
+        <x>430</x>
         <y>0</y>
         <width>81</width>
         <height>31</height>
@@ -41,14 +44,142 @@
       </property>
       <property name="font">
        <font>
+        <family>Quicksand</family>
         <pointsize>17</pointsize>
         <weight>75</weight>
         <bold>true</bold>
-        <underline>true</underline>
+        <underline>false</underline>
        </font>
       </property>
       <property name="text">
        <string>HOME</string>
+      </property>
+     </widget>
+     <widget class="QChartView" name="home_graph">
+      <property name="geometry">
+       <rect>
+        <x>40</x>
+        <y>180</y>
+        <width>851</width>
+        <height>321</height>
+       </rect>
+      </property>
+     </widget>
+     <widget class="QLabel" name="Welcome_label">
+      <property name="enabled">
+       <bool>true</bool>
+      </property>
+      <property name="geometry">
+       <rect>
+        <x>370</x>
+        <y>50</y>
+        <width>111</width>
+        <height>31</height>
+       </rect>
+      </property>
+      <property name="font">
+       <font>
+        <family>Quicksand</family>
+        <pointsize>17</pointsize>
+        <weight>75</weight>
+        <bold>true</bold>
+        <underline>false</underline>
+       </font>
+      </property>
+      <property name="text">
+       <string>Welcome</string>
+      </property>
+     </widget>
+     <widget class="QLabel" name="Name_label">
+      <property name="enabled">
+       <bool>true</bool>
+      </property>
+      <property name="geometry">
+       <rect>
+        <x>480</x>
+        <y>50</y>
+        <width>111</width>
+        <height>31</height>
+       </rect>
+      </property>
+      <property name="font">
+       <font>
+        <family>Quicksand</family>
+        <pointsize>17</pointsize>
+        <weight>75</weight>
+        <bold>true</bold>
+        <underline>false</underline>
+       </font>
+      </property>
+      <property name="text">
+       <string/>
+      </property>
+     </widget>
+     <widget class="QLabel" name="Home_scan_label">
+      <property name="enabled">
+       <bool>true</bool>
+      </property>
+      <property name="geometry">
+       <rect>
+        <x>50</x>
+        <y>130</y>
+        <width>201</width>
+        <height>31</height>
+       </rect>
+      </property>
+      <property name="font">
+       <font>
+        <family>Quicksand</family>
+        <pointsize>17</pointsize>
+        <weight>75</weight>
+        <bold>true</bold>
+        <underline>false</underline>
+       </font>
+      </property>
+      <property name="text">
+       <string>Most recent scan:</string>
+      </property>
+     </widget>
+     <widget class="QPushButton" name="mesNow_button">
+      <property name="geometry">
+       <rect>
+        <x>340</x>
+        <y>570</y>
+        <width>201</width>
+        <height>51</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>Measure Now</string>
+      </property>
+     </widget>
+     <widget class="QPushButton" name="details_button">
+      <property name="enabled">
+       <bool>false</bool>
+      </property>
+      <property name="geometry">
+       <rect>
+        <x>340</x>
+        <y>510</y>
+        <width>201</width>
+        <height>51</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>Details of most recent scan</string>
+      </property>
+     </widget>
+     <widget class="Line" name="line_2">
+      <property name="geometry">
+       <rect>
+        <x>480</x>
+        <y>80</y>
+        <width>118</width>
+        <height>3</height>
+       </rect>
+      </property>
+      <property name="orientation">
+       <enum>Qt::Horizontal</enum>
       </property>
      </widget>
     </widget>
@@ -57,8 +188,8 @@
       <property name="geometry">
        <rect>
         <x>20</x>
-        <y>220</y>
-        <width>581</width>
+        <y>370</y>
+        <width>891</width>
         <height>251</height>
        </rect>
       </property>
@@ -66,14 +197,607 @@
      <widget class="QPushButton" name="button_startMeasure">
       <property name="geometry">
        <rect>
-        <x>260</x>
-        <y>190</y>
-        <width>131</width>
-        <height>25</height>
+        <x>20</x>
+        <y>264</y>
+        <width>171</width>
+        <height>31</height>
        </rect>
+      </property>
+      <property name="font">
+       <font>
+        <family>Quicksand</family>
+        <pointsize>16</pointsize>
+        <weight>75</weight>
+        <bold>true</bold>
+       </font>
+      </property>
+      <property name="autoFillBackground">
+       <bool>false</bool>
       </property>
       <property name="text">
        <string>Measure Now</string>
+      </property>
+     </widget>
+     <widget class="QLabel" name="label_4">
+      <property name="geometry">
+       <rect>
+        <x>20</x>
+        <y>310</y>
+        <width>221</width>
+        <height>21</height>
+       </rect>
+      </property>
+      <property name="font">
+       <font>
+        <family>Quicksand Medium</family>
+        <pointsize>15</pointsize>
+        <weight>75</weight>
+        <bold>true</bold>
+       </font>
+      </property>
+      <property name="text">
+       <string>Point Being Measured:</string>
+      </property>
+     </widget>
+     <widget class="QTextEdit" name="currentPointText">
+      <property name="geometry">
+       <rect>
+        <x>240</x>
+        <y>300</y>
+        <width>51</width>
+        <height>41</height>
+       </rect>
+      </property>
+      <property name="font">
+       <font>
+        <family>Quicksand Medium</family>
+        <pointsize>15</pointsize>
+        <weight>75</weight>
+        <italic>true</italic>
+        <bold>true</bold>
+       </font>
+      </property>
+     </widget>
+     <widget class="QStackedWidget" name="imageWidget">
+      <property name="enabled">
+       <bool>true</bool>
+      </property>
+      <property name="geometry">
+       <rect>
+        <x>430</x>
+        <y>30</y>
+        <width>291</width>
+        <height>321</height>
+       </rect>
+      </property>
+      <property name="currentIndex">
+       <number>0</number>
+      </property>
+      <widget class="QWidget" name="page">
+       <widget class="QLabel" name="pic1">
+        <property name="geometry">
+         <rect>
+          <x>10</x>
+          <y>20</y>
+          <width>241</width>
+          <height>291</height>
+         </rect>
+        </property>
+        <property name="text">
+         <string/>
+        </property>
+        <property name="pixmap">
+         <pixmap resource="imageResources.qrc">:/photos/resources/compressedImages/Capture1-min.jpg</pixmap>
+        </property>
+        <property name="scaledContents">
+         <bool>true</bool>
+        </property>
+       </widget>
+      </widget>
+      <widget class="QWidget" name="page_2">
+       <widget class="QLabel" name="pic2">
+        <property name="geometry">
+         <rect>
+          <x>10</x>
+          <y>20</y>
+          <width>251</width>
+          <height>291</height>
+         </rect>
+        </property>
+        <property name="text">
+         <string/>
+        </property>
+        <property name="pixmap">
+         <pixmap resource="imageResources.qrc">:/photos/resources/compressedImages/Capture2-min.jpg</pixmap>
+        </property>
+        <property name="scaledContents">
+         <bool>true</bool>
+        </property>
+       </widget>
+      </widget>
+      <widget class="QWidget" name="page_3">
+       <widget class="QLabel" name="pic3">
+        <property name="geometry">
+         <rect>
+          <x>20</x>
+          <y>20</y>
+          <width>251</width>
+          <height>291</height>
+         </rect>
+        </property>
+        <property name="text">
+         <string/>
+        </property>
+        <property name="pixmap">
+         <pixmap resource="imageResources.qrc">:/photos/resources/compressedImages/Capture3-min.jpg</pixmap>
+        </property>
+        <property name="scaledContents">
+         <bool>true</bool>
+        </property>
+       </widget>
+      </widget>
+      <widget class="QWidget" name="page_4">
+       <widget class="QLabel" name="pic4">
+        <property name="geometry">
+         <rect>
+          <x>10</x>
+          <y>30</y>
+          <width>251</width>
+          <height>271</height>
+         </rect>
+        </property>
+        <property name="text">
+         <string/>
+        </property>
+        <property name="pixmap">
+         <pixmap resource="imageResources.qrc">:/photos/resources/compressedImages/Capture4-min.jpg</pixmap>
+        </property>
+        <property name="scaledContents">
+         <bool>true</bool>
+        </property>
+       </widget>
+      </widget>
+      <widget class="QWidget" name="page_5">
+       <widget class="QLabel" name="pic5">
+        <property name="geometry">
+         <rect>
+          <x>10</x>
+          <y>30</y>
+          <width>261</width>
+          <height>271</height>
+         </rect>
+        </property>
+        <property name="text">
+         <string/>
+        </property>
+        <property name="pixmap">
+         <pixmap resource="imageResources.qrc">:/photos/resources/compressedImages/Capture5-min.jpg</pixmap>
+        </property>
+        <property name="scaledContents">
+         <bool>true</bool>
+        </property>
+       </widget>
+      </widget>
+      <widget class="QWidget" name="page_6">
+       <widget class="QLabel" name="pic6">
+        <property name="geometry">
+         <rect>
+          <x>10</x>
+          <y>30</y>
+          <width>261</width>
+          <height>271</height>
+         </rect>
+        </property>
+        <property name="text">
+         <string/>
+        </property>
+        <property name="pixmap">
+         <pixmap resource="imageResources.qrc">:/photos/resources/compressedImages/Capture6-min.jpg</pixmap>
+        </property>
+        <property name="scaledContents">
+         <bool>true</bool>
+        </property>
+       </widget>
+      </widget>
+      <widget class="QWidget" name="page_7">
+       <widget class="QLabel" name="pic7">
+        <property name="geometry">
+         <rect>
+          <x>20</x>
+          <y>40</y>
+          <width>251</width>
+          <height>251</height>
+         </rect>
+        </property>
+        <property name="text">
+         <string/>
+        </property>
+        <property name="pixmap">
+         <pixmap resource="imageResources.qrc">:/photos/resources/compressedImages/Capture7-min.jpg</pixmap>
+        </property>
+        <property name="scaledContents">
+         <bool>true</bool>
+        </property>
+       </widget>
+      </widget>
+      <widget class="QWidget" name="page_8">
+       <widget class="QLabel" name="pic8">
+        <property name="geometry">
+         <rect>
+          <x>50</x>
+          <y>20</y>
+          <width>201</width>
+          <height>291</height>
+         </rect>
+        </property>
+        <property name="text">
+         <string/>
+        </property>
+        <property name="pixmap">
+         <pixmap resource="imageResources.qrc">:/photos/resources/compressedImages/Capture8-min.jpg</pixmap>
+        </property>
+        <property name="scaledContents">
+         <bool>true</bool>
+        </property>
+       </widget>
+      </widget>
+      <widget class="QWidget" name="page_9">
+       <widget class="QLabel" name="pic9">
+        <property name="geometry">
+         <rect>
+          <x>10</x>
+          <y>40</y>
+          <width>251</width>
+          <height>241</height>
+         </rect>
+        </property>
+        <property name="text">
+         <string/>
+        </property>
+        <property name="pixmap">
+         <pixmap resource="imageResources.qrc">:/photos/resources/compressedImages/Capture9-min.jpg</pixmap>
+        </property>
+        <property name="scaledContents">
+         <bool>true</bool>
+        </property>
+       </widget>
+      </widget>
+      <widget class="QWidget" name="page_10">
+       <widget class="QLabel" name="pic10">
+        <property name="geometry">
+         <rect>
+          <x>10</x>
+          <y>40</y>
+          <width>251</width>
+          <height>241</height>
+         </rect>
+        </property>
+        <property name="text">
+         <string/>
+        </property>
+        <property name="pixmap">
+         <pixmap resource="imageResources.qrc">:/photos/resources/compressedImages/Capture10-min.jpg</pixmap>
+        </property>
+        <property name="scaledContents">
+         <bool>true</bool>
+        </property>
+       </widget>
+      </widget>
+      <widget class="QWidget" name="page_11">
+       <widget class="QLabel" name="pic11">
+        <property name="geometry">
+         <rect>
+          <x>10</x>
+          <y>40</y>
+          <width>251</width>
+          <height>241</height>
+         </rect>
+        </property>
+        <property name="text">
+         <string/>
+        </property>
+        <property name="pixmap">
+         <pixmap resource="imageResources.qrc">:/photos/resources/compressedImages/Capture11-min.jpg</pixmap>
+        </property>
+        <property name="scaledContents">
+         <bool>true</bool>
+        </property>
+       </widget>
+      </widget>
+      <widget class="QWidget" name="page_12">
+       <widget class="QLabel" name="pic12">
+        <property name="geometry">
+         <rect>
+          <x>40</x>
+          <y>20</y>
+          <width>201</width>
+          <height>271</height>
+         </rect>
+        </property>
+        <property name="text">
+         <string/>
+        </property>
+        <property name="pixmap">
+         <pixmap resource="imageResources.qrc">:/photos/resources/compressedImages/Capture12-min.jpg</pixmap>
+        </property>
+        <property name="scaledContents">
+         <bool>true</bool>
+        </property>
+       </widget>
+      </widget>
+      <widget class="QWidget" name="page_13">
+       <widget class="QLabel" name="pic13">
+        <property name="geometry">
+         <rect>
+          <x>20</x>
+          <y>20</y>
+          <width>221</width>
+          <height>261</height>
+         </rect>
+        </property>
+        <property name="text">
+         <string/>
+        </property>
+        <property name="pixmap">
+         <pixmap resource="imageResources.qrc">:/photos/resources/compressedImages/Capture13-min.jpg</pixmap>
+        </property>
+        <property name="scaledContents">
+         <bool>true</bool>
+        </property>
+       </widget>
+      </widget>
+      <widget class="QWidget" name="page_14">
+       <widget class="QLabel" name="pic14">
+        <property name="geometry">
+         <rect>
+          <x>10</x>
+          <y>20</y>
+          <width>231</width>
+          <height>261</height>
+         </rect>
+        </property>
+        <property name="text">
+         <string/>
+        </property>
+        <property name="pixmap">
+         <pixmap resource="imageResources.qrc">:/photos/resources/compressedImages/Capture14-min.jpg</pixmap>
+        </property>
+        <property name="scaledContents">
+         <bool>true</bool>
+        </property>
+       </widget>
+      </widget>
+      <widget class="QWidget" name="page_15">
+       <widget class="QLabel" name="pic15">
+        <property name="geometry">
+         <rect>
+          <x>-10</x>
+          <y>20</y>
+          <width>251</width>
+          <height>271</height>
+         </rect>
+        </property>
+        <property name="text">
+         <string/>
+        </property>
+        <property name="pixmap">
+         <pixmap resource="imageResources.qrc">:/photos/resources/compressedImages/Capture15-min.jpg</pixmap>
+        </property>
+        <property name="scaledContents">
+         <bool>true</bool>
+        </property>
+       </widget>
+      </widget>
+      <widget class="QWidget" name="page_16">
+       <widget class="QLabel" name="pic16">
+        <property name="geometry">
+         <rect>
+          <x>10</x>
+          <y>30</y>
+          <width>241</width>
+          <height>261</height>
+         </rect>
+        </property>
+        <property name="text">
+         <string/>
+        </property>
+        <property name="pixmap">
+         <pixmap resource="imageResources.qrc">:/photos/resources/compressedImages/Capture16-min.jpg</pixmap>
+        </property>
+        <property name="scaledContents">
+         <bool>true</bool>
+        </property>
+       </widget>
+      </widget>
+      <widget class="QWidget" name="page_17">
+       <widget class="QLabel" name="pic17">
+        <property name="geometry">
+         <rect>
+          <x>0</x>
+          <y>30</y>
+          <width>251</width>
+          <height>261</height>
+         </rect>
+        </property>
+        <property name="text">
+         <string/>
+        </property>
+        <property name="pixmap">
+         <pixmap resource="imageResources.qrc">:/photos/resources/compressedImages/Capture17-min.jpg</pixmap>
+        </property>
+        <property name="scaledContents">
+         <bool>true</bool>
+        </property>
+       </widget>
+      </widget>
+      <widget class="QWidget" name="page_18">
+       <widget class="QLabel" name="pic18">
+        <property name="geometry">
+         <rect>
+          <x>0</x>
+          <y>30</y>
+          <width>251</width>
+          <height>261</height>
+         </rect>
+        </property>
+        <property name="text">
+         <string/>
+        </property>
+        <property name="pixmap">
+         <pixmap resource="imageResources.qrc">:/photos/resources/compressedImages/Capture18-min.jpg</pixmap>
+        </property>
+        <property name="scaledContents">
+         <bool>true</bool>
+        </property>
+       </widget>
+      </widget>
+      <widget class="QWidget" name="page_19">
+       <widget class="QLabel" name="pic19">
+        <property name="geometry">
+         <rect>
+          <x>0</x>
+          <y>50</y>
+          <width>271</width>
+          <height>241</height>
+         </rect>
+        </property>
+        <property name="text">
+         <string/>
+        </property>
+        <property name="pixmap">
+         <pixmap resource="imageResources.qrc">:/photos/resources/compressedImages/Capture19-min.jpg</pixmap>
+        </property>
+        <property name="scaledContents">
+         <bool>true</bool>
+        </property>
+       </widget>
+      </widget>
+      <widget class="QWidget" name="page_20">
+       <widget class="QLabel" name="pic20">
+        <property name="geometry">
+         <rect>
+          <x>50</x>
+          <y>30</y>
+          <width>191</width>
+          <height>271</height>
+         </rect>
+        </property>
+        <property name="text">
+         <string/>
+        </property>
+        <property name="pixmap">
+         <pixmap resource="imageResources.qrc">:/photos/resources/compressedImages/Capture20-min.jpg</pixmap>
+        </property>
+        <property name="scaledContents">
+         <bool>true</bool>
+        </property>
+       </widget>
+      </widget>
+      <widget class="QWidget" name="page_21">
+       <widget class="QLabel" name="pic21">
+        <property name="geometry">
+         <rect>
+          <x>0</x>
+          <y>60</y>
+          <width>261</width>
+          <height>231</height>
+         </rect>
+        </property>
+        <property name="text">
+         <string/>
+        </property>
+        <property name="pixmap">
+         <pixmap resource="imageResources.qrc">:/photos/resources/compressedImages/Capture21-min.jpg</pixmap>
+        </property>
+        <property name="scaledContents">
+         <bool>true</bool>
+        </property>
+       </widget>
+      </widget>
+      <widget class="QWidget" name="page_22">
+       <widget class="QLabel" name="pic22">
+        <property name="geometry">
+         <rect>
+          <x>1</x>
+          <y>60</y>
+          <width>271</width>
+          <height>231</height>
+         </rect>
+        </property>
+        <property name="text">
+         <string/>
+        </property>
+        <property name="pixmap">
+         <pixmap resource="imageResources.qrc">:/photos/resources/compressedImages/Capture22-min.jpg</pixmap>
+        </property>
+        <property name="scaledContents">
+         <bool>true</bool>
+        </property>
+       </widget>
+      </widget>
+      <widget class="QWidget" name="page_23">
+       <widget class="QLabel" name="pic23">
+        <property name="geometry">
+         <rect>
+          <x>0</x>
+          <y>60</y>
+          <width>271</width>
+          <height>231</height>
+         </rect>
+        </property>
+        <property name="text">
+         <string/>
+        </property>
+        <property name="pixmap">
+         <pixmap resource="imageResources.qrc">:/photos/resources/compressedImages/Capture23-min.jpg</pixmap>
+        </property>
+        <property name="scaledContents">
+         <bool>true</bool>
+        </property>
+       </widget>
+      </widget>
+      <widget class="QWidget" name="page_24">
+       <widget class="QLabel" name="pic24">
+        <property name="geometry">
+         <rect>
+          <x>40</x>
+          <y>40</y>
+          <width>201</width>
+          <height>261</height>
+         </rect>
+        </property>
+        <property name="text">
+         <string/>
+        </property>
+        <property name="pixmap">
+         <pixmap resource="imageResources.qrc">:/photos/resources/compressedImages/Capture24-min.jpg</pixmap>
+        </property>
+        <property name="scaledContents">
+         <bool>true</bool>
+        </property>
+       </widget>
+      </widget>
+     </widget>
+     <widget class="QLabel" name="scan_label">
+      <property name="geometry">
+       <rect>
+        <x>420</x>
+        <y>0</y>
+        <width>81</width>
+        <height>31</height>
+       </rect>
+      </property>
+      <property name="font">
+       <font>
+        <family>Quicksand</family>
+        <pointsize>17</pointsize>
+        <weight>75</weight>
+        <bold>true</bold>
+        <underline>false</underline>
+       </font>
+      </property>
+      <property name="text">
+       <string>SCAN</string>
       </property>
      </widget>
     </widget>
@@ -81,10 +805,10 @@
      <widget class="QPushButton" name="button_update">
       <property name="geometry">
        <rect>
-        <x>580</x>
-        <y>370</y>
+        <x>760</x>
+        <y>480</y>
         <width>161</width>
-        <height>25</height>
+        <height>41</height>
        </rect>
       </property>
       <property name="text">
@@ -94,10 +818,10 @@
      <widget class="QComboBox" name="userSelect">
       <property name="geometry">
        <rect>
-        <x>330</x>
+        <x>370</x>
         <y>70</y>
-        <width>211</width>
-        <height>25</height>
+        <width>271</width>
+        <height>41</height>
        </rect>
       </property>
      </widget>
@@ -105,19 +829,25 @@
       <property name="geometry">
        <rect>
         <x>10</x>
-        <y>410</y>
-        <width>301</width>
-        <height>31</height>
+        <y>490</y>
+        <width>351</width>
+        <height>41</height>
        </rect>
+      </property>
+      <property name="font">
+       <font>
+        <family>DejaVu Sans</family>
+        <pointsize>12</pointsize>
+       </font>
       </property>
      </widget>
      <widget class="QWidget" name="formLayoutWidget">
       <property name="geometry">
        <rect>
-        <x>320</x>
-        <y>170</y>
-        <width>254</width>
-        <height>230</height>
+        <x>380</x>
+        <y>230</y>
+        <width>371</width>
+        <height>301</height>
        </rect>
       </property>
       <layout class="QFormLayout" name="formLayout">
@@ -129,7 +859,14 @@
         </widget>
        </item>
        <item row="0" column="1">
-        <widget class="QPlainTextEdit" name="text_name"/>
+        <widget class="QPlainTextEdit" name="text_name">
+         <property name="font">
+          <font>
+           <family>DejaVu Sans</family>
+           <pointsize>13</pointsize>
+          </font>
+         </property>
+        </widget>
        </item>
        <item row="1" column="0">
         <widget class="QLabel" name="label_weight">
@@ -139,7 +876,14 @@
         </widget>
        </item>
        <item row="1" column="1">
-        <widget class="QPlainTextEdit" name="text_weight"/>
+        <widget class="QPlainTextEdit" name="text_weight">
+         <property name="font">
+          <font>
+           <family>DejaVu Sans</family>
+           <pointsize>13</pointsize>
+          </font>
+         </property>
+        </widget>
        </item>
        <item row="2" column="0">
         <widget class="QLabel" name="label_height">
@@ -149,17 +893,24 @@
         </widget>
        </item>
        <item row="2" column="1">
-        <widget class="QPlainTextEdit" name="text_height"/>
+        <widget class="QPlainTextEdit" name="text_height">
+         <property name="font">
+          <font>
+           <family>DejaVu Sans</family>
+           <pointsize>13</pointsize>
+          </font>
+         </property>
+        </widget>
        </item>
       </layout>
      </widget>
      <widget class="QPushButton" name="button_add">
       <property name="geometry">
        <rect>
-        <x>560</x>
+        <x>650</x>
         <y>70</y>
-        <width>131</width>
-        <height>25</height>
+        <width>161</width>
+        <height>61</height>
        </rect>
       </property>
       <property name="text">
@@ -171,18 +922,21 @@
        <rect>
         <x>20</x>
         <y>20</y>
-        <width>111</width>
+        <width>131</width>
         <height>17</height>
        </rect>
       </property>
       <property name="font">
        <font>
-        <family>DejaVu Sans</family>
-        <pointsize>13</pointsize>
+        <family>Quicksand</family>
+        <pointsize>17</pointsize>
+        <weight>75</weight>
+        <bold>true</bold>
+        <underline>false</underline>
        </font>
       </property>
       <property name="text">
-       <string>Profile List</string>
+       <string>PROFILES</string>
       </property>
      </widget>
      <widget class="QListView" name="profileList">
@@ -190,18 +944,24 @@
        <rect>
         <x>10</x>
         <y>50</y>
-        <width>301</width>
-        <height>351</height>
+        <width>351</width>
+        <height>431</height>
        </rect>
+      </property>
+      <property name="font">
+       <font>
+        <family>DejaVu Sans</family>
+        <pointsize>16</pointsize>
+       </font>
       </property>
      </widget>
      <widget class="QPushButton" name="button_delete">
       <property name="geometry">
        <rect>
-        <x>560</x>
-        <y>110</y>
-        <width>131</width>
-        <height>25</height>
+        <x>650</x>
+        <y>140</y>
+        <width>161</width>
+        <height>71</height>
        </rect>
       </property>
       <property name="text">
@@ -211,16 +971,18 @@
      <widget class="QLabel" name="label_3">
       <property name="geometry">
        <rect>
-        <x>330</x>
+        <x>370</x>
         <y>40</y>
-        <width>111</width>
-        <height>17</height>
+        <width>171</width>
+        <height>31</height>
        </rect>
       </property>
       <property name="font">
        <font>
-        <family>DejaVu Sans</family>
-        <pointsize>13</pointsize>
+        <family>Quicksand</family>
+        <pointsize>15</pointsize>
+        <weight>75</weight>
+        <bold>true</bold>
        </font>
       </property>
       <property name="text">
@@ -232,97 +994,113 @@
      <widget class="QLabel" name="History_label">
       <property name="geometry">
        <rect>
-        <x>260</x>
-        <y>10</y>
-        <width>111</width>
+        <x>420</x>
+        <y>0</y>
+        <width>101</width>
         <height>31</height>
        </rect>
       </property>
       <property name="font">
        <font>
+        <family>Quicksand</family>
         <pointsize>17</pointsize>
         <weight>75</weight>
         <bold>true</bold>
-        <underline>true</underline>
+        <underline>false</underline>
        </font>
       </property>
       <property name="text">
-       <string>History</string>
-      </property>
-     </widget>
-     <widget class="QComboBox" name="User_History_List">
-      <property name="geometry">
-       <rect>
-        <x>30</x>
-        <y>90</y>
-        <width>131</width>
-        <height>21</height>
-       </rect>
-      </property>
-     </widget>
-     <widget class="QPushButton" name="Select_History">
-      <property name="geometry">
-       <rect>
-        <x>180</x>
-        <y>90</y>
-        <width>83</width>
-        <height>21</height>
-       </rect>
-      </property>
-      <property name="text">
-       <string>Select</string>
+       <string>HISTORY</string>
       </property>
      </widget>
      <widget class="QLabel" name="Profile_label">
       <property name="geometry">
        <rect>
-        <x>30</x>
-        <y>70</y>
-        <width>62</width>
+        <x>10</x>
+        <y>80</y>
+        <width>101</width>
         <height>17</height>
        </rect>
       </property>
       <property name="text">
-       <string>Profile:</string>
-      </property>
-     </widget>
-     <widget class="QListView" name="User_History">
-      <property name="geometry">
-       <rect>
-        <x>30</x>
-        <y>150</y>
-        <width>211</width>
-        <height>301</height>
-       </rect>
+       <string>Profile History:</string>
       </property>
      </widget>
      <widget class="Line" name="line">
       <property name="geometry">
        <rect>
         <x>263</x>
-        <y>80</y>
+        <y>110</y>
         <width>20</width>
-        <height>371</height>
+        <height>551</height>
        </rect>
       </property>
       <property name="orientation">
        <enum>Qt::Vertical</enum>
       </property>
      </widget>
+     <widget class="QChartView" name="barGraph">
+      <property name="geometry">
+       <rect>
+        <x>280</x>
+        <y>110</y>
+        <width>451</width>
+        <height>231</height>
+       </rect>
+      </property>
+     </widget>
+     <widget class="QListView" name="organList">
+      <property name="geometry">
+       <rect>
+        <x>740</x>
+        <y>110</y>
+        <width>181</width>
+        <height>231</height>
+       </rect>
+      </property>
+     </widget>
+     <widget class="QListWidget" name="User_History">
+      <property name="geometry">
+       <rect>
+        <x>10</x>
+        <y>110</y>
+        <width>256</width>
+        <height>231</height>
+       </rect>
+      </property>
+     </widget>
+     <widget class="QLabel" name="scan_title_label">
+      <property name="geometry">
+       <rect>
+        <x>300</x>
+        <y>80</y>
+        <width>331</width>
+        <height>17</height>
+       </rect>
+      </property>
+      <property name="font">
+       <font>
+        <family>Quicksand</family>
+        <pointsize>12</pointsize>
+        <weight>75</weight>
+        <bold>true</bold>
+       </font>
+      </property>
+      <property name="text">
+       <string/>
+      </property>
+     </widget>
+     <widget class="QChartView" name="polarGraph">
+      <property name="geometry">
+       <rect>
+        <x>280</x>
+        <y>350</y>
+        <width>451</width>
+        <height>311</height>
+       </rect>
+      </property>
+     </widget>
     </widget>
-   </widget>
-   <widget class="QLabel" name="label_batteryValue">
-    <property name="geometry">
-     <rect>
-      <x>840</x>
-      <y>30</y>
-      <width>62</width>
-      <height>17</height>
-     </rect>
-    </property>
-    <property name="text">
-     <string>TextLabel</string>
-    </property>
    </widget>
    <widget class="QWidget" name="verticalLayoutWidget">
     <property name="geometry">
@@ -336,6 +1114,15 @@
     <layout class="QVBoxLayout" name="verticalLayout">
      <item>
       <widget class="QPushButton" name="button_measure">
+       <property name="font">
+        <font>
+         <family>Quicksand</family>
+         <pointsize>14</pointsize>
+         <weight>75</weight>
+         <italic>true</italic>
+         <bold>true</bold>
+        </font>
+       </property>
        <property name="text">
         <string>Measure</string>
        </property>
@@ -343,6 +1130,15 @@
      </item>
      <item>
       <widget class="QPushButton" name="button_home">
+       <property name="font">
+        <font>
+         <family>Quicksand</family>
+         <pointsize>14</pointsize>
+         <weight>75</weight>
+         <italic>true</italic>
+         <bold>true</bold>
+        </font>
+       </property>
        <property name="text">
         <string>Home</string>
        </property>
@@ -350,6 +1146,15 @@
      </item>
      <item>
       <widget class="QPushButton" name="button_profiles">
+       <property name="font">
+        <font>
+         <family>Quicksand</family>
+         <pointsize>14</pointsize>
+         <weight>75</weight>
+         <italic>true</italic>
+         <bold>true</bold>
+        </font>
+       </property>
        <property name="text">
         <string>Profiles</string>
        </property>
@@ -357,6 +1162,15 @@
      </item>
      <item>
       <widget class="QPushButton" name="button_history">
+       <property name="font">
+        <font>
+         <family>Quicksand</family>
+         <pointsize>14</pointsize>
+         <weight>75</weight>
+         <italic>true</italic>
+         <bold>true</bold>
+        </font>
+       </property>
        <property name="text">
         <string>History</string>
        </property>
@@ -367,11 +1181,17 @@
    <widget class="QLabel" name="activeUser">
     <property name="geometry">
      <rect>
-      <x>450</x>
-      <y>30</y>
-      <width>161</width>
-      <height>17</height>
+      <x>200</x>
+      <y>20</y>
+      <width>231</width>
+      <height>20</height>
      </rect>
+    </property>
+    <property name="font">
+     <font>
+      <pointsize>15</pointsize>
+      <italic>true</italic>
+     </font>
     </property>
     <property name="text">
      <string>NO PROFILE SELECTED</string>
@@ -380,8 +1200,8 @@
    <widget class="QFrame" name="frame_device">
     <property name="geometry">
      <rect>
-      <x>960</x>
-      <y>60</y>
+      <x>1210</x>
+      <y>50</y>
       <width>251</width>
       <height>111</height>
      </rect>
@@ -458,7 +1278,7 @@ QProgressBar {
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>1252</width>
+     <width>1475</width>
      <height>22</height>
     </rect>
    </property>
@@ -478,6 +1298,8 @@ QProgressBar {
    <header>QtCharts</header>
   </customwidget>
  </customwidgets>
- <resources/>
+ <resources>
+  <include location="imageResources.qrc"/>
+ </resources>
  <connections/>
 </ui>

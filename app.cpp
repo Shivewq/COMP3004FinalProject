@@ -30,6 +30,9 @@ void App::MeasureFunctionTemplate(){
             return;
         }
         int data = measurement.at(*counter);
+        emit bodyPointNumber(counter);
+        emit bodyImageNum(counter);
+
         QVector<int>* graph_Yvalues = new QVector<int>(calculateReadingGraph(data));
         QTimer* graph = new QTimer(); //will declare with "this" later as a parameter to set the parent object
         graph->setSingleShot(true);

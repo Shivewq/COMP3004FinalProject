@@ -9,6 +9,8 @@ MainWindow::MainWindow(QWidget *parent)
     ui->setupUi(this);
     ui->stackedWidget->setCurrentIndex(0); // Set to homepage
     connect(ui->button_profiles, &QPushButton::clicked, this, &MainWindow::on_button_profiles_clicked);
+    connect(ui->User_History, &QListWidget::itemClicked, this, &MainWindow::onScanSelected);
+
 
     //setup device
     device = new Device();
@@ -20,13 +22,17 @@ MainWindow::MainWindow(QWidget *parent)
     app = new App(device);
     app->activeUser = new User();
 
-
+    populateOrganList();
     userModel = new QStringListModel(this);
     ui->profileList->setModel(userModel);
     connect(ui->button_add, &QPushButton::clicked, this, &MainWindow::on_Add_User_clicked);
     connect(ui->button_delete, &QPushButton::clicked, this, &MainWindow::on_Delete_User_clicked);
     connect(ui->button_update, &QPushButton::clicked, this, &MainWindow::on_Update_User_clicked);
+    connect(ui->mesNow_button, &QPushButton::clicked, this, &MainWindow::on_button_measure_clicked);
+    connect(ui->details_button, &QPushButton::clicked, this, &MainWindow::on_details_clicked);
     connect(ui->userSelect, &QComboBox::currentTextChanged, this, &MainWindow::update_Active_User);
+    connect(app, &App::bodyPointNumber, this, &MainWindow::changeMeasurePointUI);
+    connect(app, &App::bodyImageNum, this, &MainWindow::changeBodyImageUI);
 
     // Create a chart and add the series
     series = new QLineSeries(this);
@@ -52,6 +58,290 @@ MainWindow::MainWindow(QWidget *parent)
     connect(app, &App::plotPoint, this, &MainWindow::updateChart);
     connect(app,&App::clearMeteringGraph,this,&MainWindow::clearChart);
 
+    onStart();
+
+}
+
+void MainWindow::onStart(){
+    //Get History ready and make sure it cant be access until there is a user
+    ui->button_history->setEnabled(false);
+}
+
+
+void MainWindow::initializeHomeGraph(Scan* selectedScan)
+{
+   // Prepare the bar sets for "Right" and "Left"
+   QtCharts::QBarSet *leftSet = new QtCharts::QBarSet("Left");
+   QtCharts::QBarSet *rightSet = new QtCharts::QBarSet("Right");
+
+   // Assign colors
+   leftSet->setColor(Qt::blue);
+   rightSet->setColor(Qt::green);
+
+   // Get processed data
+   QVector<int> processedData = selectedScan->getProccesedPoints();
+   if (processedData.isEmpty() || processedData.size() < 24) {
+       qWarning() << "Invalid or insufficient processed scan data.";
+       return;
+   }
+
+   // Add values to bar sets
+   for (int i = 0; i < 12; ++i) {
+       *leftSet << processedData[i];          // Left side of organ
+       *rightSet << processedData[i + 12];   // Corresponding right side of organ
+   }
+
+   // Create the bar series and add the sets
+   historyBar = new QtCharts::QBarSeries();
+   historyBar->append(leftSet);
+   historyBar->append(rightSet);
+
+   // Create the chart and add the series
+   QtCharts::QChart *chart = new QtCharts::QChart();
+   chart->addSeries(historyBar);
+   chart->setTitle("Organ Functionality Comparison");
+   chart->setAnimationOptions(QtCharts::QChart::SeriesAnimations);
+
+   // Define categories for the x-axis
+   QStringList categories = app->categories;
+   // Set up x-axis
+   QtCharts::QBarCategoryAxis *xAxis = new QtCharts::QBarCategoryAxis();
+   xAxis->append(categories);
+   chart->addAxis(xAxis, Qt::AlignBottom);
+   historyBar->attachAxis(xAxis);
+
+   // Set up y-axis
+   QtCharts::QValueAxis *yAxis = new QtCharts::QValueAxis();
+   yAxis->setRange(0, 200); // Assuming percentages range from 0 to 200%
+   yAxis->setTitleText("Functionality (%)");
+   chart->addAxis(yAxis, Qt::AlignLeft);
+   historyBar->attachAxis(yAxis);
+
+   // Add the chart to a QChartView in your UI
+   ui->home_graph->setChart(chart); // Assuming `historyGraph` is a QChartView in your UI
+   ui->home_graph->setRenderHint(QPainter::Antialiasing);
+
+
+}
+
+void MainWindow::on_details_clicked(){
+    ui->stackedWidget->setCurrentIndex(3);
+
+    if(!(app->getActiveUser()->getScanList().empty())){
+        ui->User_History->clear();
+        loadUserHistory();
+        initializeHistoryBar(app->getActiveUser()->getMostRecentScan());
+        ui->scan_title_label->setText(app->getActiveUser()->getMostRecentScan()->toString());
+    }
+
+}
+
+
+void MainWindow::initializeHistoryBar(Scan* selectedScan)
+{
+    // Prepare the bar sets for "Right" and "Left"
+    QtCharts::QBarSet *leftSet = new QtCharts::QBarSet("Left");
+    QtCharts::QBarSet *rightSet = new QtCharts::QBarSet("Right");
+
+    // Assign colors
+    leftSet->setColor(Qt::blue);
+    rightSet->setColor(Qt::green);
+
+    // Get processed data
+    QVector<int> processedData = selectedScan->getProccesedPoints();
+    if (processedData.isEmpty() || processedData.size() < 24) {
+        qWarning() << "Invalid or insufficient processed scan data.";
+        return;
+    }
+
+    // Add values to bar sets
+    for (int i = 0; i < 12; ++i) {
+        *leftSet << processedData[i];          // Left side of organ
+        *rightSet << processedData[i + 12];   // Corresponding right side of organ
+    }
+
+    // Create the bar series and add the sets
+    historyBar = new QtCharts::QBarSeries();
+    historyBar->append(leftSet);
+    historyBar->append(rightSet);
+
+    // Create the chart and add the series
+    QtCharts::QChart *chart = new QtCharts::QChart();
+    chart->addSeries(historyBar);
+    chart->setTitle("Organ Functionality Comparison");
+    chart->setAnimationOptions(QtCharts::QChart::SeriesAnimations);
+
+    // Define categories for the x-axis
+    QStringList categories = app->categories;
+    // Set up x-axis
+    QtCharts::QBarCategoryAxis *xAxis = new QtCharts::QBarCategoryAxis();
+    xAxis->append(categories);
+    chart->addAxis(xAxis, Qt::AlignBottom);
+    historyBar->attachAxis(xAxis);
+
+    // Set up y-axis
+    QtCharts::QValueAxis *yAxis = new QtCharts::QValueAxis();
+    yAxis->setRange(0, 200); // Assuming percentages range from 0 to 200%
+    yAxis->setTitleText("Functionality (%)");
+    chart->addAxis(yAxis, Qt::AlignLeft);
+    historyBar->attachAxis(yAxis);
+
+    // Add the chart to a QChartView in your UI
+    ui->barGraph->setChart(chart); // Assuming `historyGraph` is a QChartView in your UI
+    ui->barGraph->setRenderHint(QPainter::Antialiasing);
+}
+
+void MainWindow::initializePolarGraph(const QVector<int>& processedData)
+{
+    // Ensure processedData has the expected 24 points (12 left + 12 right)
+    if (processedData.size() != 24) {
+        qWarning() << "Processed data must have exactly 24 points.";
+        return;
+    }
+
+    // Split processedData into left and right sides
+    QVector<int> leftData, rightData;
+    for (int i = 0; i < 12; ++i) {
+        leftData << processedData[i];          // Left side of organ
+        rightData << processedData[i + 12];   // Corresponding right side of organ
+    }
+
+    // Create a polar chart
+    QPolarChart *polarChart = new QPolarChart();
+    polarChart->setTitle("Organ Functionality - Polar Chart");
+
+    // Create axes
+    QCategoryAxis *angleAxis = new QCategoryAxis();
+    QStringList pointNames = {"H1", "H2", "H3", "H4", "H5", "H6",
+                              "F1", "F2", "F3", "F4", "F5", "F6"};
+
+    for (int i = 0; i < pointNames.size(); ++i) {
+        angleAxis->append(pointNames[i], i * 30); // Map point names to angular positions
+    }
+    angleAxis->setRange(0, 360); // Full circular range
+    angleAxis->setLabelsPosition(QCategoryAxis::AxisLabelsPositionOnValue);
+    polarChart->addAxis(angleAxis, QPolarChart::PolarOrientationAngular);
+
+    QValueAxis *radiusAxis = new QValueAxis();
+    radiusAxis->setRange(0, 200); // Adjust as necessary
+    radiusAxis->setTickCount(5);
+    polarChart->addAxis(radiusAxis, QPolarChart::PolarOrientationRadial);
+
+    // Add indicator lines for functionality
+    QLineSeries *lowLine = new QLineSeries();
+    QLineSeries *normalLine = new QLineSeries();
+    QLineSeries *highLine = new QLineSeries();
+
+    for (int i = 0; i <= 360; i += 30) {
+        lowLine->append(i, 90);    // Low functionality threshold
+        normalLine->append(i, 100); // Normal functionality threshold
+        highLine->append(i, 108);  // High functionality threshold
+    }
+
+    polarChart->legend()->setAlignment(Qt::AlignLeft); // Position legend on the left
+    polarChart->legend()->setMarkerShape(QLegend::MarkerShapeRectangle);
+
+    lowLine->setName("Low (90%)");
+    normalLine->setName("Normal (100%)");
+    highLine->setName("High (108%)");
+
+    polarChart->addSeries(lowLine);
+    polarChart->addSeries(normalLine);
+    polarChart->addSeries(highLine);
+
+    lowLine->attachAxis(angleAxis);
+    lowLine->attachAxis(radiusAxis);
+
+    normalLine->attachAxis(angleAxis);
+    normalLine->attachAxis(radiusAxis);
+
+    highLine->attachAxis(angleAxis);
+    highLine->attachAxis(radiusAxis);
+
+    QPen lowPen(Qt::red);
+    lowPen.setStyle(Qt::DashLine);
+    lowLine->setPen(lowPen);
+
+    QPen normalPen(Qt::black);
+    normalPen.setStyle(Qt::DashLine);
+    normalLine->setPen(normalPen);
+
+    QPen highPen(Qt::green);
+    highPen.setStyle(Qt::DashLine);
+    highLine->setPen(highPen);
+
+    // Add the left side data
+    QLineSeries *leftSeries = new QLineSeries();
+    for (int i = 0; i < leftData.size(); ++i) {
+        leftSeries->append(i * 30, leftData[i]); // 30 degrees per data point
+    }
+
+    // Add the right side data
+    QLineSeries *rightSeries = new QLineSeries();
+    for (int i = 0; i < rightData.size(); ++i) {
+        rightSeries->append(i * 30, rightData[i]); // 30 degrees per data point
+    }
+
+    // Create area series for left and right sides
+    QAreaSeries *leftArea = new QAreaSeries(leftSeries);
+    leftArea->setName("Left Side");
+    QColor leftColor = Qt::blue;
+    leftColor.setAlpha(150);
+    leftArea->setBrush(QBrush(leftColor));
+
+    QAreaSeries *rightArea = new QAreaSeries(rightSeries);
+    rightArea->setName("Right Side");
+    QColor rightColor = Qt::red;
+    rightColor.setAlpha(100);
+    rightArea->setBrush(QBrush(rightColor));
+
+    polarChart->addSeries(leftArea);
+    polarChart->addSeries(rightArea);
+
+    leftSeries->attachAxis(angleAxis);
+    leftSeries->attachAxis(radiusAxis);
+
+    rightSeries->attachAxis(angleAxis);
+    rightSeries->attachAxis(radiusAxis);
+
+    leftArea->attachAxis(angleAxis);
+    leftArea->attachAxis(radiusAxis);
+
+    rightArea->attachAxis(angleAxis);
+    rightArea->attachAxis(radiusAxis);
+
+    // Set the polar chart to the QChartView
+    ui->polarGraph->setChart(polarChart);
+    ui->polarGraph->setRenderHint(QPainter::Antialiasing);
+}
+
+void MainWindow::populateOrganList()
+{
+    // Create a QStringList to hold the associations
+    QStringList organAssociations = {
+        "H1 - Lungs",
+        "H2 - Pericardium",
+        "H3 - Heart",
+        "H4 - Small Intestines",
+        "H5 - Immune System (Triple Heater)",
+        "H6 - Large Intestines",
+        "F1 - Spleen and Pancreas",
+        "F2 - Liver",
+        "F3 - Kidneys",
+        "F4 - Bladder",
+        "F5 - Gallbladder",
+        "F6 - Stomach",
+    };
+
+    // Create a QStringListModel
+    QStringListModel *model = new QStringListModel(this);
+    model->setStringList(organAssociations);
+
+    // Set the model to the QListView
+    ui->organList->setModel(model);
+
+    // Optional: Make the list view read-only
+    ui->organList->setEditTriggers(QAbstractItemView::NoEditTriggers);
 }
 
 MainWindow::~MainWindow()
@@ -63,8 +353,8 @@ void MainWindow::on_editBattery(int value){
     if(ui->battery->value() != 0){
         ui->battery->setValue(value);
     }
-    ui->label_batteryValue->setText(QString::number(value));
 }
+
 
 void MainWindow::showBatteryMsg()
 {
@@ -81,11 +371,18 @@ void MainWindow::showBatteryMsg()
 void MainWindow::on_button_home_clicked()
 {
     ui->stackedWidget->setCurrentIndex(0);
+    if(!(app->getActiveUser()->getScanList().empty())){
+           initializeHomeGraph(app->getActiveUser()->getMostRecentScan());
+    }
+
+
 }
 
 void MainWindow::on_button_history_clicked()
 {
     ui->stackedWidget->setCurrentIndex(3);
+    ui->User_History->clear();
+    loadUserHistory();
 }
 
 void MainWindow::on_button_measure_clicked()
@@ -96,13 +393,6 @@ void MainWindow::on_button_measure_clicked()
 void MainWindow::on_button_profiles_clicked()
 {
     ui->stackedWidget->setCurrentIndex(2);
-
-    /* Eric Test Code
-    app->measure();
-    app->calculateScan(0);
-    Scan* scan = app->activeUser->getScan(0);
-    app->calculateReadingGraph(scan->getPoints().at(1));
-    */
 }
 
 //Creates new user from input data
@@ -206,14 +496,28 @@ void MainWindow::on_Update_User_clicked(){
 
 }
 
+void MainWindow::changeMeasurePointUI(int const* point){
+    ui->currentPointText->setText(QString::number(*point+1));
+
+
+}
+
+void MainWindow::changeBodyImageUI(int const* point){
+
+    ui->imageWidget->setCurrentIndex(*point);
+}
+
 
 //updates active user
 void MainWindow::update_Active_User(const QString &text) {
     ui->activeUser->setText(text);
+    ui->Welcome_label->setText("Welcome");
+    ui->Name_label->setText(text);
 
     User* activeUser = app->getUserFromName(text);
     app->setActiveUser(activeUser);
-
+    ui->button_history->setEnabled(true);
+    ui->details_button->setEnabled(true);
 }
 
 
@@ -249,6 +553,37 @@ void MainWindow::clearChart(int max_y,int max_x)
     chart->update();
     pointCounter = 1; // Reset the x-axis counter
 
+}
+
+void MainWindow::loadUserHistory(){
+    User* u = app->getActiveUser();
+    if (!u){
+        qWarning() << "No active user found.";
+        return;
+    }
+
+    //Add scans to the  list model
+    for (int i = 0; i < u->getScanList().size(); ++i) {
+        Scan* scan = u->getScan(i);
+        if (scan) {
+            QListWidgetItem* item = new QListWidgetItem(scan->toString(), ui->User_History);
+            item->setData(Qt::UserRole, QVariant::fromValue(scan));
+        }
+    }
+}
+
+void MainWindow::onScanSelected(QListWidgetItem* item) {
+    if (!item) return;
+
+    //Get the scan that the user has selected
+    Scan* selectedScan = item->data(Qt::UserRole).value<Scan*>();
+
+    if (selectedScan) {
+        qDebug() << "Selected Scan:" << selectedScan;
+        initializeHistoryBar(selectedScan);
+        initializePolarGraph(selectedScan->getProccesedPoints());
+        ui->scan_title_label->setText(selectedScan->toString());
+    }
 }
 
 

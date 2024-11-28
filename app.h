@@ -32,7 +32,10 @@ public:
     void addUser(User*);
     void deleteUser(User*);
     User* getUserFromName(QString name);
-
+    QStringList categories = {
+        "H1", "H2", "H3", "H4", "H5", "H6", // Hand points
+        "F1", "F2", "F3", "F4", "F5", "F6"  // Foot points
+    };
 
 
 private:
@@ -46,6 +49,8 @@ signals:
     void plotPoint(int y);
     void clearMeteringGraph(int max_y,int max_x); //possibly pass in final value for the axis in case the graph doesn't dynamically change it in the case that the final value is very large.
     void deleteCurrentScan();
+    void bodyPointNumber(int *const); // For UI changes
+    void bodyImageNum(int *const); //Also for UI
 public slots:
     void stopMeasure();
 };
