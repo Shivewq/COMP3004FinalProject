@@ -11,6 +11,7 @@ App::App(Device* d):device(d)
 //function template for starting measuring, getting the reading,calculating the graph points
 //will need a slot in mainwindow to connect to app that updates the thing that displays which point we are measuring
 void App::MeasureFunctionTemplate(){
+    if(!device->isOn()) return;
     scanning = true;
     //pre-get all data points
     QVector<int> measurement;
@@ -30,6 +31,7 @@ void App::MeasureFunctionTemplate(){
             return;
         }
         int data = measurement.at(*counter);
+        emit skinContact(true);
         emit bodyPointNumber(counter);
         emit bodyImageNum(counter);
 
@@ -50,6 +52,7 @@ void App::MeasureFunctionTemplate(){
                 qInfo() << "counter" <<*counter;
                 *counter+= 1;
                 if(scanning) //this will only be false if a graceful shutdown has happened
+                    emit skinContact(false);
                     points->start(100);
             }
 
