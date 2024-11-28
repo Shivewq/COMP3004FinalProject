@@ -238,6 +238,13 @@ void MainWindow::initializePolarGraph(const QVector<int>& processedData)
         highLine->append(i, 108);  // High functionality threshold
     }
 
+    polarChart->legend()->setAlignment(Qt::AlignLeft); // Position legend on the left
+    polarChart->legend()->setMarkerShape(QLegend::MarkerShapeRectangle);
+
+    lowLine->setName("Low (90%)");
+    normalLine->setName("Normal (100%)");
+    highLine->setName("High (108%)");
+
     polarChart->addSeries(lowLine);
     polarChart->addSeries(normalLine);
     polarChart->addSeries(highLine);
@@ -284,7 +291,7 @@ void MainWindow::initializePolarGraph(const QVector<int>& processedData)
 
     QAreaSeries *rightArea = new QAreaSeries(rightSeries);
     rightArea->setName("Right Side");
-    QColor rightColor = Qt::green;
+    QColor rightColor = Qt::red;
     rightColor.setAlpha(100);
     rightArea->setBrush(QBrush(rightColor));
 
