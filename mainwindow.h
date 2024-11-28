@@ -64,6 +64,7 @@ private slots:
     //UI dynamic changing
     void changeMeasurePointUI(int const*);
     void changeBodyImageUI(int const*);
+    void changeSkinContact(bool);
 
 private:
     Ui::MainWindow *ui;

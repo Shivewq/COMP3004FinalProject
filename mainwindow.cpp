@@ -33,6 +33,7 @@ MainWindow::MainWindow(QWidget *parent)
     connect(ui->userSelect, &QComboBox::currentTextChanged, this, &MainWindow::update_Active_User);
     connect(app, &App::bodyPointNumber, this, &MainWindow::changeMeasurePointUI);
     connect(app, &App::bodyImageNum, this, &MainWindow::changeBodyImageUI);
+    connect(app, &App::skinContact, this, &MainWindow::changeSkinContact);
 
     // Create a chart and add the series
     series = new QLineSeries(this);
@@ -506,7 +507,14 @@ void MainWindow::changeBodyImageUI(int const* point){
 
     ui->imageWidget->setCurrentIndex(*point);
 }
-
+void MainWindow::changeSkinContact(bool isContact){
+    if(isContact){
+        ui->label_contact->setText(QString("true"));
+    }
+    else{
+        ui->label_contact->setText(QString("false"));
+    }
+}
 
 //updates active user
 void MainWindow::update_Active_User(const QString &text) {
@@ -579,10 +587,41 @@ void MainWindow::onScanSelected(QListWidgetItem* item) {
     Scan* selectedScan = item->data(Qt::UserRole).value<Scan*>();
 
     if (selectedScan) {
+        QStringList organs= {
+            "Lungs",
+            "Pericardium",
+            "Heart",
+            "Small Intestines",
+            "Immune System (Triple Heater)",
+            "Large Intestines",
+            "Spleen and Pancreas",
+            "Liver",
+            "Kidneys",
+            "Bladder",
+            "Gallbladder",
+            "Stomach",
+        };
         qDebug() << "Selected Scan:" << selectedScan;
         initializeHistoryBar(selectedScan);
-        initializePolarGraph(selectedScan->getProccesedPoints());
+        QVector<int> processedData = selectedScan->getProccesedPoints();
+        //graphing the data
+        initializePolarGraph(processedData);
         ui->scan_title_label->setText(selectedScan->toString());
+
+        //getting the worst functioning organ for reccomendations
+        auto min_it = std::min_element(processedData.begin(), processedData.end());
+        if (min_it != processedData.end()) {
+               // Compute the index of the smallest element
+               int index = std::distance(processedData.begin(), min_it);
+               //if its left side
+               if(index < 11){
+                   ui->label_reccomendation->setText(organs.at(index));
+               }
+               //if its right side
+               else{
+                   ui->label_reccomendation->setText(organs.at(index -12)); //could be wrong. Think it should be index - 12 cause it needs to loop back around
+               }
+        }
     }
 }
 

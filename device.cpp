@@ -4,6 +4,7 @@ Device::Device(): charge(new Battery())
 {
 }
 void Device::turnOn(){
+    if(charge->getCharge() == 0) return; //if battery is dead don't turn on
     charge->startTimer();
     onStatus = true;
 }

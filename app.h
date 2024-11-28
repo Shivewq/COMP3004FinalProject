@@ -51,6 +51,7 @@ signals:
     void deleteCurrentScan();
     void bodyPointNumber(int *const); // For UI changes
     void bodyImageNum(int *const); //Also for UI
+    void skinContact(bool isContact); //to tell the UI if the device is making contact with skin
 public slots:
     void stopMeasure();
 };
