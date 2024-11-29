@@ -14,6 +14,7 @@ void Battery::stopTimer(){
 }
 void Battery::chargeBattery(){
     battery = 100;
+
     emit editBattery(battery);
 }
 void Battery::updateBattery(){
@@ -22,7 +23,9 @@ void Battery::updateBattery(){
         emit editBattery(battery);
     }
     //when battery is empty
-    else {}
+    else {
+       emit batteryOut();
+    }
     //if the battery reaches 20% warn user
     if(battery == 20){
         emit lowBatteryWarning();

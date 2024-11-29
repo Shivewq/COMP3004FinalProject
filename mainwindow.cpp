@@ -18,6 +18,7 @@ MainWindow::MainWindow(QWidget *parent)
     connect(device->getBattery(),&Battery::editBattery,this,&MainWindow::on_editBattery);
     connect(device->getBattery(),&Battery::editBattery,this,&MainWindow::on_editBattery);
     connect(device->getBattery(),&Battery::lowBatteryWarning,this,&MainWindow::showBatteryMsg);
+    connect(device->getBattery(),&Battery::batteryOut,this,&MainWindow::batteryOutOff);
     connect(device,&Device::statusChange,this,&MainWindow::deviceStateUI);
 
     //setup app
@@ -140,11 +141,22 @@ void MainWindow::initializeHomeGraph(Scan* selectedScan)
 void MainWindow::on_details_clicked(){
     ui->stackedWidget->setCurrentIndex(3);
 
+    ui->User_History->clear();
+    loadUserHistory();
+
     if(!(app->getActiveUser()->getScanList().empty())){
-        ui->User_History->clear();
-        loadUserHistory();
-        initializeHistoryBar(app->getActiveUser()->getMostRecentScan());
+        //initializeHistoryBar(app->getActiveUser()->getMostRecentScan());
+        //initializePolarGraph(app->getActiveUser()->getMostRecentScan()->getProccesedPoints());
+        onScanSelected(ui->User_History->item(0));
         ui->scan_title_label->setText(app->getActiveUser()->getMostRecentScan()->toString());
+    }else if(app->getActiveUser()->getScanList().empty()){
+        QChart* chart = ui->barGraph->chart();
+        chart->removeAllSeries();
+
+        QChart* chart2 = ui->polarGraph->chart();
+        chart2->removeAllSeries();
+
+        ui->label_reccomendation->setText("");
     }
 
 }
@@ -400,6 +412,10 @@ void MainWindow::on_button_home_clicked()
     ui->stackedWidget->setCurrentIndex(0);
     if(!(app->getActiveUser()->getScanList().empty())){
            initializeHomeGraph(app->getActiveUser()->getMostRecentScan());
+    }else if(app->getActiveUser()->getScanList().empty()){
+
+        QChart* chart = ui->home_graph->chart();
+        chart->removeAllSeries();
     }
 
 
@@ -658,6 +674,7 @@ void MainWindow::onScanSelected(QListWidgetItem* item) {
 }
 
 void MainWindow::deviceStateUI(bool status){
+
     if(status){
         ui->button_startMeasure->setEnabled(true);
         ui->label_deviceStatus->setText(QString("ON"));
@@ -684,11 +701,24 @@ void MainWindow::on_button_off_clicked()
     device->turnOff();
 }
 
+void MainWindow::batteryOutOff(){
+    ui->button_on->setEnabled(true);
+    ui->button_off->setEnabled(false);
+    device->turnOff();
+    ui->label_deviceStatus->setText(QString("OUT OF BATTERY!"));
+}
 
 void MainWindow::on_button_charge_clicked()
 {
     ui->button_startMeasure->setEnabled(true);
-    ui->label_deviceStatus->setEnabled("ON");
+
+    if(device->isOn()){
+        ui->label_deviceStatus->setText("ON");
+    }else{
+        ui->label_deviceStatus->setText("OFF");
+    }
+
+
     device->plugIn();
 }
 

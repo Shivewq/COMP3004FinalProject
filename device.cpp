@@ -13,6 +13,8 @@ void Device::turnOff(){
     charge->stopTimer();
     onStatus = false;
     emit statusChange(onStatus);
+
+
 }
 void Device::plugIn(){charge->chargeBattery();}
 /*
