@@ -12,6 +12,10 @@ App::App(Device* d):device(d)
 //will need a slot in mainwindow to connect to app that updates the thing that displays which point we are measuring
 void App::MeasureFunctionTemplate(){
     if(!device->isOn()) return;
+    if(device->getBattery()->getCharge() <= 0){
+        emit outOfBattery(QString(""));
+        return;
+    }
     scanning = true;
     //pre-get all data points
     QVector<int> measurement;
@@ -26,8 +30,16 @@ void App::MeasureFunctionTemplate(){
     QTimer* points = new QTimer(this);
     points->setSingleShot(true);
     connect(points,&QTimer::timeout,this,[this,measurement,counter,points](){
+        //If device runs out during scan display out of battery
+        if(device->getBattery()->getCharge() <= 0){
+            stopMeasure();
+            emit outOfBattery(QString("Current Scan Stopped!"));
+            scanning = false;
+            return;
+        }
         if(*counter == 24){
             scanning = false;
+            emit doneScan();
             return;
         }
         int data = measurement.at(*counter);
@@ -79,7 +91,7 @@ QVector<int> App::calculateScan(QVector<int> rawPoints){
             processed = std::abs(point - 70);
             processed = 100 + ((processed/point)*100);
         }
-        qInfo() <<"Data point: " <<point << "Processed value:" << processed;
+        qInfo() << "Data point: " <<point << "Processed value:" << processed;
         processedPoints.push_back(std::floor(processed));
     }
     return processedPoints;

@@ -7,7 +7,8 @@ MainWindow::MainWindow(QWidget *parent)
 {
     //Setup UI
     ui->setupUi(this);
-    ui->stackedWidget->setCurrentIndex(0); // Set to homepage
+    this->setStyleSheet("background-color: white;");
+    ui->stackedWidget->setCurrentIndex(2); // Set to homepage
     connect(ui->button_profiles, &QPushButton::clicked, this, &MainWindow::on_button_profiles_clicked);
     connect(ui->User_History, &QListWidget::itemClicked, this, &MainWindow::onScanSelected);
 
@@ -17,6 +18,7 @@ MainWindow::MainWindow(QWidget *parent)
     connect(device->getBattery(),&Battery::editBattery,this,&MainWindow::on_editBattery);
     connect(device->getBattery(),&Battery::editBattery,this,&MainWindow::on_editBattery);
     connect(device->getBattery(),&Battery::lowBatteryWarning,this,&MainWindow::showBatteryMsg);
+    connect(device,&Device::statusChange,this,&MainWindow::deviceStateUI);
 
     //setup app
     app = new App(device);
@@ -34,6 +36,8 @@ MainWindow::MainWindow(QWidget *parent)
     connect(app, &App::bodyPointNumber, this, &MainWindow::changeMeasurePointUI);
     connect(app, &App::bodyImageNum, this, &MainWindow::changeBodyImageUI);
     connect(app, &App::skinContact, this, &MainWindow::changeSkinContact);
+    connect(app, &App::outOfBattery, this, &MainWindow::batteryOutMessage);
+    connect(app, &App::doneScan, this, &MainWindow::updateMeasureButtonUI);
 
     // Create a chart and add the series
     series = new QLineSeries(this);
@@ -66,6 +70,14 @@ MainWindow::MainWindow(QWidget *parent)
 void MainWindow::onStart(){
     //Get History ready and make sure it cant be access until there is a user
     ui->button_history->setEnabled(false);
+    ui->button_measure->setEnabled(false);
+    ui->button_charge->setEnabled(false);
+    ui->button_on->setEnabled(false);
+    ui->button_off->setEnabled(false);
+    ui->mesNow_button->setEnabled(false);
+    ui->button_startMeasure->setEnabled(false);
+    ui->button_on->setEnabled(false);
+    ui->button_off->setEnabled(false);
 }
 
 
@@ -351,9 +363,7 @@ MainWindow::~MainWindow()
 }
 
 void MainWindow::on_editBattery(int value){
-    if(ui->battery->value() != 0){
-        ui->battery->setValue(value);
-    }
+    ui->battery->setValue(value);
 }
 
 
@@ -366,6 +376,22 @@ void MainWindow::showBatteryMsg()
     msgBox.setStandardButtons(QMessageBox::Close);
 
     msgBox.exec();
+}
+
+void MainWindow::batteryOutMessage(QString msg)
+{
+    QMessageBox msgBox(this);
+    msgBox.setWindowTitle("OUT OF BATTERY");
+
+    QString text = QString("Device is Out of Battery! %1 Charge to Measure...").arg(msg);
+    msgBox.setText(text);
+    msgBox.setIcon(QMessageBox::Warning);
+    msgBox.setStandardButtons(QMessageBox::Close);
+
+    msgBox.exec();
+
+    ui->label_deviceStatus->setText("OUT OF BATTERY!");
+    ui->button_startMeasure->setEnabled(false);
 }
 
 // **MENU SELECTION CODE**
@@ -509,10 +535,10 @@ void MainWindow::changeBodyImageUI(int const* point){
 }
 void MainWindow::changeSkinContact(bool isContact){
     if(isContact){
-        ui->label_contact->setText(QString("true"));
+        ui->label_contact->setText(QString("On Skin!"));
     }
     else{
-        ui->label_contact->setText(QString("false"));
+        ui->label_contact->setText(QString("Off Skin!"));
     }
 }
 
@@ -524,8 +550,14 @@ void MainWindow::update_Active_User(const QString &text) {
 
     User* activeUser = app->getUserFromName(text);
     app->setActiveUser(activeUser);
+    //Enable buttons once user is created
     ui->button_history->setEnabled(true);
+    ui->button_measure->setEnabled(true);
     ui->details_button->setEnabled(true);
+    ui->button_charge->setEnabled(true);
+    ui->button_on->setEnabled(true);
+    ui->button_off->setEnabled(false);
+    ui->mesNow_button->setEnabled(true);
 }
 
 
@@ -571,7 +603,7 @@ void MainWindow::loadUserHistory(){
     }
 
     //Add scans to the  list model
-    for (int i = 0; i < u->getScanList().size(); ++i) {
+    for (int i = u->getScanList().size() - 1; i >= 0; --i){
         Scan* scan = u->getScan(i);
         if (scan) {
             QListWidgetItem* item = new QListWidgetItem(scan->toString(), ui->User_History);
@@ -625,27 +657,58 @@ void MainWindow::onScanSelected(QListWidgetItem* item) {
     }
 }
 
+void MainWindow::deviceStateUI(bool status){
+    if(status){
+        ui->button_startMeasure->setEnabled(true);
+        ui->label_deviceStatus->setText(QString("ON"));
+    }
+    else{
+        ui->button_startMeasure->setEnabled(false);
+        ui->label_deviceStatus->setText(QString("OFF"));
+    }
+}
+
 
 void MainWindow::on_button_on_clicked()
 {
+    ui->button_on->setEnabled(false);
+    ui->button_off->setEnabled(true);
     device->turnOn();
 }
 
 
 void MainWindow::on_button_off_clicked()
 {
+    ui->button_on->setEnabled(true);
+    ui->button_off->setEnabled(false);
     device->turnOff();
 }
 
 
 void MainWindow::on_button_charge_clicked()
 {
+    ui->button_startMeasure->setEnabled(true);
+    ui->label_deviceStatus->setEnabled("ON");
     device->plugIn();
 }
 
 
 void MainWindow::on_button_startMeasure_clicked()
 {
+    ui->button_startMeasure->setEnabled(false);
     app->MeasureFunctionTemplate();
+}
+
+void MainWindow::updateMeasureButtonUI()
+{
+    QMessageBox msgBox(this);
+    msgBox.setWindowTitle("DONE SCAN");
+    msgBox.setText("Scan Complete! Added to History.");
+    msgBox.setIcon(QMessageBox::Information);
+    msgBox.setStandardButtons(QMessageBox::Close);
+
+    msgBox.exec();
+
+    ui->button_startMeasure->setEnabled(true);
 }
 
