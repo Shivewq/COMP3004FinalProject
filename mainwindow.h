@@ -68,6 +68,7 @@ private slots:
     void deviceStateUI(bool);
     void batteryOutMessage(QString);
     void updateMeasureButtonUI(); //Also display done message
+    void batteryOutOff();
 
 private:
     Ui::MainWindow *ui;
@@ -79,5 +80,6 @@ private:
     int pointCounter =1;
 public slots:
     void on_editBattery(int value);
+
 };
 #endif // MAINWINDOW_H

@@ -13,6 +13,7 @@ App::App(Device* d):device(d)
 void App::MeasureFunctionTemplate(){
     if(!device->isOn()) return;
     if(device->getBattery()->getCharge() <= 0){
+        device->turnOff();
         emit outOfBattery(QString(""));
         return;
     }

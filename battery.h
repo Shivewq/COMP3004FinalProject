@@ -23,6 +23,7 @@ public slots:
 signals:
    void editBattery(int value);
    void lowBatteryWarning();
+   void batteryOut();
 };
 
 #endif // BATTERY_H
