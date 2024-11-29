@@ -1,16 +1,18 @@
 #include "device.h"
 
-Device::Device(): charge(new Battery())
+Device::Device(QObject* parent):QObject(parent), charge(new Battery())
 {
 }
 void Device::turnOn(){
     if(charge->getCharge() == 0) return; //if battery is dead don't turn on
     charge->startTimer();
     onStatus = true;
+    emit statusChange(onStatus);
 }
 void Device::turnOff(){
     charge->stopTimer();
     onStatus = false;
+    emit statusChange(onStatus);
 }
 void Device::plugIn(){charge->chargeBattery();}
 /*

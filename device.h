@@ -2,10 +2,11 @@
 #define DEVICE_H
 #include "battery.h"
 #include <random>
-class Device
-{
+#include <QObject>
+class Device: public QObject{
+    Q_OBJECT
 public:
-    Device();
+    explicit Device(QObject* parent = nullptr);
     Battery* getBattery(){return charge;}
     void turnOn();
     void turnOff();
@@ -17,6 +18,9 @@ private:
     bool onStatus;
 
 public slots:
+
+signals:
+    void statusChange(bool);
 
 };
 
