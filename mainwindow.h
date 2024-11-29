@@ -65,6 +65,9 @@ private slots:
     void changeMeasurePointUI(int const*);
     void changeBodyImageUI(int const*);
     void changeSkinContact(bool);
+    void deviceStateUI(bool);
+    void batteryOutMessage(QString);
+    void updateMeasureButtonUI(); //Also display done message
 
 private:
     Ui::MainWindow *ui;

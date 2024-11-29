@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>1475</width>
+    <width>1408</width>
     <height>782</height>
    </rect>
   </property>
@@ -222,9 +222,9 @@
       <property name="geometry">
        <rect>
         <x>20</x>
-        <y>310</y>
+        <y>300</y>
         <width>221</width>
-        <height>21</height>
+        <height>31</height>
        </rect>
       </property>
       <property name="font">
@@ -845,6 +845,48 @@
        <string>false</string>
       </property>
      </widget>
+     <widget class="QLabel" name="label_deviceStatus">
+      <property name="geometry">
+       <rect>
+        <x>150</x>
+        <y>40</y>
+        <width>211</width>
+        <height>21</height>
+       </rect>
+      </property>
+      <property name="font">
+       <font>
+        <family>Quicksand Medium</family>
+        <pointsize>15</pointsize>
+        <weight>75</weight>
+        <bold>true</bold>
+       </font>
+      </property>
+      <property name="text">
+       <string>OFF</string>
+      </property>
+     </widget>
+     <widget class="QLabel" name="label_skinContact_2">
+      <property name="geometry">
+       <rect>
+        <x>10</x>
+        <y>40</y>
+        <width>141</width>
+        <height>21</height>
+       </rect>
+      </property>
+      <property name="font">
+       <font>
+        <family>Quicksand Medium</family>
+        <pointsize>15</pointsize>
+        <weight>75</weight>
+        <bold>true</bold>
+       </font>
+      </property>
+      <property name="text">
+       <string>Device Status:</string>
+      </property>
+     </widget>
     </widget>
     <widget class="QWidget" name="page_profiles">
      <widget class="QPushButton" name="button_update">
@@ -1310,7 +1352,7 @@
    <widget class="QFrame" name="frame_device">
     <property name="geometry">
      <rect>
-      <x>1210</x>
+      <x>1140</x>
       <y>50</y>
       <width>251</width>
       <height>111</height>
@@ -1388,13 +1430,13 @@ QProgressBar {
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>1475</width>
+     <width>1408</width>
      <height>22</height>
     </rect>
    </property>
    <widget class="QMenu" name="menuMainWindow">
     <property name="title">
-     <string>MainWindow</string>
+     <string>RaDoTech</string>
     </property>
    </widget>
    <addaction name="menuMainWindow"/>
