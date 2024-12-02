@@ -30,9 +30,11 @@ public:
     MainWindow(QWidget *parent = nullptr);
     ~MainWindow();
 
+    //profile page buttons
     void on_Add_User_clicked();
     void on_Delete_User_clicked();
     void on_Update_User_clicked();
+
     void update_Active_User(const QString &text);
     void onStart();
     void loadUserHistory();
@@ -67,7 +69,7 @@ private slots:
     void changeSkinContact(bool);
     void deviceStateUI(bool);
     void batteryOutMessage(QString);
-    void updateMeasureButtonUI(); //Also display done message
+    void updateMeasureButtonUI();
     void batteryOutOff();
 
 private:
@@ -78,6 +80,7 @@ private:
     App* app;
     QStringListModel* userModel;
     int pointCounter =1;
+
 public slots:
     void on_editBattery(int value);
 

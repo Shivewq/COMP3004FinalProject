@@ -3,12 +3,16 @@
 Device::Device(QObject* parent):QObject(parent), charge(new Battery())
 {
 }
+
+//turns on device
 void Device::turnOn(){
     if(charge->getCharge() == 0) return; //if battery is dead don't turn on
-    charge->startTimer();
+    charge->startTimer(); //start battery timer
     onStatus = true;
     emit statusChange(onStatus);
 }
+
+//turns off device
 void Device::turnOff(){
     charge->stopTimer();
     onStatus = false;
@@ -16,7 +20,11 @@ void Device::turnOff(){
 
 
 }
+
+//signals battery to go to 100%
 void Device::plugIn(){charge->chargeBattery();}
+
+
 /*
  * Generates a random datapoint.
  * 45-70 is normal. < 45 is low functionality, > 70 is high functionality

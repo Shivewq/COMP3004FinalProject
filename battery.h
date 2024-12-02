@@ -8,18 +8,25 @@
 //basically calling device->turnOn() starts the timer and after every 2 seconds it lowers the battery
 class Battery: public QObject{
      Q_OBJECT
+
 public:
     explicit Battery(QObject* parent = nullptr);
-    QTimer* getBattery(){return batteryTimer;}
+    //battery manipulation functions
     void startTimer();
     void stopTimer();
     void chargeBattery();
+
+    //battery getters
     int getCharge(){return battery;}
+     QTimer* getBattery(){return batteryTimer;}
+
 private:
     int battery;
     QTimer* batteryTimer;
+
 public slots:
    void updateBattery();
+
 signals:
    void editBattery(int value);
    void lowBatteryWarning();

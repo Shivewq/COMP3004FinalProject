@@ -12,6 +12,8 @@ public:
     explicit User(QObject* parent = nullptr, QString name = "name", int weight = 53, int height = 180);
     ~User();
     void addScan(Scan* scan);
+
+    //getters and setters
     Scan* getScan(int index){return measurements.at(index);}
     QVector<Scan*> getScanList(){return measurements;}
     Scan* getMostRecentScan(){return measurements.last();}
@@ -27,6 +29,7 @@ private:
     int weight; //in kg
     int height; // in cm
     QVector<Scan*> measurements; //back is most recent scan
+
 public slots:
     void deleteScan();
 };

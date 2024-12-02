@@ -8,20 +8,25 @@
 #include <QDebug>
 #include <QTimer>
 #include <QString>
+
 //foward declarations
 class User;
 class Device;
 class App :public QObject
+
 {
     Q_OBJECT
+
 public:
+
     App(Device* d);
-    QVector<int> calculateScan(QVector<int> rawPoints); //gets the scan from the user and does calculations, not sure what it returns
+    ~App();
+
+    //data collection and processing
+    QVector<int> calculateScan(QVector<int> rawPoints);
     void MeasureFunctionTemplate();
-    //I think below should be during the scan after getting the random number from the device it runs this function that returns an array of int. In the graph every say 0.3 seconds it plots a point.
-    //in the graph, every 0.3 seconds pop a point. Stop the tiemr when there are no more points left
-    QVector<int> calculateReadingGraph(int reading); //this function will take the reading and calculate the points on the graph based on the doc part "How we calculate reading/how we take measurement:"
-    User* activeUser;
+    QVector<int> calculateReadingGraph(int reading);
+
     //helper functions
     int randomNum(int minimum,int maximum);
 
@@ -40,17 +45,17 @@ public:
 
 private:
     Device* device;
-    //User* activeUser;
+    User* activeUser;
     QVector<User*> users;
     bool scanning;
-//private slots:
-   // void takeMeasurement(int counter, QVector<int*> measurements); //takes in the current point we are measureing and the vector of all previous points.
+
+
 signals:
     void plotPoint(int y);
-    void clearMeteringGraph(int max_y,int max_x); //possibly pass in final value for the axis in case the graph doesn't dynamically change it in the case that the final value is very large.
+    void clearMeteringGraph(int max_y,int max_x);
     void deleteCurrentScan();
-    void bodyPointNumber(int *const); // For UI changes
-    void bodyImageNum(int *const); //Also for UI
+    void bodyPointNumber(int *const);
+    void bodyImageNum(int *const);
     void skinContact(bool isContact); //to tell the UI if the device is making contact with skin
     void outOfBattery(QString); // For when the battery is out
     void doneScan(); // Successful completion of scan
