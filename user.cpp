@@ -4,6 +4,8 @@ User::User(QObject* parent,QString name, int weight, int height):QObject(parent)
 
 }
 User::~User(){}
+
+//adds scab to the measurements vector
 void User::addScan(Scan* scan){
     measurements.push_back(scan);
     qInfo() << "Scan:" << measurements.back() << measurements.last()->getDate().date();
@@ -12,25 +14,38 @@ void User::addScan(Scan* scan){
    }
 }
 
+//returns the users name
 QString User::getName(){
     return name;
 }
 
+int User::getHeight(){
+    return height;
+}
+
+int User::getWeight(){
+    return weight;
+}
+
+//sets the users name
 void User::setName(QString newName){
     name = newName;
     qInfo()<<"new name set";
 }
 
+//sets the users weight
 void User::setWeight(int newWeight){
     weight = newWeight;
     qInfo()<<"new weight set";
 }
+
+//sets the users height
 void User::setHeight(int newHeight){
     height = newHeight;
     qInfo()<<"new height set";
 }
+
 //for graceful shutdown, removes the last scan
-//this should be called in app if the timer is on
 void User::deleteScan(){
     measurements.removeLast();
 }

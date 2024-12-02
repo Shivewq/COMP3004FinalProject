@@ -30,7 +30,7 @@
      <enum>QFrame::Box</enum>
     </property>
     <property name="currentIndex">
-     <number>3</number>
+     <number>2</number>
     </property>
     <widget class="QWidget" name="page_home">
      <widget class="QLabel" name="label">
@@ -890,10 +890,13 @@
     </widget>
     <widget class="QWidget" name="page_profiles">
      <widget class="QPushButton" name="button_update">
+      <property name="enabled">
+       <bool>false</bool>
+      </property>
       <property name="geometry">
        <rect>
-        <x>760</x>
-        <y>480</y>
+        <x>750</x>
+        <y>560</y>
         <width>161</width>
         <height>41</height>
        </rect>
@@ -916,7 +919,7 @@
       <property name="geometry">
        <rect>
         <x>10</x>
-        <y>490</y>
+        <y>540</y>
         <width>351</width>
         <height>41</height>
        </rect>
@@ -931,8 +934,8 @@
      <widget class="QWidget" name="formLayoutWidget">
       <property name="geometry">
        <rect>
-        <x>380</x>
-        <y>230</y>
+        <x>370</x>
+        <y>300</y>
         <width>371</width>
         <height>301</height>
        </rect>
@@ -1032,7 +1035,7 @@
         <x>10</x>
         <y>50</y>
         <width>351</width>
-        <height>431</height>
+        <height>481</height>
        </rect>
       </property>
       <property name="font">
@@ -1076,6 +1079,43 @@
        <string>Active Profile</string>
       </property>
      </widget>
+     <widget class="QTextEdit" name="UserInfo">
+      <property name="geometry">
+       <rect>
+        <x>370</x>
+        <y>160</y>
+        <width>271</width>
+        <height>121</height>
+       </rect>
+      </property>
+      <property name="font">
+       <font>
+        <family>DejaVu Sans</family>
+        <pointsize>13</pointsize>
+       </font>
+      </property>
+     </widget>
+     <widget class="QLabel" name="label_8">
+      <property name="geometry">
+       <rect>
+        <x>370</x>
+        <y>120</y>
+        <width>171</width>
+        <height>31</height>
+       </rect>
+      </property>
+      <property name="font">
+       <font>
+        <family>Quicksand</family>
+        <pointsize>15</pointsize>
+        <weight>75</weight>
+        <bold>true</bold>
+       </font>
+      </property>
+      <property name="text">
+       <string>Active Profile Info</string>
+      </property>
+     </widget>
     </widget>
     <widget class="QWidget" name="page_history">
      <widget class="QLabel" name="History_label">
@@ -1105,12 +1145,12 @@
        <rect>
         <x>10</x>
         <y>80</y>
-        <width>101</width>
+        <width>181</width>
         <height>17</height>
        </rect>
       </property>
       <property name="text">
-       <string>Profile History:</string>
+       <string>Select Scan From History:</string>
       </property>
      </widget>
      <widget class="Line" name="line">

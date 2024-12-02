@@ -7,9 +7,17 @@ App::App(Device* d):device(d)
 {
 
 }
-//will have signal to plot point and clear graph
-//function template for starting measuring, getting the reading,calculating the graph points
-//will need a slot in mainwindow to connect to app that updates the thing that displays which point we are measuring
+
+App::~App(){
+    //delete all the users stored in the users vector
+    for(User* u: users){
+        delete u;
+    }
+
+}
+
+//store all the raw data points generated from the device in the measurments vector
+//plot all the datapoints collected on the graph in the measure page
 void App::MeasureFunctionTemplate(){
     if(!device->isOn()) return;
     if(device->getBattery()->getCharge() <= 0){
@@ -24,10 +32,11 @@ void App::MeasureFunctionTemplate(){
         measurement.push_back(this->device->geneateDataPoint());
     }
     QDateTime scanDate = QDateTime::currentDateTime();
+    //store the raw data points and processed data in a scan object
     activeUser->addScan(new Scan(measurement,calculateScan(measurement),scanDate));
 
-    //So basically the timer is to loop through each point. At the end of the function you restart the timer
-    int* counter = new int(0); //increments when me move through the points. Pointer so I can modify in the timeout
+    //timer is to loop through each point. At the end of the function restart the timer
+    int* counter = new int(0); //increments when me move through the points.
     QTimer* points = new QTimer(this);
     points->setSingleShot(true);
     connect(points,&QTimer::timeout,this,[this,measurement,counter,points](){
@@ -44,16 +53,18 @@ void App::MeasureFunctionTemplate(){
             return;
         }
         int data = measurement.at(*counter);
+        //display the skin contact, scan point number and the correct image
         emit skinContact(true);
         emit bodyPointNumber(counter);
         emit bodyImageNum(counter);
 
+        //plot the points
         QVector<int>* graph_Yvalues = new QVector<int>(calculateReadingGraph(data));
         QTimer* graph = new QTimer(); //will declare with "this" later as a parameter to set the parent object
         graph->setSingleShot(true);
         emit clearMeteringGraph(data,graph_Yvalues->size());
         connect(graph,&QTimer::timeout, this,[this,graph_Yvalues,graph,counter,points](){
-            //emit clearMeteringGraph(graph_Yvalues->last());
+
             if(!graph_Yvalues->isEmpty()){ //if there is still more to plot
                 int y = graph_Yvalues->takeFirst();
                 //plot the point by popping a value from the front of y
@@ -75,11 +86,14 @@ void App::MeasureFunctionTemplate(){
     points->start(400);
 }
 
-//45-70 is normal. < 45 is low functionality, > 70 is high functionality
+
+//gets the raw data from the device, and processes them to get the functionality percentages of that organ
+//returns a vector of all the processed data
 QVector<int> App::calculateScan(QVector<int> rawPoints){
     double processed; //the % difference
     QVector<int> processedPoints;
     //goes through each measurement and calculates the %.
+    //45-70 is normal. < 45 is low functionality, > 70 is high functionality
     for(int point: rawPoints){
         if(point > 45 && point < 70){ //if the functionality is normal will be under 100%
             processed = 100;
@@ -97,16 +111,20 @@ QVector<int> App::calculateScan(QVector<int> rawPoints){
     }
     return processedPoints;
 }
-//input: an individual reading point
-//output: A vector of all the y axis points for the graph
+
+
+
+//takes in an individual reading point, and outputs a vector of all the Y axis points for the movement of the reading graph on the measure page
 QVector<int> App::calculateReadingGraph(int reading){
     QVector<int> yValues;
-    int y = 0; //current i thing
+    int y = 0; //current i
+
     //basically for 1/4 of reading, 1/2 reading, 3/4 reading , full reading
     for(int i = 1; i <= 4; i++){
         y = (i*reading)/4;
         //i = 1, 1/4 reading, i = 2, 1/2 reading, i = 3, 3/4 reading, i = 4, full reading
-        int f = randomNum(1,2); // how much difference to add to simulate random change between i intervals. Could remove if graph looks weird with low values of reading such as 8.
+        int f = randomNum(1,2); // how much difference to add to simulate random change between i intervals.
+
         //it will still simulate a longer reading
         for(int i = 0; i < randomNum(1,3); i++){
             yValues.push_back(y - f);
@@ -170,6 +188,7 @@ User* App:: getUserFromName(QString name){
     }
     return nullptr;
 }
+
 //when the app runs out of battery, this stops the timers so no more points are plotted on the graph
 void App::stopMeasure(){
     //if we are currently measuring need to delete the most recent scan from the user list

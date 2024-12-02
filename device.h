@@ -5,14 +5,18 @@
 #include <QObject>
 class Device: public QObject{
     Q_OBJECT
+
 public:
     explicit Device(QObject* parent = nullptr);
     Battery* getBattery(){return charge;}
+    //battery value functions
     void turnOn();
     void turnOff();
     void plugIn();
+
     int geneateDataPoint();
     bool isOn(){return onStatus;}
+
 private:
     Battery* charge;
     bool onStatus;

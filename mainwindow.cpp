@@ -23,7 +23,7 @@ MainWindow::MainWindow(QWidget *parent)
 
     //setup app
     app = new App(device);
-    app->activeUser = new User();
+
 
     populateOrganList();
     userModel = new QStringListModel(this);
@@ -64,10 +64,18 @@ MainWindow::MainWindow(QWidget *parent)
     connect(app, &App::plotPoint, this, &MainWindow::updateChart);
     connect(app,&App::clearMeteringGraph,this,&MainWindow::clearChart);
 
+    //start the app in a specific state
     onStart();
 
 }
 
+MainWindow::~MainWindow()
+{
+    delete ui;
+}
+
+
+//initial state of the app
 void MainWindow::onStart(){
     //Get History ready and make sure it cant be access until there is a user
     ui->button_history->setEnabled(false);
@@ -82,6 +90,7 @@ void MainWindow::onStart(){
 }
 
 
+//displays bar graph of the active profiles most recent scan on the home page
 void MainWindow::initializeHomeGraph(Scan* selectedScan)
 {
    // Prepare the bar sets for "Right" and "Left"
@@ -138,6 +147,7 @@ void MainWindow::initializeHomeGraph(Scan* selectedScan)
 
 }
 
+//send user to the history page to view their most recent scan in more detail
 void MainWindow::on_details_clicked(){
     ui->stackedWidget->setCurrentIndex(3);
 
@@ -145,23 +155,16 @@ void MainWindow::on_details_clicked(){
     loadUserHistory();
 
     if(!(app->getActiveUser()->getScanList().empty())){
-        //initializeHistoryBar(app->getActiveUser()->getMostRecentScan());
-        //initializePolarGraph(app->getActiveUser()->getMostRecentScan()->getProccesedPoints());
+        //display all info related to the most recent scan (bar graph, circle graph, recommendations)
         onScanSelected(ui->User_History->item(0));
         ui->scan_title_label->setText(app->getActiveUser()->getMostRecentScan()->toString());
-    }else if(app->getActiveUser()->getScanList().empty()){
-        QChart* chart = ui->barGraph->chart();
-        chart->removeAllSeries();
 
-        QChart* chart2 = ui->polarGraph->chart();
-        chart2->removeAllSeries();
-
-        ui->label_reccomendation->setText("");
     }
+
 
 }
 
-
+//displays selected bar graph on history page
 void MainWindow::initializeHistoryBar(Scan* selectedScan)
 {
     // Prepare the bar sets for "Right" and "Left"
@@ -216,6 +219,8 @@ void MainWindow::initializeHistoryBar(Scan* selectedScan)
     ui->barGraph->setRenderHint(QPainter::Antialiasing);
 }
 
+
+//displays selected scan's circle graph on the history page
 void MainWindow::initializePolarGraph(const QVector<int>& processedData)
 {
     // Ensure processedData has the expected 24 points (12 left + 12 right)
@@ -340,6 +345,7 @@ void MainWindow::initializePolarGraph(const QVector<int>& processedData)
     ui->polarGraph->setRenderHint(QPainter::Antialiasing);
 }
 
+//holds the organ data seen on the right side of history page. Helps the user to associate the graph to an organ
 void MainWindow::populateOrganList()
 {
     // Create a QStringList to hold the associations
@@ -369,16 +375,14 @@ void MainWindow::populateOrganList()
     ui->organList->setEditTriggers(QAbstractItemView::NoEditTriggers);
 }
 
-MainWindow::~MainWindow()
-{
-    delete ui;
-}
 
+//set the value of the battery on the UI
 void MainWindow::on_editBattery(int value){
     ui->battery->setValue(value);
 }
 
 
+//displays the box with the low battery message at 20%
 void MainWindow::showBatteryMsg()
 {
     QMessageBox msgBox(this);
@@ -390,6 +394,7 @@ void MainWindow::showBatteryMsg()
     msgBox.exec();
 }
 
+//displays the box with the battery out message at 0%
 void MainWindow::batteryOutMessage(QString msg)
 {
     QMessageBox msgBox(this);
@@ -411,11 +416,11 @@ void MainWindow::on_button_home_clicked()
 {
     ui->stackedWidget->setCurrentIndex(0);
     if(!(app->getActiveUser()->getScanList().empty())){
-           initializeHomeGraph(app->getActiveUser()->getMostRecentScan());
+        //if the user has a most recent graph, display it
+        initializeHomeGraph(app->getActiveUser()->getMostRecentScan());
     }else if(app->getActiveUser()->getScanList().empty()){
-
-        QChart* chart = ui->home_graph->chart();
-        chart->removeAllSeries();
+        //if not, display an empty graph
+        ui->home_graph->chart()->removeAllSeries();
     }
 
 
@@ -424,6 +429,7 @@ void MainWindow::on_button_home_clicked()
 void MainWindow::on_button_history_clicked()
 {
     ui->stackedWidget->setCurrentIndex(3);
+    //updates current profiles history or allows for another profiles history to replace it
     ui->User_History->clear();
     loadUserHistory();
 }
@@ -440,6 +446,9 @@ void MainWindow::on_button_profiles_clicked()
 
 //Creates new user from input data
 void MainWindow::on_Add_User_clicked(){
+
+    ui->button_update->setEnabled(true);
+
     //get the users info from the UI
     QString name = ui->text_name->toPlainText();
     QString heightStr = ui->text_height->toPlainText();
@@ -448,6 +457,7 @@ void MainWindow::on_Add_User_clicked(){
     // Validate the input
     if (name.isEmpty() || heightStr.isEmpty() || weightStr.isEmpty()) {
         qInfo() << "Please fill in all fields.";
+        ui->profileLog->setText("Please fill in all fields.");
         return;
     }
 
@@ -455,7 +465,7 @@ void MainWindow::on_Add_User_clicked(){
     int numHeight = heightStr.toInt();
     int numWeight = weightStr.toInt();
 
-
+    //create new user and add it to the user list
     User* newUser = new User(this, name, numWeight, numHeight);
     app->addUser(newUser);
 
@@ -472,30 +482,32 @@ void MainWindow::on_Add_User_clicked(){
     ui->userSelect->addItem(newUser->getName(), QVariant::fromValue(newUser));
     ui->profileLog->setText("Profile Created!");
 
-    //connecting user signals (Eric added this for shutdown...)
-    //I am not too sure if this will delete the most recent scan from all users...
-    //if not then just need to add a check to make sure we are doing it to active user
-    connect(app,&App::deleteCurrentScan,newUser,&User::deleteScan);
 }
 
-// deletes all traces of a user
+// deletes all traces of a user. Always makes sure there is at least one profile active
 void MainWindow::on_Delete_User_clicked(){
 
-    //get the users name from the list view and remove that row from the list view
-    QModelIndex selectedIndex = ui->profileList->currentIndex();
-    QStringListModel* model = qobject_cast<QStringListModel*>(ui->profileList->model());
-    QString userName = model->data(selectedIndex, Qt::DisplayRole).toString();
-    model->removeRow(selectedIndex.row());
+    if(ui->userSelect->count() > 1){
+        //get the users name from the list view and remove that row from the list view
+        QModelIndex selectedIndex = ui->profileList->currentIndex();
+        QStringListModel* model = qobject_cast<QStringListModel*>(ui->profileList->model());
+        QString userName = model->data(selectedIndex, Qt::DisplayRole).toString();
+        model->removeRow(selectedIndex.row());
 
-    //remove user from the combo box
-    int comboIndex = ui->userSelect->findText(userName);
-    ui->userSelect->removeItem(comboIndex);
+        //remove user from the combo box
+        int comboIndex = ui->userSelect->findText(userName);
+        ui->userSelect->removeItem(comboIndex);
 
-    //get the user to delete from its name, and delete the user from the user list
-    User* userToDelete = app->getUserFromName(userName);
-    app->deleteUser(userToDelete);
+        //get the user to delete from its name, and delete the user from the user list
+        User* userToDelete = app->getUserFromName(userName);
+        app->deleteUser(userToDelete);
 
-    ui->profileLog->setText("Profile Deleted");
+        ui->profileLog->setText("Profile Deleted");
+    }else{
+
+        ui->profileLog->setText("Cannot delete last profile");
+    }
+
 }
 
 //update the users info and the UI accordingly
@@ -536,19 +548,28 @@ void MainWindow::on_Update_User_clicked(){
     ui->text_height->clear();
     ui->text_weight->clear();
 
+    //update profile info box
+    ui->UserInfo->clear();
+    ui->UserInfo->append("Weight: " + QString::number(app->getActiveUser()->getWeight()) +" kg");
+    ui->UserInfo->append("Height: " + QString::number(app->getActiveUser()->getHeight()) + " cm");
+
 
 }
 
+//change the point number on measure screen
 void MainWindow::changeMeasurePointUI(int const* point){
     ui->currentPointText->setText(QString::number(*point+1));
 
 
 }
 
+//change the image of the scan point on the measure page
 void MainWindow::changeBodyImageUI(int const* point){
 
     ui->imageWidget->setCurrentIndex(*point);
 }
+
+//changes the boolean message that shows whether or not the device is on the users skin
 void MainWindow::changeSkinContact(bool isContact){
     if(isContact){
         ui->label_contact->setText(QString("On Skin!"));
@@ -574,9 +595,20 @@ void MainWindow::update_Active_User(const QString &text) {
     ui->button_on->setEnabled(true);
     ui->button_off->setEnabled(false);
     ui->mesNow_button->setEnabled(true);
+
+    //make the history page graphs empty to reset it for the next active user
+    ui->barGraph->chart()->removeAllSeries();
+    ui->polarGraph->chart()->removeAllSeries();
+
+    //display the active users info
+    ui->UserInfo->clear();
+    ui->UserInfo->append("Weight: " + QString::number(app->getActiveUser()->getWeight())+ " kg");
+    ui->UserInfo->append("Height: " + QString::number(app->getActiveUser()->getHeight())+ " cm");
+
 }
 
 
+//updates the chart on the measure screen for every point
 void MainWindow::updateChart(int y)
 {
     series->append(pointCounter, y); // Append (x, y) to the chart series
@@ -585,6 +617,8 @@ void MainWindow::updateChart(int y)
     ui->meteringGraph->repaint();
 }
 
+
+//clears the chart on the measure screen for next scan point
 void MainWindow::clearChart(int max_y,int max_x)
 {
 
@@ -611,6 +645,8 @@ void MainWindow::clearChart(int max_y,int max_x)
 
 }
 
+
+//displays the users scan history on the history page
 void MainWindow::loadUserHistory(){
     User* u = app->getActiveUser();
     if (!u){
@@ -628,6 +664,7 @@ void MainWindow::loadUserHistory(){
     }
 }
 
+//displays all graph data (bar and circle), and the right recommendation
 void MainWindow::onScanSelected(QListWidgetItem* item) {
     if (!item) return;
 
@@ -673,6 +710,7 @@ void MainWindow::onScanSelected(QListWidgetItem* item) {
     }
 }
 
+//checks whether the device is on or off and displays it accordingly on the measure page
 void MainWindow::deviceStateUI(bool status){
 
     if(status){
@@ -701,6 +739,7 @@ void MainWindow::on_button_off_clicked()
     device->turnOff();
 }
 
+//turns the device off when the battery runs out
 void MainWindow::batteryOutOff(){
     ui->button_on->setEnabled(true);
     ui->button_off->setEnabled(false);
@@ -708,6 +747,7 @@ void MainWindow::batteryOutOff(){
     ui->label_deviceStatus->setText(QString("OUT OF BATTERY!"));
 }
 
+//sets the device battery back to 100% and allows users to scan again if device was dead
 void MainWindow::on_button_charge_clicked()
 {
     ui->button_startMeasure->setEnabled(true);
@@ -716,19 +756,27 @@ void MainWindow::on_button_charge_clicked()
         ui->label_deviceStatus->setText("ON");
     }else{
         ui->label_deviceStatus->setText("OFF");
+        ui->button_startMeasure->setEnabled(false);
     }
 
-
+    //what actually changes the battery number
     device->plugIn();
 }
 
 
+//starts a scan on the measure page
 void MainWindow::on_button_startMeasure_clicked()
 {
     ui->button_startMeasure->setEnabled(false);
+    //cannot turn device off during scan
+    ui->button_off->setEnabled(false);
+
+    //cannot change active user during scan
+    ui->userSelect->setEnabled(false);
     app->MeasureFunctionTemplate();
 }
 
+//displays a box message once a successful scan has been recorded
 void MainWindow::updateMeasureButtonUI()
 {
     QMessageBox msgBox(this);
@@ -740,5 +788,10 @@ void MainWindow::updateMeasureButtonUI()
     msgBox.exec();
 
     ui->button_startMeasure->setEnabled(true);
+    //enable off button after scan
+    ui->button_off->setEnabled(true);
+
+    //cannot active user change after scan
+    ui->userSelect->setEnabled(true);
 }
 
