@@ -31,7 +31,7 @@ private:
     QVector<Scan*> measurements; //back is most recent scan
 
 public slots:
-    void deleteScan();
+    void deleteScan(QString name);
 };
 
 #endif // USER_H

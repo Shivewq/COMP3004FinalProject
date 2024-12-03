@@ -46,6 +46,7 @@ void User::setHeight(int newHeight){
 }
 
 //for graceful shutdown, removes the last scan
-void User::deleteScan(){
+void User::deleteScan(QString name){
+    if(name != this->name) return; //if this is not the right user to delete
     measurements.removeLast();
 }
