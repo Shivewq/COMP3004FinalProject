@@ -56,7 +56,6 @@ void App::MeasureFunction(){
         //display the skin contact, scan point number and the correct image
         emit skinContact(true);
         emit bodyPointNumber(counter);
-        emit bodyImageNum(counter);
 
         //plot the points
         QVector<int>* graph_Yvalues = new QVector<int>(calculateReadingGraph(data));
@@ -70,20 +69,23 @@ void App::MeasureFunction(){
                 //plot the point by popping a value from the front of y
                 emit plotPoint(y);
                 if(scanning) //this will only be false if a graceful shutdown has happened
-                    graph->start(50); //restart the timer
+                    graph->start(75); //restart the timer
             }
             else{ //if there is no more points to graph. We move onto the next measurement
                 qInfo() << "counter" <<*counter;
                 *counter+= 1;
-                if(scanning) //this will only be false if a graceful shutdown has happened
+                if(scanning){ //this will only be false if a graceful shutdown has happened
                     emit skinContact(false);
-                    points->start(100);
+                    emit bodyImageNum(counter);
+                    points->start(1500);
+                }
             }
 
         });
-       graph->start(400);
+       graph->start(75);
     });
-    points->start(400);
+    emit bodyImageNum(counter);
+    points->start(1500);
 }
 
 
