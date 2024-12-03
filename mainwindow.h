@@ -34,6 +34,7 @@ public:
     void on_Add_User_clicked();
     void on_Delete_User_clicked();
     void on_Update_User_clicked();
+    void on_details_clicked();
 
     void update_Active_User(const QString &text);
     void onStart();
@@ -47,7 +48,7 @@ private slots:
     void on_button_history_clicked();
     void on_button_profiles_clicked();
     void on_button_measure_clicked();
-    void on_details_clicked();
+
 
     //Metering chart updating
     void updateChart(int y);
@@ -62,6 +63,7 @@ private slots:
     void on_button_off_clicked();
     void on_button_charge_clicked();
     void on_button_startMeasure_clicked();
+    void on_button_Interrupt_clicked();
 
     //UI dynamic changing
     void changeMeasurePointUI(int const*);
@@ -72,7 +74,7 @@ private slots:
     void updateMeasureButtonUI();
     void batteryOutOff();
 
-    void on_button_Interrupt_clicked();
+
 
 private:
     Ui::MainWindow *ui;
