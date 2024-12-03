@@ -10,7 +10,7 @@ Battery::Battery(QObject* parent):QObject(parent), battery(100), batteryTimer(ne
 void Battery::startTimer(){
     disconnect(batteryTimer, &QTimer::timeout, this, &Battery::updateBattery);
     connect(batteryTimer,&QTimer::timeout,this,&Battery::updateBattery);
-     batteryTimer->start(1000); //2 second timer
+     batteryTimer->start(5000); //5 second timer
 }
 
 //stops battery timer when device is off
