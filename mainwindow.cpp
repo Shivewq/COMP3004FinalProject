@@ -450,9 +450,9 @@ void MainWindow::on_Add_User_clicked(){
     ui->button_update->setEnabled(true);
 
     //get the users info from the UI
-    QString name = ui->text_name->toPlainText();
-    QString heightStr = ui->text_height->toPlainText();
-    QString weightStr = ui->text_weight->toPlainText();
+    QString name = ui->text_name->text();
+    QString heightStr = ui->text_height->text();
+    QString weightStr = ui->text_weight->text();
 
     // Validate the input
     if (name.isEmpty() || heightStr.isEmpty() || weightStr.isEmpty()) {
@@ -460,6 +460,14 @@ void MainWindow::on_Add_User_clicked(){
         ui->profileLog->setText("Please fill in all fields.");
         return;
     }
+
+    // Will match positive integers only
+    QRegularExpression integerRegex("^\\d+$");
+        if (!integerRegex.match(heightStr).hasMatch() || !integerRegex.match(weightStr).hasMatch()) {
+            qInfo() << "Invalid height or weight.";
+            ui->profileLog->setText("Height and weight must be integers. Please re-enter info");
+            return;
+        }
 
     //Convert QString to int
     int numHeight = heightStr.toInt();
@@ -487,9 +495,17 @@ void MainWindow::on_Add_User_clicked(){
 // deletes all traces of a user. Always makes sure there is at least one profile active
 void MainWindow::on_Delete_User_clicked(){
 
+
     if(ui->userSelect->count() > 1){
-        //get the users name from the list view and remove that row from the list view
+
+        //check to see if the user has actually selected a profile to delete
         QModelIndex selectedIndex = ui->profileList->currentIndex();
+        if (!selectedIndex.isValid()) {
+            ui->profileLog->setText("Please select a profile to delete.");
+            return;
+        }
+
+        //get the users name from the list view and remove that row from the list view
         QStringListModel* model = qobject_cast<QStringListModel*>(ui->profileList->model());
         QString userName = model->data(selectedIndex, Qt::DisplayRole).toString();
         model->removeRow(selectedIndex.row());
@@ -503,7 +519,12 @@ void MainWindow::on_Delete_User_clicked(){
         app->deleteUser(userToDelete);
 
         ui->profileLog->setText("Profile Deleted");
-    }else{
+
+    }else if(ui->userSelect->count() == 0){
+        ui->profileLog->setText("Cannot delete, no profile exists");
+    }
+
+    else{
 
         ui->profileLog->setText("Cannot delete last profile");
     }
@@ -515,10 +536,10 @@ void MainWindow::on_Update_User_clicked(){
 
     User* userToUpdate = app->getActiveUser();
 
-    if(!ui->text_name->toPlainText().isEmpty()){
+    if(!ui->text_name->text().isEmpty()){
 
         QString oldName = userToUpdate->getName();
-        QString newName = ui->text_name->toPlainText();
+        QString newName = ui->text_name->text();
         userToUpdate->setName(newName);
 
         //display updated name in profile list
@@ -531,14 +552,14 @@ void MainWindow::on_Update_User_clicked(){
         ui->userSelect->setItemText(comboIndex, newName);
     }
 
-    if(!ui->text_weight->toPlainText().isEmpty()){
-        QString weightStr = ui->text_weight->toPlainText();
+    if(!ui->text_weight->text().isEmpty()){
+        QString weightStr = ui->text_weight->text();
         int numWeight = weightStr.toInt();
         userToUpdate->setWeight(numWeight);
     }
 
-    if(!ui->text_height->toPlainText().isEmpty()){
-        QString heightStr = ui->text_height->toPlainText();
+    if(!ui->text_height->text().isEmpty()){
+        QString heightStr = ui->text_height->text();
         int numHeight = heightStr.toInt();
         userToUpdate->setHeight(numHeight);
     }
@@ -599,6 +620,7 @@ void MainWindow::update_Active_User(const QString &text) {
     //make the history page graphs empty to reset it for the next active user
     ui->barGraph->chart()->removeAllSeries();
     ui->polarGraph->chart()->removeAllSeries();
+    ui->label_reccomendation->setText("");
 
     //display the active users info
     ui->UserInfo->clear();
