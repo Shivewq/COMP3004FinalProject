@@ -85,6 +85,7 @@ void MainWindow::onStart(){
     ui->button_off->setEnabled(false);
     ui->mesNow_button->setEnabled(false);
     ui->button_startMeasure->setEnabled(false);
+    ui->button_Interrupt->setEnabled(false);
     ui->button_on->setEnabled(false);
     ui->button_off->setEnabled(false);
 }
@@ -159,6 +160,10 @@ void MainWindow::on_details_clicked(){
         onScanSelected(ui->User_History->item(0));
         ui->scan_title_label->setText(app->getActiveUser()->getMostRecentScan()->toString());
 
+    }else if (app->getActiveUser()->getScanList().empty()){
+        ui->barGraph->chart()->removeAllSeries();
+        ui->polarGraph->chart()->removeAllSeries();
+        ui->label_reccomendation->setText("");
     }
 
 
@@ -409,6 +414,7 @@ void MainWindow::batteryOutMessage(QString msg)
 
     ui->label_deviceStatus->setText("OUT OF BATTERY!");
     ui->button_startMeasure->setEnabled(false);
+    ui->button_Interrupt->setEnabled(false);
 }
 
 // **MENU SELECTION CODE**
@@ -430,6 +436,12 @@ void MainWindow::on_button_history_clicked()
 {
     ui->stackedWidget->setCurrentIndex(3);
     //updates current profiles history or allows for another profiles history to replace it
+    if (app->getActiveUser()->getScanList().empty()){
+        ui->barGraph->chart()->removeAllSeries();
+        ui->polarGraph->chart()->removeAllSeries();
+        ui->label_reccomendation->setText("");
+     }
+
     ui->User_History->clear();
     loadUserHistory();
 }
@@ -775,7 +787,7 @@ void MainWindow::batteryOutOff(){
 //sets the device battery back to 100% and allows users to scan again if device was dead
 void MainWindow::on_button_charge_clicked()
 {
-    ui->button_startMeasure->setEnabled(true);
+
 
     if(device->isOn()){
         ui->label_deviceStatus->setText("ON");
@@ -793,6 +805,7 @@ void MainWindow::on_button_charge_clicked()
 void MainWindow::on_button_startMeasure_clicked()
 {
     ui->button_startMeasure->setEnabled(false);
+    ui->button_Interrupt->setEnabled(true);
     //cannot turn device off during scan
     ui->button_off->setEnabled(false);
 
@@ -813,6 +826,7 @@ void MainWindow::updateMeasureButtonUI()
     msgBox.exec();
 
     ui->button_startMeasure->setEnabled(true);
+    ui->button_Interrupt->setEnabled(false);
     //enable off button after scan
     ui->button_off->setEnabled(true);
 
@@ -825,6 +839,9 @@ void MainWindow::on_button_Interrupt_clicked()
 {
     //stop the scan
     app->stopMeasure();
+    ui->button_off->setEnabled(true);
+    ui->button_startMeasure->setEnabled(true);
+    ui->button_Interrupt->setEnabled(false);
     //display warning message telling user to restart
     QMessageBox msgBox(this);
     msgBox.setWindowTitle("INTERRUPTED SCAN! ");
