@@ -72,6 +72,8 @@ private slots:
     void updateMeasureButtonUI();
     void batteryOutOff();
 
+    void on_button_Interrupt_clicked();
+
 private:
     Ui::MainWindow *ui;
     QtCharts::QLineSeries *series;

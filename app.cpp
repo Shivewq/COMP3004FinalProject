@@ -18,7 +18,7 @@ App::~App(){
 
 //store all the raw data points generated from the device in the measurments vector
 //plot all the datapoints collected on the graph in the measure page
-void App::MeasureFunctionTemplate(){
+void App::MeasureFunction(){
     if(!device->isOn()) return;
     if(device->getBattery()->getCharge() <= 0){
         device->turnOff();
@@ -193,7 +193,7 @@ User* App:: getUserFromName(QString name){
 void App::stopMeasure(){
     //if we are currently measuring need to delete the most recent scan from the user list
     if(scanning) {
-        emit deleteCurrentScan();
+        emit deleteCurrentScan(activeUser->getName());
         scanning = false;
     }
 

@@ -24,7 +24,7 @@ public:
 
     //data collection and processing
     QVector<int> calculateScan(QVector<int> rawPoints);
-    void MeasureFunctionTemplate();
+    void MeasureFunction();
     QVector<int> calculateReadingGraph(int reading);
 
     //helper functions
@@ -53,7 +53,7 @@ private:
 signals:
     void plotPoint(int y);
     void clearMeteringGraph(int max_y,int max_x);
-    void deleteCurrentScan();
+    void deleteCurrentScan(QString name);
     void bodyPointNumber(int *const);
     void bodyImageNum(int *const);
     void skinContact(bool isContact); //to tell the UI if the device is making contact with skin

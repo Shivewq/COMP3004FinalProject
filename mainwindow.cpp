@@ -16,14 +16,14 @@ MainWindow::MainWindow(QWidget *parent)
     //setup device
     device = new Device();
     connect(device->getBattery(),&Battery::editBattery,this,&MainWindow::on_editBattery);
-    connect(device->getBattery(),&Battery::editBattery,this,&MainWindow::on_editBattery);
+    //connect(device->getBattery(),&Battery::editBattery,this,&MainWindow::on_editBattery);
     connect(device->getBattery(),&Battery::lowBatteryWarning,this,&MainWindow::showBatteryMsg);
     connect(device->getBattery(),&Battery::batteryOut,this,&MainWindow::batteryOutOff);
     connect(device,&Device::statusChange,this,&MainWindow::deviceStateUI);
 
     //setup app
     app = new App(device);
-
+    connect(device->getBattery(),&Battery::batteryOut,app,&App::stopMeasure);
 
     populateOrganList();
     userModel = new QStringListModel(this);
@@ -447,48 +447,51 @@ void MainWindow::on_button_profiles_clicked()
 //Creates new user from input data
 void MainWindow::on_Add_User_clicked(){
 
-    ui->button_update->setEnabled(true);
+   //get the users info from the UI
+   QString name = ui->text_name->text();
+   QString heightStr = ui->text_height->text();
+   QString weightStr = ui->text_weight->text();
 
-    //get the users info from the UI
-    QString name = ui->text_name->text();
-    QString heightStr = ui->text_height->text();
-    QString weightStr = ui->text_weight->text();
+   // Validate the input
+   if (name.isEmpty() || heightStr.isEmpty() || weightStr.isEmpty()) {
+       qInfo() << "Please fill in all fields.";
+       ui->profileLog->setText("Please fill in all fields.");
+       return;
+   }
 
-    // Validate the input
-    if (name.isEmpty() || heightStr.isEmpty() || weightStr.isEmpty()) {
-        qInfo() << "Please fill in all fields.";
-        ui->profileLog->setText("Please fill in all fields.");
-        return;
-    }
+   // Will match positive integers only
+   QRegularExpression integerRegex("^\\d+$");
+       if (!integerRegex.match(heightStr).hasMatch() || !integerRegex.match(weightStr).hasMatch()) {
+           qInfo() << "Invalid height or weight.";
+           ui->profileLog->setText("Height and weight must be integers. Please re-enter info");
+           return;
+       }
 
-    // Will match positive integers only
-    QRegularExpression integerRegex("^\\d+$");
-        if (!integerRegex.match(heightStr).hasMatch() || !integerRegex.match(weightStr).hasMatch()) {
-            qInfo() << "Invalid height or weight.";
-            ui->profileLog->setText("Height and weight must be integers. Please re-enter info");
-            return;
-        }
+   //Convert QString to int
+   int numHeight = heightStr.toInt();
+   int numWeight = weightStr.toInt();
 
-    //Convert QString to int
-    int numHeight = heightStr.toInt();
-    int numWeight = weightStr.toInt();
+   //create new user and add it to the user list
+   User* newUser = new User(this, name, numWeight, numHeight);
+   app->addUser(newUser);
+   connect(app,&App::deleteCurrentScan,newUser,&User::deleteScan);
+   //adjust UI accordingly
+   ui->text_name->clear();
+   ui->text_height->clear();
+   ui->text_weight->clear();
 
-    //create new user and add it to the user list
-    User* newUser = new User(this, name, numWeight, numHeight);
-    app->addUser(newUser);
-
-    //adjust UI accordingly
-    ui->text_name->clear();
-    ui->text_height->clear();
-    ui->text_weight->clear();
-
-    QStringList users = userModel->stringList();
-    users.append(name);
-    userModel->setStringList(users);
+   QStringList users = userModel->stringList();
+   users.append(name);
+   userModel->setStringList(users);
 
 
-    ui->userSelect->addItem(newUser->getName(), QVariant::fromValue(newUser));
-    ui->profileLog->setText("Profile Created!");
+   ui->userSelect->addItem(newUser->getName(), QVariant::fromValue(newUser));
+
+   //only allows profile updates if a profile has actually been created
+   if(ui->userSelect->count() > 0){
+       ui->button_update->setEnabled(true);
+       ui->profileLog->setText("Profile Created!");
+   }
 
 }
 
@@ -795,7 +798,7 @@ void MainWindow::on_button_startMeasure_clicked()
 
     //cannot change active user during scan
     ui->userSelect->setEnabled(false);
-    app->MeasureFunctionTemplate();
+    app->MeasureFunction();
 }
 
 //displays a box message once a successful scan has been recorded
@@ -815,5 +818,20 @@ void MainWindow::updateMeasureButtonUI()
 
     //cannot active user change after scan
     ui->userSelect->setEnabled(true);
+}
+
+//Safety Scenario: Scan was interrupted
+void MainWindow::on_button_Interrupt_clicked()
+{
+    //stop the scan
+    app->stopMeasure();
+    //display warning message telling user to restart
+    QMessageBox msgBox(this);
+    msgBox.setWindowTitle("INTERRUPTED SCAN! ");
+    msgBox.setText("Scan wasn't able to be completed. Please retry.");
+    msgBox.setIcon(QMessageBox::Warning);
+    msgBox.setStandardButtons(QMessageBox::Close);
+
+    msgBox.exec();
 }
 

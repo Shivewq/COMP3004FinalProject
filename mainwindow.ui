@@ -36,7 +36,7 @@
      <number>1</number>
     </property>
     <property name="currentIndex">
-     <number>2</number>
+     <number>1</number>
     </property>
     <widget class="QWidget" name="page_home">
      <widget class="QLabel" name="label">
@@ -891,6 +891,30 @@
       </property>
       <property name="text">
        <string>Device Status:</string>
+      </property>
+     </widget>
+     <widget class="QPushButton" name="button_Interrupt">
+      <property name="geometry">
+       <rect>
+        <x>20</x>
+        <y>190</y>
+        <width>171</width>
+        <height>31</height>
+       </rect>
+      </property>
+      <property name="font">
+       <font>
+        <family>Quicksand</family>
+        <pointsize>16</pointsize>
+        <weight>75</weight>
+        <bold>true</bold>
+       </font>
+      </property>
+      <property name="autoFillBackground">
+       <bool>false</bool>
+      </property>
+      <property name="text">
+       <string>Interrupt Scan</string>
       </property>
      </widget>
     </widget>
