@@ -36,7 +36,7 @@
      <number>1</number>
     </property>
     <property name="currentIndex">
-     <number>2</number>
+     <number>3</number>
     </property>
     <widget class="QWidget" name="page_home">
      <widget class="QLabel" name="label">
@@ -1376,7 +1376,20 @@
        </rect>
       </property>
       <property name="text">
-       <string>Here are our reccomendations:</string>
+       <string>we recommend seeking a professional</string>
+      </property>
+     </widget>
+     <widget class="QLabel" name="label_9">
+      <property name="geometry">
+       <rect>
+        <x>10</x>
+        <y>450</y>
+        <width>261</width>
+        <height>21</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>opinion.</string>
       </property>
      </widget>
     </widget>
