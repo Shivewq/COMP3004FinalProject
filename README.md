@@ -25,3 +25,10 @@
 	- Scan history code to access the user scan history and be able to click through
 	- Signals for important UI updates such as on/off device, battery updating, on/off skin touch, current point number, and idea to add images
 	- Bug fixes to battery and scan.
+### Eric:
+	- Traceability Matrix
+ 	- logic & implementation for the device and how it generates the data points
+  	- logic & implementation for measuring and calculating the measuring graph points
+   	- implementation for calculating the points for the bar/circle graph
+    	- implemented the basics for the battery such as the on/off triggering the depletetion and connecting it to the device
+     	- implemented graceful shutdown for if the simulation is mid scan
