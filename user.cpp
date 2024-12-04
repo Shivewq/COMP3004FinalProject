@@ -14,7 +14,7 @@ void User::addScan(Scan* scan){
    }
 }
 
-//returns the users name
+//returns the users name, height, weight
 QString User::getName(){
     return name;
 }

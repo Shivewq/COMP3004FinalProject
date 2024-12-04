@@ -73,8 +73,8 @@ private slots:
     void batteryOutMessage(QString);
     void updateMeasureButtonUI();
     void batteryOutOff();
-
-
+    void on_text_name_returnPressed();
+    void on_text_weight_returnPressed();
 
 private:
     Ui::MainWindow *ui;

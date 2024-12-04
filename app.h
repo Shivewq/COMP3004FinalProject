@@ -44,7 +44,7 @@ public:
 
 
 private:
-    Device* device;
+    Device* device; // reference to the device
     User* activeUser;
     QVector<User*> users;
     bool scanning;
@@ -56,9 +56,9 @@ signals:
     void deleteCurrentScan(QString name);
     void bodyPointNumber(int *const);
     void bodyImageNum(int *const);
-    void skinContact(bool isContact); //to tell the UI if the device is making contact with skin
-    void outOfBattery(QString); // For when the battery is out
-    void doneScan(); // Successful completion of scan
+    void skinContact(bool isContact);
+    void outOfBattery(QString);
+    void doneScan();
 
 public slots:
     void stopMeasure();
