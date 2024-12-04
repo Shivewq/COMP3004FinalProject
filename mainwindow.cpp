@@ -80,9 +80,8 @@ void MainWindow::onStart(){
     //Get History ready and make sure it cant be access until there is a user
     ui->button_history->setEnabled(false);
     ui->button_measure->setEnabled(false);
+    ui->button_home->setEnabled(false);
     ui->button_charge->setEnabled(false);
-    ui->button_on->setEnabled(false);
-    ui->button_off->setEnabled(false);
     ui->mesNow_button->setEnabled(false);
     ui->button_startMeasure->setEnabled(false);
     ui->button_Interrupt->setEnabled(false);
@@ -632,6 +631,7 @@ void MainWindow::update_Active_User(const QString &text) {
     //Enable buttons once user is created
     ui->button_history->setEnabled(true);
     ui->button_measure->setEnabled(true);
+    ui->button_home->setEnabled(true);
     ui->details_button->setEnabled(true);
     ui->button_charge->setEnabled(true);
     ui->button_on->setEnabled(true);
