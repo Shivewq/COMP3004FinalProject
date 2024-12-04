@@ -38,11 +38,13 @@ Battery Critically Low: 	       RaDoTech_OutOfBattery_Sequence.png
 
 Loss Of Connection during Treatment:   RaDoTech_Interrupt_Sequence.png
 
-### State Diagrams
+### State Diagrams:
 Device + App State Diagrams: RaDoTech_StateDiagrams.png
 
+### Class Diagram:
+
 ### Use Cases + Traceability Matrix + Design Discussion
-	- TEAM31_Submission.pdf
+TEAM31_Submission.pdf
 
 ## Teamwork (ALL TEAMMATES CONTRIBUTED):
 	- All Use cases
