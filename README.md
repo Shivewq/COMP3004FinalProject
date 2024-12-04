@@ -43,6 +43,8 @@ Device + App State Diagrams --> RaDoTech_StateDiagrams.png
 
 ### Class Diagram:
 
+### Use Case Diagram:
+
 ### Use Cases + Traceability Matrix + Design Discussion
 TEAM31_Submission.docx
 
