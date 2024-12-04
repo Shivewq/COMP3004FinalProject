@@ -42,9 +42,9 @@ Loss Of Connection during Treatment --> RaDoTech_Interrupt_Sequence.png
 Device + App State Diagrams --> RaDoTech_StateDiagrams.png
 
 ### Class Diagram:
-
+RaDoTechClassDiagram.drawio
 ### Use Case Diagram:
-
+UseCaseDiagram.drawio
 ### Use Cases + Traceability Matrix + Design Discussion
 TEAM31_Submission.docx
 
