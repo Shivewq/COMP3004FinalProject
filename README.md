@@ -1,5 +1,11 @@
 # COMP3004FinalProject
 
+## FILES INFO:
+#### Sequence Scenarios:
+ 		- Main Success Scenario: RaDoTech_Sequence.png
+   		- Battery Critically Low: RaDoTech_OutOfBattery_Sequence.png
+     		- Loss Of Connection during Treatment: RaDoTech_Interrupt_Sequence.png
+
 ## Teamwork (ALL TEAMMATES CONTRIBUTED):
 	- All Use cases
 	- Class ideas and Class design
