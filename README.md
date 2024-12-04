@@ -3,7 +3,7 @@ By Eric Desrosiers - 101265942, Michael Roy - 101260953, Shiven Sharma - 1012728
 
 
 ## FILES INFO:
-- IMPORT AND INSTALL QT CHARTS BEFORE RUNNING. RUN THE FOLLOWING COMMAND IN CMD: sudo apt install libqt5charts5 libqt5charts5-dev
+- IMPORT AND INSTALL QT CHARTS BEFORE RUNNING. RUN THE FOLLOWING COMMAND IN CMD --> sudo apt install libqt5charts5 libqt5charts5-dev
 
 Header Files:
 - app.h
@@ -32,19 +32,19 @@ Other Files:
 - README.md
 
 #### Sequence Scenarios:
-Main Success Scenario: 		       RaDoTech_Sequence.png
+Main Success Scenario --> RaDoTech_Sequence.png
 
-Battery Critically Low: 	       RaDoTech_OutOfBattery_Sequence.png
+Battery Critically Low --> RaDoTech_OutOfBattery_Sequence.png
 
-Loss Of Connection during Treatment:   RaDoTech_Interrupt_Sequence.png
+Loss Of Connection during Treatment --> RaDoTech_Interrupt_Sequence.png
 
 ### State Diagrams:
-Device + App State Diagrams: RaDoTech_StateDiagrams.png
+Device + App State Diagrams --> RaDoTech_StateDiagrams.png
 
 ### Class Diagram:
 
 ### Use Cases + Traceability Matrix + Design Discussion
-TEAM31_Submission.pdf
+TEAM31_Submission.docx
 
 ## Teamwork (ALL TEAMMATES CONTRIBUTED):
 	- All Use cases
@@ -61,10 +61,10 @@ TEAM31_Submission.pdf
 		- Out of Battery/Shutdown Sequence Scenario
 		- Measure Interrupt Sequence Scenario
 	- UI code logic, including widget switching for the different screens and which buttons are enabled at a given time
-	- UI design, helped with UI design, battery design, and UI Layout and fonts
-	- Scan history code to access the user scan history and be able to click through
+	- UI design, designed base UI and major changes, battery design, and UI Layout and fonts, colour, etc
+	- All Scan history code to access the user scan history and be able to click through
 	- Signals for important UI updates such as on/off device, battery updating, on/off skin touch, current point number, and idea to add images
-	- Bug fixes to battery and scan.
+	- All Bug fixes to the battery and scan.
 ### Eric:
 	- Traceability Matrix
  	- logic & implementation for the device and how it generates the data points
