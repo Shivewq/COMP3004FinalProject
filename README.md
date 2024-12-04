@@ -76,11 +76,11 @@ TEAM31_Submission.docx
 
 ### Adam:
 	- State Diagrams (device and app)
- 	- Contributed to the design discussion pdf by cleaning up use cases, adding design discussions, and reviewing existing design discussions
- 	- All functionality and UI design of the profiles page, including adding, removing, and updating user profiles. 
-  	- All functionality and UI design of the home page, including the graph visual and corresponding buttons.
-   	- Included all the scan point images to give the user a visual of where to scan
-    	- Debugged and cleaned up a lot of the main UI functionality, filled in the holes where necessary
+ 	- Cleaned up base Use Cases
+ 	- All functionality and UI design of the profiles page, including adding, removing, and updating user profiles, as well as determining/displaying the active profile
+  	- All functionality and UI design of the home page, including the graph visual, greeting message placeholder, and buttons
+   	- Gathered and included all the scan point images to give the user a visual during a scan
+    	- Debugged and cleaned up a lot of the main UI functionality (signals, slots, button/graph display) across all pages, filled in the holes where necessary
         
 ### Shiven:
         - Class Diagram
