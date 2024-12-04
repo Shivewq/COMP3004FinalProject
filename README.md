@@ -1,4 +1,5 @@
 # COMP3004FinalProject
+By Eric, Michael, Shiven, Adam
 
 ## FILES INFO:
 #### Sequence Scenarios:
