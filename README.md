@@ -81,3 +81,13 @@ TEAM31_Submission.docx
   	- All functionality and UI design of the home page, including the graph visual and corresponding buttons.
    	- Included all the scan point images to give the user a visual of where to scan
     	- Debugged and cleaned up a lot of the main UI functionality, filled in the holes where necessary
+        
+### Shiven:
+        - Class Diagram
+        - Use Case Diagram 
+        - Contributed to the design discussion pdf by adding to design discussions
+        - All implementation of handling graphs for both simulating the scan per point and Bar and Polar charts to display processed data in an easy-to-read manner for the user
+        - Implemenetation of the UI design of the measurement and history page for displaying data
+        - Implementation of signals/slots for important UI chart updates to display data accurately and on time
+        - Implement user friendly attributes such as a legend to associate body points to the related organ and it's side
+        - Video Demonstration of the overall functionality of the program
