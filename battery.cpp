@@ -33,7 +33,7 @@ void Battery::updateBattery(){
         emit editBattery(battery);
     }
     //when battery is empty
-    else {
+    if (battery == 0){
        emit batteryOut();
     }
     //if the battery reaches 20% warn user

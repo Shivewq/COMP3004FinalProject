@@ -28,7 +28,7 @@ private:
     QString name;
     int weight; //in kg
     int height; // in cm
-    QVector<Scan*> measurements; //back is most recent scan
+    QVector<Scan*> measurements;
 
 public slots:
     void deleteScan(QString name);

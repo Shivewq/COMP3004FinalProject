@@ -9,6 +9,7 @@ class Device: public QObject{
 public:
     explicit Device(QObject* parent = nullptr);
     Battery* getBattery(){return charge;}
+
     //battery value functions
     void turnOn();
     void turnOff();
@@ -18,10 +19,8 @@ public:
     bool isOn(){return onStatus;}
 
 private:
-    Battery* charge;
-    bool onStatus;
-
-public slots:
+    Battery* charge; //battery object
+    bool onStatus; //whether the device is on or off
 
 signals:
     void statusChange(bool);

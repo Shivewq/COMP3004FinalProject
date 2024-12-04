@@ -88,6 +88,7 @@ void MainWindow::onStart(){
     ui->button_Interrupt->setEnabled(false);
     ui->button_on->setEnabled(false);
     ui->button_off->setEnabled(false);
+    ui->text_name->setFocus();
 }
 
 
@@ -412,9 +413,13 @@ void MainWindow::batteryOutMessage(QString msg)
 
     msgBox.exec();
 
+    //update other UI elements accordingly
     ui->label_deviceStatus->setText("OUT OF BATTERY!");
     ui->button_startMeasure->setEnabled(false);
     ui->button_Interrupt->setEnabled(false);
+    ui->button_home->setEnabled(true);
+    ui->button_history->setEnabled(true);
+    ui->button_profiles->setEnabled(true);
 }
 
 // **MENU SELECTION CODE**
@@ -567,6 +572,7 @@ void MainWindow::on_Update_User_clicked(){
         ui->userSelect->setItemText(comboIndex, newName);
     }
 
+    //update the weigth and height if applicable
     if(!ui->text_weight->text().isEmpty()){
         QString weightStr = ui->text_weight->text();
         int numWeight = weightStr.toInt();
@@ -760,7 +766,7 @@ void MainWindow::deviceStateUI(bool status){
     }
 }
 
-
+//turns on device
 void MainWindow::on_button_on_clicked()
 {
     ui->button_on->setEnabled(false);
@@ -768,7 +774,7 @@ void MainWindow::on_button_on_clicked()
     device->turnOn();
 }
 
-
+//turns off devices
 void MainWindow::on_button_off_clicked()
 {
     ui->button_on->setEnabled(true);
@@ -804,13 +810,15 @@ void MainWindow::on_button_charge_clicked()
 //starts a scan on the measure page
 void MainWindow::on_button_startMeasure_clicked()
 {
+    //enable/disable UI accordingly
     ui->button_startMeasure->setEnabled(false);
     ui->button_Interrupt->setEnabled(true);
-    //cannot turn device off during scan
+    ui->button_home->setEnabled(false);
+    ui->button_history->setEnabled(false);
+    ui->button_profiles->setEnabled(false);
     ui->button_off->setEnabled(false);
 
-    //cannot change active user during scan
-    ui->userSelect->setEnabled(false);
+
     app->MeasureFunction();
 }
 
@@ -825,13 +833,14 @@ void MainWindow::updateMeasureButtonUI()
 
     msgBox.exec();
 
+    //enable/disable UI accordingly
     ui->button_startMeasure->setEnabled(true);
     ui->button_Interrupt->setEnabled(false);
-    //enable off button after scan
+    ui->button_home->setEnabled(true);
+    ui->button_history->setEnabled(true);
+    ui->button_profiles->setEnabled(true);
     ui->button_off->setEnabled(true);
 
-    //cannot active user change after scan
-    ui->userSelect->setEnabled(true);
 }
 
 //Safety Scenario: Scan was interrupted
@@ -842,6 +851,12 @@ void MainWindow::on_button_Interrupt_clicked()
     ui->button_off->setEnabled(true);
     ui->button_startMeasure->setEnabled(true);
     ui->button_Interrupt->setEnabled(false);
+    ui->button_home->setEnabled(true);
+    ui->button_history->setEnabled(true);
+    ui->button_profiles->setEnabled(true);
+    ui->label_contact->setText(QString("Off Skin!"));
+
+
     //display warning message telling user to restart
     QMessageBox msgBox(this);
     msgBox.setWindowTitle("INTERRUPTED SCAN! ");
@@ -850,5 +865,17 @@ void MainWindow::on_button_Interrupt_clicked()
     msgBox.setStandardButtons(QMessageBox::Close);
 
     msgBox.exec();
+}
+
+//after entering profile name, click enter to directly go the next line
+void MainWindow::on_text_name_returnPressed()
+{
+    ui->text_weight->setFocus();
+}
+
+//same as above but for the last 2 lines
+void MainWindow::on_text_weight_returnPressed()
+{
+    ui->text_height->setFocus();
 }
 
