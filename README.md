@@ -54,6 +54,7 @@ TEAM31_Submission.docx
 	- UI design ideas
 	- Code design and logic flow ideas
 	- Research for RaDoTech for accurate recreation
+ 	- Design Discussion PDF
 
 ### Michael:
 	- Sequence Diagrams
